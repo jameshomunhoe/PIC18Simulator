@@ -3,6 +3,7 @@
 #include "ExecutionTable.h"
 #include "Execute.h"
 
+
 #define isInFirstAccessRange (address >= 0x00 && address <= 0x7f)
 #define isInSecondAccessRange (address >= 0xf80 && address <= 0xfff)
 #define isInBankedRange (address >= 0x80 && address <= 0xf79)

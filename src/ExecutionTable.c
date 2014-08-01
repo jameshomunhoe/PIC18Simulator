@@ -2,7 +2,7 @@
 #include "ExecutionTable.h"
 #include "Execute.h"
 
-typedef int (*ExecutionTable)(unsigned int code);
+
 
 ExecutionTable executionTable[64] = {
 	[0x06] = executeSWAPF,
@@ -30,6 +30,10 @@ ExecutionTable executionTable[64] = {
 	[0x2d] = executeBTFSC,
 	[0x2e] = executeBTFSC,
 	[0x2f] = executeBTFSC,
-	
-
+	[0x38] = executeConditionalBranch,
+	[0x39] = executeConditionalBranch,
+	[0x3a] = executeConditionalBranch,
+	[0x3b] = executeConditionalBranch,
 };
+
+	

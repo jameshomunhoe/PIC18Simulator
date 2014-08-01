@@ -181,7 +181,7 @@ Token *getToken(String *str) {
 			str->length--;
 		}
 			
-		if(isSpace(stringCharAt(str,0)) || str->length==0){
+		if((stringIsCharAtInSet(str,0,operatorSet) == 0) || str->length==0){
 			Operator *operator = operatorNewBySymbol(charReturn);
 			tokenReturn = (Token *)operator;
 		}

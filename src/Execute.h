@@ -1,6 +1,19 @@
 #ifndef _EXECUTE_H_
 #define _EXECUTE_H_
 
+//james
+int executeBC(unsigned int code);
+int executeBNC(unsigned int code);
+int executeBNZ(unsigned int code);
+int executeBRA(unsigned int code);
+int executeBZ(unsigned int code);
+int executeCALL(unsigned int code);
+
+int executeConditionalBranch(unsigned int code);
+
+
+//shyanfeng
+
 int executeBCF(unsigned int code);
 int executeBSF(unsigned int code);
 int executeBTFSC(unsigned int code);

@@ -6,6 +6,9 @@
 void setUp(void){}
 void tearDown(void){}
 
-void test_ExecutionTable(){
+//executionTable[(0xFC00 & code)>>10](code);
 
+void test_BC(){
+	int code = 0xE205;
+	
 }
