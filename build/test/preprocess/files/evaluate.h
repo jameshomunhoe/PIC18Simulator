@@ -1,7 +1,0 @@
-
-
-
-
-
-
-int evaluate(char *charbla);

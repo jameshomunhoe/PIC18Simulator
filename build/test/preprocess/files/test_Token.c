@@ -350,8 +350,6 @@ void test_getToken_sould_return_IdentifierToken_AuCheeLiang_without_ending_with_
 
 }
 
-
-
 void test_getToken_should_return_OperatorToken_BITWISE_NOT_OP(void){
 
  int test;
@@ -368,15 +366,15 @@ void test_getToken_should_return_OperatorToken_BITWISE_NOT_OP(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)190, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)189, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("~"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)191);
+ UnityAssertEqualString((const char*)("~"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)190);
 
- UnityAssertEqualNumber((_U_SINT)((BITWISE_NOT_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)192, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((BITWISE_NOT_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)191, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((150)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)193, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((150)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)192, UNITY_DISPLAY_STYLE_INT);
 
- assertStringEqual((" ahahaha hehehe hoho"), (string), 194, ((void *)0));
+ assertStringEqual((" ahahaha hehehe hoho"), (string), 193, ((void *)0));
 
 }
 
@@ -398,15 +396,15 @@ void test_getToken_should_return_OperatorToken_BITWISE_AND_OP(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)205, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)204, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)206);
+ UnityAssertEqualString((const char*)("&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)205);
 
- UnityAssertEqualNumber((_U_SINT)((BITWISE_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)207, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((BITWISE_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)206, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((60)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)208, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((60)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)207, UNITY_DISPLAY_STYLE_INT);
 
- assertStringEqual((" ahahaha"), (string), 209, ((void *)0));
+ assertStringEqual((" ahahaha"), (string), 208, ((void *)0));
 
 }
 
@@ -428,15 +426,15 @@ void test_getToken_should_return_OperatorToken_LOGICAL_AND_OP(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)220, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)219, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("&&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)221);
+ UnityAssertEqualString((const char*)("&&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)220);
 
- UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)222, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)221, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)223, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)222, UNITY_DISPLAY_STYLE_INT);
 
- assertStringEqual((" 123sdv  we"), (string), 224, ((void *)0));
+ assertStringEqual((" 123sdv  we"), (string), 223, ((void *)0));
 
 }
 
@@ -458,15 +456,15 @@ void test_getToken_should_return_OperatorToken_LOGICAL_OR_OP(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)235, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)234, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("||"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)236);
+ UnityAssertEqualString((const char*)("||"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)235);
 
- UnityAssertEqualNumber((_U_SINT)((LOGICAL_OR_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)237, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((LOGICAL_OR_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)236, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((20)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)238, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((20)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)237, UNITY_DISPLAY_STYLE_INT);
 
- assertStringEqual((" 123sdv  we"), (string), 239, ((void *)0));
+ assertStringEqual((" 123sdv  we"), (string), 238, ((void *)0));
 
 }
 
@@ -490,7 +488,7 @@ void test_getToken_sould_Throw_an_error_with_mixed_up_number_and_alphabet(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)251, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)250, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -516,7 +514,7 @@ void test_getToken_sould_Throw_an_error_with_mixed_up_number_and_operator(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)264, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)263, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -542,7 +540,7 @@ void test_getToken_sould_Throw_an_error_with_mixed_up_all_together(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)277, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)276, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -564,27 +562,11 @@ void test_getToken_multiple_times_abc_BITWISE_NOT_OP_123(void){
 
  token = getToken(string);
 
- UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)288, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)287, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("abc"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)289);
+ UnityAssertEqualString((const char*)("abc"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)288);
 
- assertStringEqual((" ~ 123"), (string), 290, ((void *)0));
-
-
-
-
-
- token = getToken(string);
-
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)294, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualString((const char*)("~"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)295);
-
- UnityAssertEqualNumber((_U_SINT)((BITWISE_NOT_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)296, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((150)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)297, UNITY_DISPLAY_STYLE_INT);
-
- assertStringEqual((" 123"), (string), 298, ((void *)0));
+ assertStringEqual((" ~ 123"), (string), 289, ((void *)0));
 
 
 
@@ -592,11 +574,27 @@ void test_getToken_multiple_times_abc_BITWISE_NOT_OP_123(void){
 
  token = getToken(string);
 
- UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)302, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)293, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((((Number *)token)->value)), (((void *)0)), (_U_UINT)303, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualString((const char*)("~"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)294);
 
- assertStringEqual((""), (string), 304, ((void *)0));
+ UnityAssertEqualNumber((_U_SINT)((BITWISE_NOT_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)295, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((150)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)296, UNITY_DISPLAY_STYLE_INT);
+
+ assertStringEqual((" 123"), (string), 297, ((void *)0));
+
+
+
+
+
+ token = getToken(string);
+
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)301, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((((Number *)token)->value)), (((void *)0)), (_U_UINT)302, UNITY_DISPLAY_STYLE_INT);
+
+ assertStringEqual((""), (string), 303, ((void *)0));
 
 }
 
@@ -616,27 +614,11 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_123(void){
 
  token = getToken(string);
 
- UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)314, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)313, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("abc"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)315);
+ UnityAssertEqualString((const char*)("abc"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)314);
 
- assertStringEqual((" && 123"), (string), 316, ((void *)0));
-
-
-
-
-
- token = getToken(string);
-
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)320, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualString((const char*)("&&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)321);
-
- UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)322, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)323, UNITY_DISPLAY_STYLE_INT);
-
- assertStringEqual((" 123"), (string), 324, ((void *)0));
+ assertStringEqual((" && 123"), (string), 315, ((void *)0));
 
 
 
@@ -644,11 +626,27 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_123(void){
 
  token = getToken(string);
 
- UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)328, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)319, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((((Number *)token)->value)), (((void *)0)), (_U_UINT)329, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualString((const char*)("&&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)320);
 
- assertStringEqual((""), (string), 330, ((void *)0));
+ UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)321, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)322, UNITY_DISPLAY_STYLE_INT);
+
+ assertStringEqual((" 123"), (string), 323, ((void *)0));
+
+
+
+
+
+ token = getToken(string);
+
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)327, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((((Number *)token)->value)), (((void *)0)), (_U_UINT)328, UNITY_DISPLAY_STYLE_INT);
+
+ assertStringEqual((""), (string), 329, ((void *)0));
 
 }
 
@@ -670,11 +668,11 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(voi
 
  token = getToken(string);
 
- UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)341, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)340, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("abc"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)342);
+ UnityAssertEqualString((const char*)("abc"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)341);
 
- assertStringEqual((" && 12a3"), (string), 343, ((void *)0));
+ assertStringEqual((" && 12a3"), (string), 342, ((void *)0));
 
 
 
@@ -682,15 +680,15 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(voi
 
  token = getToken(string);
 
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)347, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)346, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("&&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)348);
+ UnityAssertEqualString((const char*)("&&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)347);
 
- UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)349, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)348, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)350, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)349, UNITY_DISPLAY_STYLE_INT);
 
- assertStringEqual((" 12a3"), (string), 351, ((void *)0));
+ assertStringEqual((" 12a3"), (string), 350, ((void *)0));
 
 
 
@@ -702,17 +700,21 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(voi
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
- UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)357, UNITY_DISPLAY_STYLE_INT);
-
-
-
-
-
-
+ UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)356, UNITY_DISPLAY_STYLE_INT);
 
  }
 
+
+
+
+
+
+
+
+
 }
+
+
 
 
 
@@ -732,29 +734,11 @@ void test_tokenDel_should_not_cause_error(){
 
  token = getToken(string);
 
- UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)372, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)373, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("abc"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)373);
+ UnityAssertEqualString((const char*)("abc"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)374);
 
- assertStringEqual((" && 123"), (string), 374, ((void *)0));
-
- tokenDel(token);
-
-
-
-
-
- token = getToken(string);
-
- UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)379, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualString((const char*)("&&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)380);
-
- UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)381, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)382, UNITY_DISPLAY_STYLE_INT);
-
- assertStringEqual((" 123"), (string), 383, ((void *)0));
+ assertStringEqual((" && 123"), (string), 375, ((void *)0));
 
  tokenDel(token);
 
@@ -764,11 +748,29 @@ void test_tokenDel_should_not_cause_error(){
 
  token = getToken(string);
 
- UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)388, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)380, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((((Number *)token)->value)), (((void *)0)), (_U_UINT)389, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualString((const char*)("&&"), (const char*)(((Operator *)token)->info->symbol), (((void *)0)), (_U_UINT)381);
 
- assertStringEqual((""), (string), 390, ((void *)0));
+ UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((((Operator *)token)->info->id)), (((void *)0)), (_U_UINT)382, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((((Operator *)token)->info->precedence)), (((void *)0)), (_U_UINT)383, UNITY_DISPLAY_STYLE_INT);
+
+ assertStringEqual((" 123"), (string), 384, ((void *)0));
+
+ tokenDel(token);
+
+
+
+
+
+ token = getToken(string);
+
+ UnityAssertEqualNumber((_U_SINT)((NUMBER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)389, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((((Number *)token)->value)), (((void *)0)), (_U_UINT)390, UNITY_DISPLAY_STYLE_INT);
+
+ assertStringEqual((""), (string), 391, ((void *)0));
 
  tokenDel(token);
 
@@ -796,7 +798,7 @@ void test_getToken_sould_throw_error_mix_Number_Identifier(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)404, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)405, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -824,10 +826,10 @@ void test_getToken_sould_not_throw_error_mix_Identifier_Number(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)418, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)419, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualString((const char*)("ABC123"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)419);
+ UnityAssertEqualString((const char*)("ABC123"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)420);
 
- assertStringEqual((""), (string), 420, ((void *)0));
+ assertStringEqual((""), (string), 421, ((void *)0));
 
 }

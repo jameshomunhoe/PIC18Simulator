@@ -137,7 +137,10 @@ Token *getToken(String *str) {
 	String *strReturn;
 	
 	stringTrimLeft(str);
-
+	if(stringLength(str) == 0)
+		return NULL;
+	
+	
 	//Number
 	if(stringIsCharAtInSet(str,0,numberSet)){
 		strReturn = stringRemoveWordContaining(str,numberSet);
@@ -156,6 +159,7 @@ Token *getToken(String *str) {
 		strReturn = stringRemoveWordContaining(str,alphaNumericSet);
 		Identifier *identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
 		tokenReturn = (Token *)identifier;
+		
 	}
 	
 	//Operator
@@ -168,30 +172,28 @@ Token *getToken(String *str) {
 				charReturn[0] = '&';
 				charReturn[1] = '&';
 				charReturn[2] = 0;
+				str->start++;
+				str->length--;
 			}
 			else if(charReturn[0] == '|'){
 				charReturn[0] = '|';
 				charReturn[1] = '|';
 				charReturn[2] = 0;
+				str->start++;
+				str->length--;
 			}
-			else
-				Throw(ERR_NUMBER_NOT_WELL_FORMED);
-				
-			str->start++;
-			str->length--;
 		}
 			
-		if((stringIsCharAtInSet(str,0,operatorSet) == 0) || str->length==0){
-			Operator *operator = operatorNewBySymbol(charReturn);
-			tokenReturn = (Token *)operator;
-		}
+		Operator *operator = operatorNewBySymbol(charReturn);
+		tokenReturn = (Token *)operator;
+		
+	
 	}
 	else
-		Throw(ERR_NO_ARGUMENT);
+		Throw(ERR_ILLEGAL_ARGUMENT);
 		
 	free(strReturn);
 	return tokenReturn;
-		
 }
 
 /**

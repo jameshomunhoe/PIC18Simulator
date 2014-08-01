@@ -52,43 +52,43 @@
   :line: 169
   :message: ''
 - :test: test_getToken_should_return_OperatorToken_BITWISE_NOT_OP
-  :line: 182
+  :line: 181
   :message: ''
 - :test: test_getToken_should_return_OperatorToken_BITWISE_AND_OP
-  :line: 197
+  :line: 196
   :message: ''
 - :test: test_getToken_should_return_OperatorToken_LOGICAL_AND_OP
-  :line: 212
+  :line: 211
   :message: ''
 - :test: test_getToken_should_return_OperatorToken_LOGICAL_OR_OP
-  :line: 227
+  :line: 226
   :message: ''
 - :test: test_getToken_sould_Throw_an_error_with_mixed_up_number_and_alphabet
-  :line: 242
+  :line: 241
   :message: ''
 - :test: test_getToken_sould_Throw_an_error_with_mixed_up_number_and_operator
-  :line: 255
+  :line: 254
   :message: ''
 - :test: test_getToken_sould_Throw_an_error_with_mixed_up_all_together
-  :line: 268
+  :line: 267
   :message: ''
 - :test: test_getToken_multiple_times_abc_BITWISE_NOT_OP_123
-  :line: 281
+  :line: 280
   :message: ''
 - :test: test_getToken_multiple_times_abc_LOGICAL_AND_OP_123
-  :line: 307
+  :line: 306
   :message: ''
 - :test: test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error
-  :line: 333
+  :line: 332
   :message: ''
 - :test: test_tokenDel_should_not_cause_error
-  :line: 365
+  :line: 366
   :message: ''
 - :test: test_getToken_sould_throw_error_mix_Number_Identifier
-  :line: 395
+  :line: 396
   :message: ''
 - :test: test_getToken_sould_not_throw_error_mix_Identifier_Number
-  :line: 408
+  :line: 409
   :message: ''
 :failures: []
 :ignores: []

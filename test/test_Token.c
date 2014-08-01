@@ -178,7 +178,6 @@ void test_getToken_sould_return_IdentifierToken_AuCheeLiang_without_ending_with_
 	TEST_ASSERT_EQUAL_STRING("AuCheeLiang",((Identifier *)token)->name->string);
 	TEST_ASSERT_EQUAL_String("",string);
 }
-
 void test_getToken_should_return_OperatorToken_BITWISE_NOT_OP(void){
 	int test;
 	Text *text = textNew("~ ahahaha hehehe hoho");
@@ -355,11 +354,13 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(voi
 	token = getToken(string);}
 	Catch(e){
 	TEST_ASSERT_EQUAL(ERR_NUMBER_NOT_WELL_FORMED,e);
+	}
+	
 	// TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
 	// TEST_ASSERT_EQUAL(123,((Number *)token)->value);
 	// TEST_ASSERT_EQUAL_String("",string);
-	}
 }
+
 
 
 void test_tokenDel_should_not_cause_error(){

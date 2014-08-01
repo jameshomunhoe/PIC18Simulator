@@ -94,19 +94,19 @@ int main(void)
   RUN_TEST(test_getToken_sould_return_IdentifierToken_AuCheeLiang, 143);
   RUN_TEST(test_getToken_should_return_IdentifierToken_ChiewBingXuan, 156);
   RUN_TEST(test_getToken_sould_return_IdentifierToken_AuCheeLiang_without_ending_with_space, 169);
-  RUN_TEST(test_getToken_should_return_OperatorToken_BITWISE_NOT_OP, 182);
-  RUN_TEST(test_getToken_should_return_OperatorToken_BITWISE_AND_OP, 197);
-  RUN_TEST(test_getToken_should_return_OperatorToken_LOGICAL_AND_OP, 212);
-  RUN_TEST(test_getToken_should_return_OperatorToken_LOGICAL_OR_OP, 227);
-  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_number_and_alphabet, 242);
-  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_number_and_operator, 255);
-  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_all_together, 268);
-  RUN_TEST(test_getToken_multiple_times_abc_BITWISE_NOT_OP_123, 281);
-  RUN_TEST(test_getToken_multiple_times_abc_LOGICAL_AND_OP_123, 307);
-  RUN_TEST(test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error, 333);
-  RUN_TEST(test_tokenDel_should_not_cause_error, 365);
-  RUN_TEST(test_getToken_sould_throw_error_mix_Number_Identifier, 395);
-  RUN_TEST(test_getToken_sould_not_throw_error_mix_Identifier_Number, 408);
+  RUN_TEST(test_getToken_should_return_OperatorToken_BITWISE_NOT_OP, 181);
+  RUN_TEST(test_getToken_should_return_OperatorToken_BITWISE_AND_OP, 196);
+  RUN_TEST(test_getToken_should_return_OperatorToken_LOGICAL_AND_OP, 211);
+  RUN_TEST(test_getToken_should_return_OperatorToken_LOGICAL_OR_OP, 226);
+  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_number_and_alphabet, 241);
+  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_number_and_operator, 254);
+  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_all_together, 267);
+  RUN_TEST(test_getToken_multiple_times_abc_BITWISE_NOT_OP_123, 280);
+  RUN_TEST(test_getToken_multiple_times_abc_LOGICAL_AND_OP_123, 306);
+  RUN_TEST(test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error, 332);
+  RUN_TEST(test_tokenDel_should_not_cause_error, 366);
+  RUN_TEST(test_getToken_sould_throw_error_mix_Number_Identifier, 396);
+  RUN_TEST(test_getToken_sould_not_throw_error_mix_Identifier_Number, 409);
 
   return (UnityEnd());
 }
