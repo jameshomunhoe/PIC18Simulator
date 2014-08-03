@@ -76,3 +76,18 @@ void clearAllFileRegisters(){
 	}
 	
 }
+
+int getProgramCounter(){
+
+	return	(fileRegisters[PCLATU]<<16) + 
+			(fileRegisters[PCLATH]<<8) + 
+			fileRegisters[PCL];
+}
+
+void setProgramCounter (int programCounter){
+
+	fileRegisters[PCLATU] = (programCounter & 0xff0000) >> 16;
+	fileRegisters[PCLATH] = (programCounter & 0xff00) >> 8;
+	fileRegisters[PCL]	  = (programCounter & 0xff);
+	
+}

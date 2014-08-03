@@ -12,5 +12,7 @@ int getFileRegData(int address, int access);
 int setFileRegData(int address, int access, int data);
 int findActualFileRegister(int address, int access);
 void clearAllFileRegisters();
+int getProgramCounter();
+void setProgramCounter (int programCounter);
 
 #endif //_FILE_REGISTER_H_

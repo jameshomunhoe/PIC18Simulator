@@ -299,3 +299,62 @@ void test_setFileRegData_banked_should_set_data_into_address_0xf71(){
 	TEST_ASSERT_EQUAL(0x62, data);
 	
 }
+
+void test_getProgramCounter_should_able_to_retrive_current_value_0x010203(){
+	
+	clearAllFileRegisters();
+	
+	fileRegisters[PCLATU] = 0x01;
+	fileRegisters[PCLATH] = 0x02;
+	fileRegisters[PCL] = 0x03;
+	
+	int pc = getProgramCounter();
+	
+	TEST_ASSERT_EQUAL_HEX32(0x10203,pc);
+
+}
+
+void test_getProgramCounter_should_able_to_retrive_current_value_0xff00ff(){
+	
+	clearAllFileRegisters();
+	
+	fileRegisters[PCLATU] = 0xff;
+	fileRegisters[PCLATH] = 0x0;
+	fileRegisters[PCL] = 0xff;
+	
+	int pc = getProgramCounter();
+	
+	TEST_ASSERT_EQUAL_HEX32(0xff00ff,pc);
+
+}
+
+void test_setProgramCounter_should_able_to_set_value_0xabcdef(){
+	
+	clearAllFileRegisters();
+	
+	int pc = 0xabcdef;
+	setProgramCounter(pc);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xab,fileRegisters[PCLATU] );
+	TEST_ASSERT_EQUAL_HEX16(0xcd,fileRegisters[PCLATH] );
+	TEST_ASSERT_EQUAL_HEX16(0xef,fileRegisters[PCL] );
+
+}
+
+void test_getProgramCounter_and_setProgramCounter_should_able_to_get_and_update_pc(){
+	
+	clearAllFileRegisters();
+	
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x01;
+	
+	int pc = getProgramCounter();
+	pc += 0x5;
+	setProgramCounter(pc);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU] );
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH] );
+	TEST_ASSERT_EQUAL_HEX16(0x06,fileRegisters[PCL] );
+
+}

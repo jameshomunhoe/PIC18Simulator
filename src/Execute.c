@@ -4,14 +4,19 @@
 #include "Execute.h"
 
 
+
+int executeInstruction(int code){
+	
+	executionTable[(code & 0xFC00)>>10](code);
+
+}
+
 int executeBC(unsigned int code){
 	signed char skipAmount = code & 0xff;
 	int programCounter, carryBit = 0;
 	
-	programCounter = fileRegisters[PCLATU]<<16 + 
-					 fileRegisters[PCLATH]<<8 + 
-					 fileRegisters[PCL];
-					 
+	
+	programCounter = getProgramCounter();
 	carryBit = fileRegisters[STATUS] & 0x1;
 	
 	if(carryBit)
@@ -19,9 +24,9 @@ int executeBC(unsigned int code){
 	else
 		programCounter += 2;
 		
-	fileRegisters[PCLATU] = (programCounter & 0xff0000) >> 16;
-	fileRegisters[PCLATH] = (programCounter & 0xff00) >> 8;
-	fileRegisters[PCL]	  = (programCounter & 0xff);
+	setProgramCounter(programCounter);
+	
+	return programCounter;
 	
 }
 
@@ -33,8 +38,31 @@ int executeCALL(unsigned int code){}
 
 int executeConditionalBranch(unsigned int code){
 
-	int instruction = (code & 0xfc00)>>10;
-
+	int instruction = (code & 0xff00)>>8;	
+	
+	switch(instruction){
+	
+	case 0xe2:
+	executeBC(code);
+	break;
+	
+	case 0xe3:
+	executeBNC(code);
+	break;
+	
+	case 0xe1:
+	executeBZ(code);
+	break;
+	
+	case 0xec:
+	executeCALL(code);
+	break;
+	
+	case 0xed:
+	executeCALL(code);
+	break;
+	
+	}
 }
 
 

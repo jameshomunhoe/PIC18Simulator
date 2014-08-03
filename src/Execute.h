@@ -1,6 +1,9 @@
 #ifndef _EXECUTE_H_
 #define _EXECUTE_H_
 
+//easier to execute functions, input full opcode into parameter
+int executeInstruction(int code);
+
 //james
 int executeBC(unsigned int code);
 int executeBNC(unsigned int code);

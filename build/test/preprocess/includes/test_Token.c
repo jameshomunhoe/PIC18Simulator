@@ -1,9 +1,0 @@
----
-- CException.h
-- CharSet.h
-- CustomTypeAssert.h
-- ErrorCode.h
-- StringObject.h
-- Text.h
-- Token.h
-- unity.h
