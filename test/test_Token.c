@@ -420,3 +420,19 @@ void test_getToken_sould_not_throw_error_mix_Identifier_Number(void){
 	TEST_ASSERT_EQUAL_STRING("ABC123",((Identifier *)token)->name->string);
 	TEST_ASSERT_EQUAL_String("",string);
 }
+
+
+void test_getToken_should_fix_bug_for_close_bracket(void){
+	Text *text = textNew(")");
+	String *string = stringNew(text);
+	Token *token;
+	
+	//Test for abc
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING(")",((Operator *)token)->info->symbol);
+	
+}
+
+
+

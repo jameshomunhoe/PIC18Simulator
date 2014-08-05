@@ -192,20 +192,17 @@ void stringTrim(String *string){
 */
 // return -l if empty remove by moving index number
 int stringRemoveChar(String *str){
-	char forReturn = str->text->string[str->start];
 	
-	if(str->text->string[str->start] != 0 && \
-	   str->text->string[str->start+1] != 0){
-		str->start++;
-		str->length--;
-	}
-	else{
-		if(str->text->string[str->start] != 0)
+	if(stringLength(str) != 0){
+		char forReturn = str->text->string[str->start];
+		if(stringLength(str) > 1)
+			str->start++;
 			str->length--;
-		return -1;
+		return forReturn;
 	}
-
-	return forReturn;
+	else
+		return -1;
+	
 }
 
 /**

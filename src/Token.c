@@ -61,7 +61,6 @@ Operator *operatorNewBySymbol(char *symbol) {
 	int i;
 	Operator *operator = malloc(sizeof(Operator));
 	operator->type = OPERATOR_TOKEN;
-	
 	for(i=0;i < MAIN_OPERATOR_TABLE_SIZE; i++){
 		if(strcmp(mainOperatorTable[i].symbol,symbol) == 0){
 			operator->info = &mainOperatorTable[i];
@@ -88,6 +87,7 @@ Operator *operatorNewByID(OperatorID id) {
 	for(i=0;i < MAIN_OPERATOR_TABLE_SIZE; i++){
 		if(mainOperatorTable[i].id == id){
 			operator->info = &mainOperatorTable[i];
+			
 			return operator;
 		}
 	}
@@ -166,8 +166,8 @@ Token *getToken(String *str) {
 	else if(stringIsCharAtInSet(str,0,operatorSet)){
 		charReturn[0] = (char )stringRemoveChar(str);
 		charReturn[1] = 0;
-
-		if(stringCharAt(str,0) == charReturn[0]){
+		
+		if(stringCharAt(str,0) == charReturn[0] && stringLength(str) != 0){
 			if(charReturn[0] == '&'){
 				charReturn[0] = '&';
 				charReturn[1] = '&';
@@ -183,11 +183,10 @@ Token *getToken(String *str) {
 				str->length--;
 			}
 		}
-			
+		
 		Operator *operator = operatorNewBySymbol(charReturn);
 		tokenReturn = (Token *)operator;
 		
-	
 	}
 	else
 		Throw(ERR_ILLEGAL_ARGUMENT);

@@ -264,7 +264,7 @@ void test_stringRemoveChar_should_return_negative_one_after_deletion(void){
 	String *str = stringNew(text);
 	
 	toCompare = stringRemoveChar(str);
-	TEST_ASSERT_EQUAL(-1,toCompare);
+	TEST_ASSERT_EQUAL('a',toCompare);
 	TEST_ASSERT_EQUAL(0,str->length);
 	TEST_ASSERT_EQUAL(0,str->start);
 }

@@ -30,8 +30,44 @@ int executeBC(unsigned int code){
 	
 }
 
-int executeBNC(unsigned int code){}
-int executeBNZ(unsigned int code){}
+int executeBNC(unsigned int code){
+	signed char skipAmount = code & 0xff;
+	int programCounter, carryBit = 0;
+	
+	
+	programCounter = getProgramCounter();
+	carryBit = fileRegisters[STATUS] & 0x1;
+	
+	if(carryBit)
+		programCounter += 2;
+	else
+		programCounter += 2 + (2*skipAmount);
+		
+	setProgramCounter(programCounter);
+	
+	return programCounter;
+	
+}
+	
+int executeBNZ(unsigned int code){
+	signed char skipAmount = code & 0xff;
+	int programCounter, zeroBit = 0;
+	
+	
+	programCounter = getProgramCounter();
+	zeroBit = (fileRegisters[STATUS] & 0x4)>>2;
+	
+	if(zeroBit)
+		programCounter += 2;
+	else
+		programCounter += 2 + (2*skipAmount);
+		
+	setProgramCounter(programCounter);
+	
+	return programCounter;
+	
+}
+
 int executeBRA(unsigned int code){}
 int executeBZ(unsigned int code){}
 int executeCALL(unsigned int code){}
@@ -50,8 +86,12 @@ int executeConditionalBranch(unsigned int code){
 	executeBNC(code);
 	break;
 	
-	case 0xe1:
+	case 0xe0:
 	executeBZ(code);
+	break;
+	
+	case 0xe1:
+	executeBNZ(code);
 	break;
 	
 	case 0xec:
