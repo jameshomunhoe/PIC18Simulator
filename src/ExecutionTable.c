@@ -34,6 +34,8 @@ ExecutionTable executionTable[64] = {
 	[0x39] = executeConditionalBranch,
 	[0x3a] = executeConditionalBranch,
 	[0x3b] = executeConditionalBranch,
+	[0x34] = executeBRA,
+	[0x35] = executeBRA
 };
 
 	
