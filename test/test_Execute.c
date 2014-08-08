@@ -423,3 +423,40 @@ void test_MOVWF_should_move_value_of_60_to_fileRegisters_0xf00(){
 	
 	TEST_ASSERT_EQUAL_HEX8(0x60,fileRegisters[0xf00]);
 }
+
+void test_RLCF_should_return_0xfe(){
+	clearAllFileRegisters();
+	int code = 0x3601;
+	
+	fileRegisters[0x01] = 0xff;
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX8(0xfe,fileRegisters[0x01]);
+	TEST_ASSERT_EQUAL(0x11,fileRegisters[STATUS]);
+	
+}
+
+void test_RLCF_should_return_0x00(){
+	clearAllFileRegisters();
+	int code = 0x3601;
+	
+	fileRegisters[0x01] = 0x80;
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[0x01]);
+	TEST_ASSERT_EQUAL_HEX8(0x5,fileRegisters[STATUS]);
+	
+}
+
+void test_RLCF_should_shift_in_from_carry(){
+	clearAllFileRegisters();
+	int code = 0x3601;
+	
+	setCarryFlag();
+	fileRegisters[0x01] = 0x70;
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX8(0xE1,fileRegisters[0x01]);
+	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[STATUS]);
+	
+}

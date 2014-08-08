@@ -36,6 +36,64 @@ void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSiz
 
 }
 
+void setNegativeFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x10;
+}
+
+void clearNegativeFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xef;
+}
+
+void setOverFlowFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x08;
+}
+
+void clearOverFlowFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xf7;
+}
+
+void setZeroFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x04;
+}
+
+void clearZeroFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xfb;
+}
+
+void setDigitalCarryFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x02;
+}
+
+void clearDigitalCarryFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xfd;
+}
+
+void setCarryFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x01;
+}
+
+void clearCarryFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xfe;
+}
+
+void clearAllFlag(){
+	clearNegativeFlag();
+	clearOverFlowFlag();
+	clearZeroFlag();
+	clearDigitalCarryFlag();
+	clearCarryFlag();
+}
+
 int executeInstruction(int code){
 
 	executionTable[(code & 0xFC00)>>10](code);
@@ -154,8 +212,37 @@ int executeNEGF(unsigned int code){
 	return fileValue;
 }
 
+int executeRLCF(unsigned int code){
+	// 0 to WREG 1 to fileReg
+	//C,N,Z
+	int fileAddress,accessBanked,destination,carryBit;
+	unsigned int fileValue;
+	
+	fileAddress = getBitsAtOffset(code,0,8);
+	accessBanked = getBitsAtOffset(code,8,1);
+	destination = getBitsAtOffset(code,9,1);
+	carryBit = getBitsAtOffset(fileRegisters[STATUS],0,1);
+	
+	fileValue = getFileRegData(fileAddress,accessBanked);
+	fileValue = (fileValue << 1) + carryBit;
+	
+	if(destination == 1)
+		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
+	else
+		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
+	
+	clearAllFlag();
+	
+	if(getBitsAtOffset(fileValue,8,1))
+		setCarryFlag();
+	if(getBitsAtOffset(fileValue,7,1))
+		setNegativeFlag();
+	if(getBitsAtOffset(fileValue,0,8) == 0)
+		setZeroFlag();
+
+}
+
 int executeCALL(unsigned int code){}
-int executeRLCF(unsigned int code){}
 int executeRRNCF(unsigned int code){}
 int executeADDWF(unsigned int code){}
 
