@@ -1,8 +1,11 @@
 #ifndef _EXECUTE_H_
 #define _EXECUTE_H_
 
+#include "Types.h"
 //easier to execute functions, input full opcode into parameter
 int executeInstruction(int code);
+uint32 getBitsAtOffset(uint32 data, int offset, int bitSize);
+void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize);
 
 //james
 int executeBC(unsigned int code);
@@ -12,7 +15,14 @@ int executeBRA(unsigned int code);
 int executeBZ(unsigned int code);
 int executeCALL(unsigned int code);
 
+int executeNEGF(unsigned int code);
+int executeRLCF(unsigned int code);
+int executeRRNCF(unsigned int code);
+int executeADDWF(unsigned int code);
+int executeMOVWF(unsigned int code);
+
 int executeConditionalBranch(unsigned int code);
+int executeMOVWForNEGF(unsigned int code);
 
 
 //shyanfeng

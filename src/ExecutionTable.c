@@ -30,12 +30,17 @@ ExecutionTable executionTable[64] = {
 	[0x2d] = executeBTFSC,
 	[0x2e] = executeBTFSC,
 	[0x2f] = executeBTFSC,
+	[0x34] = executeBRA,
+	[0x35] = executeBRA,
 	[0x38] = executeConditionalBranch,
 	[0x39] = executeConditionalBranch,
 	[0x3a] = executeConditionalBranch,
 	[0x3b] = executeConditionalBranch,
-	[0x34] = executeBRA,
-	[0x35] = executeBRA
+	[0x1b] = executeMOVWForNEGF,
+	[0x0d] = executeRLCF,
+	[0x0c] = executeRRNCF,
+	[0x09] = executeADDWF
+	
 };
 
 	

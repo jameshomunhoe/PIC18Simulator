@@ -335,3 +335,91 @@ void test_BRA_should_decrease_ProgramCounter_by_0xa_to_0x6(){
 	TEST_ASSERT_EQUAL_HEX16(0x06,fileRegisters[PCL]);
 	
 }
+void test_NEGF_should_invert_fileData_from_0xff_to_0x01(){
+	clearAllFileRegisters();
+	
+	int code = 0x6c50;
+	unsigned char data; 	
+	fileRegisters[0x50] = 0xff;
+	
+	data = executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[0x50]);
+	TEST_ASSERT_EQUAL_HEX16(0x01,data);
+}
+
+void test_NEGF_should_invert_fileData_from_0xf0_to_0x10(){
+	clearAllFileRegisters();
+	
+	int code = 0x6c50;
+	unsigned char data; 	
+	fileRegisters[0x50] = 0xf0;
+	
+	data = executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[0x50]);
+	TEST_ASSERT_EQUAL_HEX16(0x10,data);
+}
+
+void test_NEGF_should_invert_fileData_from_0x80_remains_0x80(){
+	clearAllFileRegisters();
+	
+	int code = 0x6c50;
+	unsigned char data; 	
+	fileRegisters[0x50] = 0x80;
+	
+	data = executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x80,fileRegisters[0x50]);
+	TEST_ASSERT_EQUAL_HEX16(0x80,data);
+}
+
+void test_getBitsAtOffset_should_return_0x4(){
+
+	uint32 bits = getBitsAtOffset(0x1234,0,4);
+	
+	TEST_ASSERT_EQUAL_HEX32(0x4,bits);
+}
+
+void test_getBitsAtOffset_should_return_0x1(){
+
+	uint32 bits = getBitsAtOffset(0x1234,12,4);
+	
+	TEST_ASSERT_EQUAL_HEX32(0x1,bits);
+}
+
+
+void test_getBitsAtOffset_should_return_0x12345678(){
+
+	uint32 bits = getBitsAtOffset(0x12345678,0,100);
+	
+	TEST_ASSERT_EQUAL_HEX32(0x12345678,bits);
+}
+
+void test_getBitsAtOffset_should_return_0x1_MSB(){
+
+	uint32 bits = getBitsAtOffset(0x87654321,100,100);
+	
+	TEST_ASSERT_EQUAL_HEX32(0x1,bits);
+}
+
+void test_MOVWF_should_move_value_of_50_to_fileRegisters_0x01(){
+	clearAllFileRegisters();
+	
+	int code = 0x6e01;
+	fileRegisters[WREG] = 0x50;
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX8(0x50,fileRegisters[0x01]);
+}
+
+void test_MOVWF_should_move_value_of_60_to_fileRegisters_0xf00(){
+	clearAllFileRegisters();
+	
+	int code = 0x6f00;
+	fileRegisters[BSR] = 0xf;
+	fileRegisters[WREG] = 0x60;
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX8(0x60,fileRegisters[0xf00]);
+}

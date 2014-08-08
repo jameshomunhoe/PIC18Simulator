@@ -2,22 +2,53 @@
 #include "FileRegister.h"
 #include "ExecutionTable.h"
 #include "Execute.h"
+#include "Types.h"
 
 
+uint32 maskTable[32] = { 	0x0, 
+							0x1, 0x3, 0x7, 0xf, 
+							0x1f, 0x3f, 0x7f, 0xff,
+							0x1ff, 0x3ff, 0x7ff, 0xfff, 
+							0x1fff, 0x3fff, 0x7fff, 0xffff, 
+							0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 
+							0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 
+							0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 
+							0x1fffffff, 0x3fffffff, 0x7fffffff
+						};
+
+uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
+	
+	if(offset >= 0 && bitSize > 0){
+		if(offset >31)
+			offset = 31;
+		if(bitSize > 31)
+			bitSize = 31;
+		
+		data = (data >> offset) & maskTable[bitSize];
+		
+		return data;
+	}
+	else
+		return 0;
+}
+
+void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize){
+
+}
 
 int executeInstruction(int code){
-	
+
 	executionTable[(code & 0xFC00)>>10](code);
 
 }
 
 int executeBC(unsigned int code){
-	signed char skipAmount = code & 0xff;
+	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, carryBit = 0;
 	
 	
 	programCounter = getProgramCounter();
-	carryBit = fileRegisters[STATUS] & 0x1;
+	carryBit = getBitsAtOffset(fileRegisters[STATUS],0,1);
 	
 	if(carryBit)
 		programCounter += 2 + (2*skipAmount);
@@ -31,12 +62,12 @@ int executeBC(unsigned int code){
 }
 
 int executeBNC(unsigned int code){
-	signed char skipAmount = code & 0xff;
+	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, carryBit = 0;
 	
 	
 	programCounter = getProgramCounter();
-	carryBit = fileRegisters[STATUS] & 0x1;
+	carryBit = getBitsAtOffset(fileRegisters[STATUS],0,1);
 	
 	if(carryBit)
 		programCounter += 2;
@@ -50,12 +81,12 @@ int executeBNC(unsigned int code){
 }
 	
 int executeBZ(unsigned int code){
-	signed char skipAmount = code & 0xff;
+	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, zeroBit = 0;
 	
 	
 	programCounter = getProgramCounter();
-	zeroBit = (fileRegisters[STATUS] & 0x4)>>2;
+	zeroBit = getBitsAtOffset(fileRegisters[STATUS],2,1);
 	
 	if(zeroBit)
 		programCounter += 2 + (2*skipAmount);
@@ -69,12 +100,12 @@ int executeBZ(unsigned int code){
 }
 
 int executeBNZ(unsigned int code){
-	signed char skipAmount = code & 0xff;
+	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, zeroBit = 0;
 	
 	
 	programCounter = getProgramCounter();
-	zeroBit = (fileRegisters[STATUS] & 0x4)>>2;
+	zeroBit = getBitsAtOffset(fileRegisters[STATUS],2,1);
 	
 	if(zeroBit)
 		programCounter += 2;
@@ -88,7 +119,7 @@ int executeBNZ(unsigned int code){
 }
 
 int executeBRA(unsigned int code){
-	int skipAmount = code & 0x7ff;
+	int skipAmount = getBitsAtOffset(code,0,11);
 	int programCounter = getProgramCounter();
 	int negativeValue = ((~skipAmount) + 1) & 0x3ff;
 		
@@ -101,6 +132,32 @@ int executeBRA(unsigned int code){
 	
 	return programCounter;
 }
+
+int executeMOVWF(unsigned int code){
+
+	fileRegisters[findActualFileRegister(getBitsAtOffset(code,0,8),
+				  getBitsAtOffset(code,8,1))] 
+				  = fileRegisters[WREG];
+
+}
+
+int executeNEGF(unsigned int code){
+	
+	int fileValue,fileAddress,accessBanked;
+	fileAddress = getBitsAtOffset(code,0,8);
+	accessBanked = getBitsAtOffset(code,8,1);
+	
+	fileValue = getFileRegData(fileAddress,accessBanked);
+	fileValue = ~fileValue+1;
+	setFileRegData(fileAddress,accessBanked,fileValue);
+	
+	return fileValue;
+}
+
+int executeCALL(unsigned int code){}
+int executeRLCF(unsigned int code){}
+int executeRRNCF(unsigned int code){}
+int executeADDWF(unsigned int code){}
 
 int executeConditionalBranch(unsigned int code){
 
@@ -135,7 +192,31 @@ int executeConditionalBranch(unsigned int code){
 	}
 }
 
-int executeCALL(unsigned int code){}
+int executeMOVWForNEGF(unsigned int code){
+	int instruction = (code & 0xff00)>>8;
+	
+	switch(instruction){
+	
+	case 0x6e:
+	executeMOVWF(code);
+	break;
+	
+	case 0x6f:
+	executeMOVWF(code);
+	break;
+	
+	case 0x6c:
+	executeNEGF(code);
+	break;
+	
+	case 0x6d:
+	executeNEGF(code);
+	break;
+	}
+
+}
+
+
 
 
 

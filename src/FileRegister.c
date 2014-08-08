@@ -84,10 +84,10 @@ int getProgramCounter(){
 			fileRegisters[PCL];
 }
 
-void setProgramCounter (int programCounter){
+void setProgramCounter (unsigned int programCounter){
 
-	fileRegisters[PCLATU] = (programCounter & 0xff0000) >> 16;
-	fileRegisters[PCLATH] = (programCounter & 0xff00) >> 8;
-	fileRegisters[PCL]	  = (programCounter & 0xff);
+	fileRegisters[PCLATU] = (programCounter >> 16) & 0xff;
+	fileRegisters[PCLATH] = (programCounter >> 8) & 0xff;
+	fileRegisters[PCL]	  = programCounter & 0xff;
 	
 }
