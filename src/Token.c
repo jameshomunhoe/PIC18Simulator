@@ -133,8 +133,11 @@ Token *getToken(String *str) {
 	//		-create operator token
 	
 	char charReturn[3];
-	Token *tokenReturn;
-	String *strReturn;
+	Token *tokenReturn = NULL;
+	String *strReturn = NULL;
+	Number *number = NULL;
+	Identifier *identifier = NULL;
+	Operator *operator = NULL;
 	
 	stringTrimLeft(str);
 	if(stringLength(str) == 0)
@@ -145,21 +148,21 @@ Token *getToken(String *str) {
 	if(stringIsCharAtInSet(str,0,numberSet)){
 		strReturn = stringRemoveWordContaining(str,numberSet);
 		if(stringIsCharAtInSet(str,0,alphabetSet)){
-			free(strReturn);
 			Throw(ERR_NUMBER_NOT_WELL_FORMED);
 		}
 		else{
-			Number *number = numberNew(stringToInteger(strReturn));
+			number = numberNew(stringToInteger(strReturn));
 			tokenReturn = (Token *)number;
+			stringDel(strReturn);
 		}
 	}
 	
 	//Identifier
 	else if(stringIsCharAtInSet(str,0,alphabetSet)){
 		strReturn = stringRemoveWordContaining(str,alphaNumericSet);
-		Identifier *identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
+		identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
 		tokenReturn = (Token *)identifier;
-		
+		stringDel(strReturn);
 	}
 	
 	//Operator
@@ -184,14 +187,14 @@ Token *getToken(String *str) {
 			}
 		}
 		
-		Operator *operator = operatorNewBySymbol(charReturn);
+		operator = operatorNewBySymbol(charReturn);
 		tokenReturn = (Token *)operator;
 		
 	}
 	else
 		Throw(ERR_ILLEGAL_ARGUMENT);
 		
-	free(strReturn);
+	
 	return tokenReturn;
 }
 
@@ -219,5 +222,27 @@ void tokenDel(Token *token){
 		if(((Identifier *)token)->number != NULL)
 			tokenDel((Token *)(((Identifier *)token)->number));
 		free(token);
+	}
+}
+
+void tokenDump(Token *token){
+	
+	if(token==NULL)
+	{
+		printf("NULL token\n");
+		return;
+	}
+	
+	if(token->type == NUMBER_TOKEN){
+		printf("Number Token=%d\n",((Number*)token)->value);
+	}else if(token->type == OPERATOR_TOKEN){		
+		printf("Operator Token=%s, precedence=%d, affix=%d\n",
+					((Operator*)token)->info->symbol,
+					((Operator*)token)->info->precedence,
+					((Operator*)token)->info->affix);
+	}else if(token->type == IDENTIFIER_TOKEN){
+		printf("Identifier Token=%s\n",((Identifier*)token)->name);
+	}else{
+		printf("Unknown Token\n");
 	}
 }

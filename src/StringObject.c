@@ -92,8 +92,8 @@ String *stringDel(String *string){
 
 	string->reference--;
 	if(string->reference == 0){
-		free(string);
 		textDel(string->text);
+		free(string);
 		return NULL;
 	}
 	return string;
