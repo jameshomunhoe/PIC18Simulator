@@ -134,7 +134,7 @@ Token *getToken(String *str) {
 	
 	char charReturn[3];
 	Token *tokenReturn;
-	String *strReturn;
+	String *strReturn = NULL;
 	
 	stringTrimLeft(str);
 	if(stringLength(str) == 0)
@@ -145,7 +145,8 @@ Token *getToken(String *str) {
 	if(stringIsCharAtInSet(str,0,numberSet)){
 		strReturn = stringRemoveWordContaining(str,numberSet);
 		if(stringIsCharAtInSet(str,0,alphabetSet)){
-			free(strReturn);
+			free(strReturn);		// This is dangerous! Use stringDel() instead.
+							// However, I suggest don't put it here. Put it on line 195.
 			Throw(ERR_NUMBER_NOT_WELL_FORMED);
 		}
 		else{
@@ -191,7 +192,7 @@ Token *getToken(String *str) {
 	else
 		Throw(ERR_ILLEGAL_ARGUMENT);
 		
-	free(strReturn);
+	free(strReturn);	// This is dangerous! Use stringDel() instead.
 	return tokenReturn;
 }
 
