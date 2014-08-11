@@ -90,9 +90,12 @@ String *stringAssign(String *string){
 */
 String *stringDel(String *string){
 
+	if(string == NULL)
+		return NULL;
+
 	string->reference--;
 	if(string->reference == 0){
-		free(string);
+		free(string);			// You should free after testDel(string->text)!!!
 		textDel(string->text);
 		return NULL;
 	}
