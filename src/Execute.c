@@ -294,10 +294,9 @@ int executeCALL(unsigned int code){
 	fileRegisters[TOSL] = getBitsAtOffset(topOfStack,0,8);
 	
 	setProgramCounter(pcDestination);
-	
-
 
 }
+
 int executeADDWF(unsigned int code){}
 
 int executeConditionalBranch(unsigned int code){

@@ -486,6 +486,7 @@ void test_RRNCF_should_shift_0x01_to_0x80(){
 void test_CALL_should_update_PC_to_0x12345(){
 	clearAllFileRegisters();
 	uint32 code = 0xec45f123;
+	
 	fileRegisters[PCLATU] = 0x00;
 	fileRegisters[PCLATH] = 0x00;
 	fileRegisters[PCL] = 0x01;
@@ -495,16 +496,17 @@ void test_CALL_should_update_PC_to_0x12345(){
 	TEST_ASSERT_EQUAL_HEX16(0x1,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x23,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x45,fileRegisters[PCL]);
+
 	
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSH]);
 	TEST_ASSERT_EQUAL_HEX16(0x05,fileRegisters[TOSL]);
-
 }
 
 void test_CALL_should_update_PC_to_0xfffff(){
 	clearAllFileRegisters();
 	uint32 code = 0xecffffff;
+
 
 	fileRegisters[PCLATU] = 0xff;
 	fileRegisters[PCLATH] = 0xff;
@@ -519,5 +521,4 @@ void test_CALL_should_update_PC_to_0xfffff(){
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSH]);
 	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[TOSL]);
-
 }
