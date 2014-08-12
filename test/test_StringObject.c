@@ -229,11 +229,11 @@ void test_all(void){
 	
 	toCompare = stringDel(str); //no more
 	//unable to TEST_ASSERT_EQUAL, bad memory because already removed
-	TEST_ASSERT_EQUAL(1,text->reference);
+	//TEST_ASSERT_EQUAL(0,text->reference);
 	
-	stringTrim(str);
-	TEST_ASSERT_EQUAL(4,str->start);
-	TEST_ASSERT_EQUAL(5,str->length);
+	// stringTrim(str);
+	// TEST_ASSERT_EQUAL(4,str->start);
+	// TEST_ASSERT_EQUAL(5,str->length);
 }
 
 void test_stringRemoveChar_should_remove_w(void){

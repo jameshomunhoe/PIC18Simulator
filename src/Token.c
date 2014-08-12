@@ -20,7 +20,7 @@ OperatorInfo mainOperatorTable[] = {
   {.symbol="-", .id=SUB_OP, .precedence=80, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   {.symbol="&", .id=BITWISE_AND_OP, .precedence=60, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   {.symbol="^", .id=BITWISE_XOR_OP, .precedence=50, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
-  {.symbol="|", .id=BITWISE_OR_OP, .precedence=40, .affix=INFIX, .assoc=LEFT_TO_RIGHT},  
+  {.symbol="|", .id=BITWISE_OR_OP, .precedence=40, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   {.symbol="&&", .id=LOGICAL_AND_OP, .precedence=30, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   {.symbol="||", .id=LOGICAL_OR_OP, .precedence=20, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   // All other symbols MUST have higher precedence than those below:
@@ -83,11 +83,11 @@ Operator *operatorNewByID(OperatorID id) {
 	int i;
 	Operator *operator = malloc(sizeof(Operator));
 	operator->type = OPERATOR_TOKEN;
-	
+
 	for(i=0;i < MAIN_OPERATOR_TABLE_SIZE; i++){
 		if(mainOperatorTable[i].id == id){
 			operator->info = &mainOperatorTable[i];
-			
+
 			return operator;
 		}
 	}
@@ -131,43 +131,45 @@ Token *getToken(String *str) {
 	//		-create identifier token
 	//	c	-if operator set then extract operator symbol
 	//		-create operator token
-	
+
 	char charReturn[3];
-	Token *tokenReturn;
+	Token *tokenReturn = NULL;
 	String *strReturn = NULL;
-	
+	Number *number = NULL;
+	Identifier *identifier = NULL;
+	Operator *operator = NULL;
+
 	stringTrimLeft(str);
 	if(stringLength(str) == 0)
 		return NULL;
-	
-	
+
+
 	//Number
 	if(stringIsCharAtInSet(str,0,numberSet)){
 		strReturn = stringRemoveWordContaining(str,numberSet);
 		if(stringIsCharAtInSet(str,0,alphabetSet)){
-			free(strReturn);		// This is dangerous! Use stringDel() instead.
-							// However, I suggest don't put it here. Put it on line 195.
 			Throw(ERR_NUMBER_NOT_WELL_FORMED);
 		}
 		else{
-			Number *number = numberNew(stringToInteger(strReturn));
+			number = numberNew(stringToInteger(strReturn));
 			tokenReturn = (Token *)number;
+//			stringDel(strReturn);        // I suggest not to delete here... see below
 		}
 	}
-	
+
 	//Identifier
 	else if(stringIsCharAtInSet(str,0,alphabetSet)){
 		strReturn = stringRemoveWordContaining(str,alphaNumericSet);
-		Identifier *identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
+		identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
 		tokenReturn = (Token *)identifier;
-		
+//		stringDel(strReturn);             // I suggest not to delete here either... see below
 	}
-	
+
 	//Operator
 	else if(stringIsCharAtInSet(str,0,operatorSet)){
 		charReturn[0] = (char )stringRemoveChar(str);
 		charReturn[1] = 0;
-		
+
 		if(stringCharAt(str,0) == charReturn[0] && stringLength(str) != 0){
 			if(charReturn[0] == '&'){
 				charReturn[0] = '&';
@@ -184,15 +186,16 @@ Token *getToken(String *str) {
 				str->length--;
 			}
 		}
-		
-		Operator *operator = operatorNewBySymbol(charReturn);
+
+		operator = operatorNewBySymbol(charReturn);
 		tokenReturn = (Token *)operator;
-		
+
 	}
 	else
 		Throw(ERR_ILLEGAL_ARGUMENT);
-		
-	free(strReturn);	// This is dangerous! Use stringDel() instead.
+
+  stringDel(strReturn);             // Delete here
+
 	return tokenReturn;
 }
 
@@ -204,21 +207,43 @@ Token *getToken(String *str) {
  *
  */
 void tokenDel(Token *token){
-	
+
 	if(token->type == NUMBER_TOKEN){
 		free(token);
 	}
-		
+
 	else if(token->type == OPERATOR_TOKEN){
 		if(((Operator *)token)->info != NULL)
 		free(token);
 	}
-		
+
 	else if(token->type == IDENTIFIER_TOKEN){
 		if(((Identifier *)token)->name != NULL)
 			textDel(((Identifier *)token)->name);
 		if(((Identifier *)token)->number != NULL)
 			tokenDel((Token *)(((Identifier *)token)->number));
 		free(token);
+	}
+}
+
+void tokenDump(Token *token){
+
+	if(token==NULL)
+	{
+		printf("NULL token\n");
+		return;
+	}
+
+	if(token->type == NUMBER_TOKEN){
+		printf("Number Token=%d\n",((Number*)token)->value);
+	}else if(token->type == OPERATOR_TOKEN){
+		printf("Operator Token=%s, precedence=%d, affix=%d\n",
+					((Operator*)token)->info->symbol,
+					((Operator*)token)->info->precedence,
+					((Operator*)token)->info->affix);
+	}else if(token->type == IDENTIFIER_TOKEN){
+		printf("Identifier Token=%s\n",((Identifier*)token)->name);
+	}else{
+		printf("Unknown Token\n");
 	}
 }

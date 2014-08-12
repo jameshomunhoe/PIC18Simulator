@@ -61,9 +61,14 @@ Text *textDel(Text *text){
 	//reduce text reference by one
 	//do normal delete
 	//else do nth
+	int i;
+	
 	if(text->reference < 0x80000000 && text->reference > 0){
 		text->reference--;
 		if(text->reference == 0){
+			for( i = 0; i < strlen(text->string); i++){
+				text->string[i] = 0;
+			}
 			free(text);
 			return NULL;
 		}		

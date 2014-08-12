@@ -109,7 +109,6 @@ void test_getToken_sould_return_NumberToken_324(void){
 	Token *token;
 	
 	token = getToken(string);
-	
 	TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
 	TEST_ASSERT_EQUAL(324,((Number *)token)->value);
 	TEST_ASSERT_EQUAL_String(" 123 435 01010",string);
@@ -433,6 +432,4 @@ void test_getToken_should_fix_bug_for_close_bracket(void){
 	TEST_ASSERT_EQUAL_STRING(")",((Operator *)token)->info->symbol);
 	
 }
-
-
 

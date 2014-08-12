@@ -11,7 +11,7 @@
 *
 * Input:
 *	str				is the String object
-* 
+*
 */
 void stringDump(String *string){
 	uint32 index = 0, len = 0;
@@ -27,7 +27,7 @@ void stringDump(String *string){
 		int actualLength;
 		fullString = string->text->string;
 		index = string->start;
-		
+
 		if(index <= strlen(fullString)){
 			actualString = &fullString[index];
 			actualLength = strlen(actualString);
@@ -38,7 +38,7 @@ void stringDump(String *string){
 			actualString = "";
 		}
 	}
-	
+
 	printf("[%d] f_str[:%d]:%s, start:%d, len:%d, str:%.*s\n", \
 			string->reference, string->text->reference, fullString, index, \
 			string->length, len, actualString);
@@ -51,18 +51,18 @@ void stringDump(String *string){
 *
 * Input:
 *	text	the text object
-* 
+*
 * Return the new String object
 */
 String *stringNew(Text *text){
 
 	String *newString = malloc(sizeof(String));
-	
+
 	newString->text = textAssign(text);
 	newString->reference = 1;
 	newString->start = 0;
 	newString->length = strlen(text->string);
-	
+
 	return newString;
 }
 
@@ -71,7 +71,7 @@ String *stringNew(Text *text){
 *
 * Input:
 *	string	the string to assign.
-* 
+*
 * Return the input string
 */
 String *stringAssign(String *string){
@@ -85,18 +85,18 @@ String *stringAssign(String *string){
 *
 * Input:
 *	string	the string to delete
-* 
+*
 * Return the input string
 */
 String *stringDel(String *string){
 
-	if(string == NULL)
-		return NULL;
+	if(string == NULL)        // You ought to check this!!!
+		return NULL;            // Or else suffer possible future bad memory access
 
 	string->reference--;
 	if(string->reference == 0){
-		free(string);			// You should free after testDel(string->text)!!!
 		textDel(string->text);
+		free(string);
 		return NULL;
 	}
 	return string;
@@ -109,12 +109,12 @@ String *stringDel(String *string){
 * Input:
 *	string			the string for skip purpose
 *	numChar2Skip	the amount of character wanted to skip
-* 
+*
 */
 void stringSkip(String *string, int numChar2Skip){
 
 	int startPoint = string->start + numChar2Skip;
-	
+
 	if(startPoint < strlen(string->text->string)){
 		string->start = startPoint;
 		string->length = strlen(string->text->string) - string->start;
@@ -130,13 +130,13 @@ void stringSkip(String *string, int numChar2Skip){
 *
 * Input:
 *	string	the string that wanted to trim
-* 
+*
 */
 void stringTrimLeft(String *string){
-	
+
 	int i = string->start;
 	int l = strlen(string->text->string);
-	
+
 	if(string->text->string[i] != 0){
 		for(;i<=l;i++){
 			if(isSpace(string->text->string[i])){
@@ -154,19 +154,19 @@ void stringTrimLeft(String *string){
 *
 * Input:
 *	string	the string that wanted to trim
-* 
+*
 */
 void stringTrimRight(String *string){
 
 	int end = string->start + string->length - 1;
-	
+
 	for(;;end--){
 		if(string->length == 0)
 			break;
-			
+
 		else if(isSpace(string->text->string[end]))
 				string->length--;
-		
+
 		else
 			break;
 	}
@@ -177,7 +177,7 @@ void stringTrimRight(String *string){
 *
 * Input:
 *	string	the string that wanted to trim
-* 
+*
 */
 void stringTrim(String *string){
 	stringTrimLeft(string);
@@ -189,13 +189,13 @@ void stringTrim(String *string){
 *
 * Input:
 *	string	the string to removeChar
-* 
+*
 * Return the character if successfully deleted
 * Return -1 otherwise
 */
 // return -l if empty remove by moving index number
 int stringRemoveChar(String *str){
-	
+
 	if(stringLength(str) != 0){
 		char forReturn = str->text->string[str->start];
 		if(stringLength(str) > 1)
@@ -205,7 +205,7 @@ int stringRemoveChar(String *str){
 	}
 	else
 		return -1;
-	
+
 }
 
 /**
@@ -213,7 +213,7 @@ int stringRemoveChar(String *str){
 *
 * Input:
 *	string	the string length that wanted
-* 
+*
 * Return the length of the string
 */
 // length of string
@@ -228,18 +228,18 @@ int stringLength(String *str){
 * Input:
 *	string		the string to remove the word
 *	delimites	the set that character that should not remove
-* 
+*
 * Return the string that have removed from the original string
 */
 String *stringRemoveWordNotContaining(String *str,char delimites[]){
 	int i,j,count,delimitesLength,strLength;
 	String *strReturn = stringNew(str->text);
-	
+
 	delimitesLength = strlen(delimites);
 	strLength = strlen(str->text->string);
 	strReturn->start = str->start;
 	strReturn->length = 0;
-	
+
 	for(j=str->start;j<strLength;j++){
 		for(i=0,count=0;i<delimitesLength;i++){
 			if(str->text->string[j] == delimites[i]){
@@ -262,12 +262,12 @@ String *stringRemoveWordNotContaining(String *str,char delimites[]){
 
 /**
 * Remove the word from the string which contain in the containSet from the left
-* Once detected character not contain in containSet, stop 
+* Once detected character not contain in containSet, stop
 *
 * Input:
 *	string		the string to remove the word
 *	containSet	the set that character that should remove
-* 
+*
 * Return the string that have removed from the original string
 */
 String *stringRemoveWordContaining(String *str, char containSet[]){
@@ -277,7 +277,7 @@ String *stringRemoveWordContaining(String *str, char containSet[]){
 	strLength = strlen(str->text->string);
 	strReturn->start = str->start;
 	strReturn->length = 0;
-	
+
 	for(j=str->start;j<strLength;j++){
 		for(i=0,count=0;i<containLength;i++){
 			if(str->text->string[j] == containSet[i]){
@@ -302,7 +302,7 @@ String *stringRemoveWordContaining(String *str, char containSet[]){
 * Input:
 *	str1	the first string to compare with second
 *	str2	the second string to compare with first
-* 
+*
 * Return 1 if it is the same
 * Return 0 otherwise
 */
@@ -312,13 +312,13 @@ int stringIsEqual(String *str1, String *str2){
 	int actualLength2;
 	char *actualString;
 	char *actualString2;
-	
+
 	actualString = &str1->text->string[str1->start];
 	actualString2 = &str2->text->string[str2->start];
-	
+
 	actualLength = strlen(actualString);
 	actualLength2 = strlen(actualString2);
-	
+
 	if(actualLength == actualLength2){
 		for(i=0;i<actualLength;i++){
 			if(actualString[i] != actualString2[i])
@@ -336,7 +336,7 @@ int stringIsEqual(String *str1, String *str2){
 * Input:
 *	str1	the first string to compare with second
 *	str2	the second string to compare with first
-* 
+*
 * Return 1 if it is the same
 * Return 0 otherwise
 */
@@ -346,13 +346,13 @@ int stringIsEqualCaseInsensitive(String *str1, String *str2){
 	int actualLength2;
 	char *actualString;
 	char *actualString2;
-	
+
 	actualString = &str1->text->string[str1->start];
 	actualString2 = &str2->text->string[str2->start];
-	
+
 	actualLength = strlen(actualString);
 	actualLength2 = strlen(actualString2);
-	
+
 	if(actualLength == actualLength2){
 		for(i=0;i<actualLength;i++){
 			if(tolower(actualString[i]) != tolower(actualString2[i]))
@@ -393,12 +393,12 @@ int stringCharAt(String *str, int relativeIndex){
 *	relativeIndex	is the relative index into the String
 *					This value must be positive
 *	set				is the set of characters delimited by NULL
-* 
+*
 * Return 1 if the character that chosen is in the set list.
 * Return 0 otherwise
 */
 int stringIsCharAtInSet(String *str, int relativeIndex, char set[]){
-	
+
 	int i, setLength = strlen(set);
 
 	if(relativeIndex >= 0 && relativeIndex < str->length){
@@ -415,7 +415,7 @@ int stringIsCharAtInSet(String *str, int relativeIndex, char set[]){
 *
 * Input:
 *	str		is the string that use as reference for converting
-* 
+*
 * Return the value in integer
 */
 int stringToInteger(String *str){
@@ -424,7 +424,7 @@ int stringToInteger(String *str){
 	int forReturn = atoi(string);
 
 	free(string);
-	
+
 	return forReturn;
 }
 
@@ -437,21 +437,21 @@ int stringToInteger(String *str){
 *					This value must be positive
 *
 *	length			the amount of character will be cropped out
-* 
+*
 * Return the array of character that selected
 */
 char *stringSubstringInChar(String *str, int relativePosition, int length){
-	
+
 	int size;
 	if(str->start+relativePosition+length > strlen(str->text->string))
 		size = str->length - str->start + relativePosition+1;
 	else
 		size = length+1;
-		
+
 	char *character = malloc(sizeof(char)*size);
-		
+
 	int i,j,h;
-	
+
 	for(j=0,i=str->start+relativePosition; i < str->start+relativePosition+length ; j++,i++){
 		character[j] = str->text->string[i];
 		h = j;
@@ -469,11 +469,11 @@ char *stringSubstringInChar(String *str, int relativePosition, int length){
 *						This value must be positive
 *
 *	length				the amount of character will be cropped out
-* 
+*
 * Return the Text that selected
 */
 Text *stringSubstringInText(String *str, int relativePosition, int length){
-	
+
 	char *charStr = stringSubstringInChar(str,relativePosition,length);
 	Text *text = textNew(charStr);
 	free(charStr);
@@ -487,7 +487,7 @@ String *stringRemoveWordNotContaining(String *str,char delimites[]){
 	String *strReturn;
 	length = strlen(delimites);
 	char forReturn[length];
-	
+
 	for( i = str->start; i < str->length && j < length;i++){
 		for(;j<length;i++){
 			if(str->text->string[i] != delimites[j]){
@@ -501,7 +501,7 @@ String *stringRemoveWordNotContaining(String *str,char delimites[]){
 			}
 		}
 	}
-	
+
 	text = textNew(forReturn);
 	strReturn = stringNew(text);
 	return  strReturn;

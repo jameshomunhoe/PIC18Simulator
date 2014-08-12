@@ -38,7 +38,7 @@ ExecutionTable executionTable[64] = {
 	[0x3b] = executeConditionalBranch,
 	[0x1b] = executeMOVWForNEGF,
 	[0x0d] = executeRLCF,
-	[0x0c] = executeRRNCF,
+	[0x10] = executeRRNCF,
 	[0x09] = executeADDWF
 	
 };
