@@ -34,6 +34,9 @@ uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
 
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize){
 
+	 *dataPtr =  *dataPtr &(~(maskTable[bitSize]<<offset));
+	 *dataPtr = *dataPtr|((dataToWrite & maskTable[bitSize]) << offset);
+
 }
 
 void setNegativeFlag(){
@@ -94,10 +97,15 @@ void clearAllFlag(){
 	clearCarryFlag();
 }
 
-int executeInstruction(int code){
-
-	executionTable[(code & 0xFC00)>>10](code);
-
+uint32 executeInstruction(uint32 code){
+	
+	if(code < 0x10000){
+		executionTable[getBitsAtOffset(code,10,6)](code);
+	}
+	
+	else if(code > 0xffff){		
+		executionTable[getBitsAtOffset(code,26,6)](code);
+	}
 }
 
 int executeBC(unsigned int code){
@@ -242,13 +250,67 @@ int executeRLCF(unsigned int code){
 
 }
 
-int executeCALL(unsigned int code){}
-int executeRRNCF(unsigned int code){}
+int executeRRNCF(unsigned int code){
+	// 0 to WREG 1 to fileReg
+	//N,Z
+	int fileAddress,accessBanked,destination,lastBit;
+	unsigned int fileValue;
+	
+	fileAddress = getBitsAtOffset(code,0,8);
+	accessBanked = getBitsAtOffset(code,8,1);
+	destination = getBitsAtOffset(code,9,1);
+	
+	fileValue = getFileRegData(fileAddress,accessBanked);
+	lastBit = getBitsAtOffset(fileValue,0,1);
+	fileValue = fileValue >> 1;
+	setBitsAtOffset(&fileValue,lastBit,7,1);
+	
+	if(destination == 1)
+		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
+	else
+		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
+	
+	clearAllFlag();
+	
+	if(getBitsAtOffset(fileValue,7,1))
+		setNegativeFlag();
+	if(getBitsAtOffset(fileValue,0,8) == 0)
+		setZeroFlag();
+
+}
+
+int executeCALL(unsigned int code){
+
+	uint32 pcDestination,currentPC,topOfStack;
+	int shadowBit;
+	
+	pcDestination = ((getBitsAtOffset(code,0,12))<<8 | getBitsAtOffset(code,16,8));
+	shadowBit = getBitsAtOffset(code,24,1);
+	currentPC = getProgramCounter();
+	
+	topOfStack = currentPC + 4;
+	fileRegisters[TOSU] = getBitsAtOffset(topOfStack,16,5);
+	fileRegisters[TOSH] = getBitsAtOffset(topOfStack,8,8);
+	fileRegisters[TOSL] = getBitsAtOffset(topOfStack,0,8);
+	
+	setProgramCounter(pcDestination);
+
+
+
+}
 int executeADDWF(unsigned int code){}
 
 int executeConditionalBranch(unsigned int code){
 
-	int instruction = (code & 0xff00)>>8;	
+	int instruction;
+	
+	if(code < 0x10000)
+		instruction = getBitsAtOffset(code,8,8);
+	
+	else if(code > 0xffff)
+		instruction = getBitsAtOffset(code,24,8);
+	
+
 	
 	switch(instruction){
 	
