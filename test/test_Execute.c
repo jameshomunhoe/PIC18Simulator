@@ -9,7 +9,7 @@ void tearDown(void){}
 //executionTable[(0xFC00 & code)>>10](code);
 
 
-
+/*
 void test_BC_should_increase_ProgramCounter_by_4(){
 	clearAllFileRegisters();
 	
@@ -459,4 +459,65 @@ void test_RLCF_should_shift_in_from_carry(){
 	TEST_ASSERT_EQUAL_HEX8(0xE1,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[STATUS]);
 	
+}
+
+void test_RRNCF_should_shift_0x70_to_0x38(){
+	clearAllFileRegisters();
+	int code = 0x4001;
+	
+	fileRegisters[0x01] = 0x70;
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX8(0x38,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
+}
+
+void test_RRNCF_should_shift_0x01_to_0x80(){
+	clearAllFileRegisters();
+	int code = 0x4001;
+	
+	fileRegisters[0x01] = 0x01;
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX8(0x80,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[STATUS]);
+}
+*/
+void test_CALL_should_update_PC_to_0x12345(){
+	clearAllFileRegisters();
+	uint32 code = 0xec45f123;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x01;
+
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x1,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x23,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x45,fileRegisters[PCL]);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSH]);
+	TEST_ASSERT_EQUAL_HEX16(0x05,fileRegisters[TOSL]);
+
+}
+
+void test_CALL_should_update_PC_to_0xfffff(){
+	clearAllFileRegisters();
+	uint32 code = 0xecffffff;
+
+	fileRegisters[PCLATU] = 0xff;
+	fileRegisters[PCLATH] = 0xff;
+	fileRegisters[PCL] = 0xff;
+	
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xf,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[PCL]);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSH]);
+	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[TOSL]);
+
 }
