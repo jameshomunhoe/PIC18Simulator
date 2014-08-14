@@ -80,7 +80,7 @@ Identifier *identifierNew(Text *name);//2nd
 Token *getToken(String *str);
 void tokenDel(Token *token);
 void tokenDump(Token *token);
-int evaluateExpression(char *expression);
+// int evaluateExpression(char *expression);
 
 
 #endif // Token_H

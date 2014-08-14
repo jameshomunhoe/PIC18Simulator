@@ -241,7 +241,7 @@ void tokenDump(Token *token){
 					((Operator*)token)->info->precedence,
 					((Operator*)token)->info->affix);
 	}else if(token->type == IDENTIFIER_TOKEN){
-		printf("Identifier Token=%s\n",((Identifier*)token)->name);
+		printf("Identifier Token=%s\n",((Identifier*)token)->name->string);
 	}else{
 		printf("Unknown Token\n");
 	}

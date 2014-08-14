@@ -4,7 +4,9 @@
 #include "Execute.h"
 #include "Types.h"
 
-
+/**
+*	Table to mask off certain bits for getBitsAtOffset and setBitsAtOffset use
+*/
 uint32 maskTable[32] = { 	0x0, 
 							0x1, 0x3, 0x7, 0xf, 
 							0x1f, 0x3f, 0x7f, 0xff,
@@ -16,6 +18,17 @@ uint32 maskTable[32] = { 	0x0,
 							0x1fffffff, 0x3fffffff, 0x7fffffff
 						};
 
+
+/**
+*	To get certain amount of Bits from a variable
+*	
+*	Input:
+*		Variable to extract the value out
+*		Starting bit
+*		Size to crop
+*
+*	A universal function to decode and execute the opCode (for execution use)
+*/
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
 	
 	if(offset >= 0 && bitSize > 0){
@@ -89,6 +102,14 @@ void clearCarryFlag(){
 	fileRegisters[STATUS] &= 0xfe;
 }
 
+/**
+*	Clear all status flag
+*	
+*	Input:
+*		-
+*
+*	To clear all STATUS flag bits before setting
+*/
 void clearAllFlag(){
 	clearNegativeFlag();
 	clearOverFlowFlag();
@@ -97,6 +118,14 @@ void clearAllFlag(){
 	clearCarryFlag();
 }
 
+/**
+*	To execute an instructions
+*	
+*	Input:
+*		full opcode
+*
+*	A universal function to decode and execute the opCode (for execution use)
+*/
 uint32 executeInstruction(uint32 code){
 	
 	if(code < 0x10000){
@@ -108,6 +137,14 @@ uint32 executeInstruction(uint32 code){
 	}
 }
 
+/**
+*	To execute BNZ instructions
+*	
+*	Input:
+*		full opcode
+*
+*	set the program counter according to the amount from opcode if the CARRY flag is 1
+*/
 int executeBC(unsigned int code){
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, carryBit = 0;
@@ -127,6 +164,14 @@ int executeBC(unsigned int code){
 	
 }
 
+/**
+*	To execute BNC instructions
+*	
+*	Input:
+*		full opcode
+*
+*	set the program counter according to the amount from opcode if the CARRY flag is 0
+*/
 int executeBNC(unsigned int code){
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, carryBit = 0;
@@ -146,6 +191,14 @@ int executeBNC(unsigned int code){
 	
 }
 	
+/**
+*	To execute BZ instructions
+*	
+*	Input:
+*		full opcode
+*
+*	set the program counter according to the amount from opcode if the ZERO flag is 1
+*/
 int executeBZ(unsigned int code){
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, zeroBit = 0;
@@ -165,6 +218,14 @@ int executeBZ(unsigned int code){
 
 }
 
+/**
+*	To execute BNZ instructions
+*	
+*	Input:
+*		full opcode
+*
+*	set the program counter according to the amount from opcode if the ZERO flag is 0
+*/
 int executeBNZ(unsigned int code){
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, zeroBit = 0;
@@ -184,6 +245,14 @@ int executeBNZ(unsigned int code){
 	
 }
 
+/**
+*	To execute BRA instructions
+*	
+*	Input:
+*		full opcode
+*
+*	Set the program counter by adding or subtracting according to the amount given in the opcode
+*/
 int executeBRA(unsigned int code){
 	int skipAmount = getBitsAtOffset(code,0,11);
 	int programCounter = getProgramCounter();
@@ -207,6 +276,14 @@ int executeMOVWF(unsigned int code){
 
 }
 
+/**
+*	To execute NEGF instructions
+*	
+*	Input:
+*		full opcode
+*
+*	2nd's compliment the fileRegister's value
+*/
 int executeNEGF(unsigned int code){
 	
 	int fileValue,fileAddress,accessBanked;
@@ -220,6 +297,14 @@ int executeNEGF(unsigned int code){
 	return fileValue;
 }
 
+/**
+*	To execute RLCF instructions
+*	
+*	Input:
+*		full opcode
+*
+*	Rotate the fileRegister's value to the left with carryBit in and carryBit out if value exceed 16 bits MSB.
+*/
 int executeRLCF(unsigned int code){
 	// 0 to WREG 1 to fileReg
 	//C,N,Z
@@ -250,6 +335,14 @@ int executeRLCF(unsigned int code){
 
 }
 
+/**
+*	To execute RRNCF instructions
+*	
+*	Input:
+*		full opcode
+*
+*	Rotate the fileRegister's value to the right without carryBit.
+*/
 int executeRRNCF(unsigned int code){
 	// 0 to WREG 1 to fileReg
 	//N,Z
@@ -279,6 +372,14 @@ int executeRRNCF(unsigned int code){
 
 }
 
+/**
+*	To execute CALL instructions
+*	
+*	Input:
+*		full opcode
+*
+*	Set the program counter to the value input, while saving current program counter in TopOfStack.
+*/
 int executeCALL(unsigned int code){
 
 	uint32 pcDestination,currentPC,topOfStack;
@@ -294,11 +395,68 @@ int executeCALL(unsigned int code){
 	fileRegisters[TOSL] = getBitsAtOffset(topOfStack,0,8);
 	
 	setProgramCounter(pcDestination);
+	//shadowRegister part haven't done
+}
+
+/**
+*	To execute ADDWF instructions
+*	
+*	Input:
+*		full opcode
+*
+*	Add the value of the address in opcode with WREG, 
+*	and save to either one of them depending on the destination requested
+*/
+int executeADDWF(unsigned int code){
+
+	int fileValue,fileAddress,accessBanked,destination;
+	int carryBit8,carry6to7,carry3to4;
+	fileAddress = getBitsAtOffset(code,0,8);
+	accessBanked = getBitsAtOffset(code,8,1);
+	destination = getBitsAtOffset(code,9,1);
+	
+	fileValue = getFileRegData(fileAddress,accessBanked);
+	
+	//for OV and DC checking
+	carryBit8 = (fileValue + fileRegisters[WREG]) >> 8;
+	carry6to7 = (getBitsAtOffset(fileValue,0,7) + getBitsAtOffset(fileRegisters[WREG],0,7))>>7;
+	carry3to4 = (getBitsAtOffset(fileValue,0,4) + getBitsAtOffset(fileRegisters[WREG],0,4))>>4;
+	
+	fileValue += fileRegisters[WREG];
+	
+	if(destination == 1)
+		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
+	else
+		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
+	
+	//Status flag
+	clearAllFlag();
+	//C
+	if(carryBit8 == 1)
+		setCarryFlag();
+	//DC
+	if(carry3to4 == 1)
+		setDigitalCarryFlag();
+	//Z
+	if(getBitsAtOffset(fileValue,0,8) == 0)
+		setZeroFlag();
+	//OV
+	if((carryBit8 == 0 && carry6to7 == 1) || (carryBit8 == 1 && carry6to7 == 0))
+		setOverFlowFlag();
+	//N
+	if(getBitsAtOffset(fileValue,7,1))
+		setNegativeFlag();
 
 }
 
-int executeADDWF(unsigned int code){}
-
+/**
+*	To execute all ConditionalBranch due to address clashing in table
+*	
+*	Input:
+*		full opcode
+*
+*	Choose the function to execute if opcode matches
+*/
 int executeConditionalBranch(unsigned int code){
 
 	int instruction;
@@ -340,6 +498,14 @@ int executeConditionalBranch(unsigned int code){
 	}
 }
 
+/**
+*	To execute MOVWF or NEGF due to address clashing in table
+*	
+*	Input:
+*		full opcode
+*
+*	Choose the function to execute if opcode matches
+*/
 int executeMOVWForNEGF(unsigned int code){
 	int instruction = (code & 0xff00)>>8;
 	

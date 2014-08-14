@@ -10,6 +10,7 @@
 void setUp(void) {}
 void tearDown(void) {}
 
+
 void test_getToken_should_get_5(void) {
 	Number *number = numberNew(5);
 	

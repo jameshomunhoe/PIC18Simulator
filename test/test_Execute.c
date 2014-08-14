@@ -9,7 +9,7 @@ void tearDown(void){}
 //executionTable[(0xFC00 & code)>>10](code);
 
 
-/*
+
 void test_BC_should_increase_ProgramCounter_by_4(){
 	clearAllFileRegisters();
 	
@@ -482,7 +482,6 @@ void test_RRNCF_should_shift_0x01_to_0x80(){
 	TEST_ASSERT_EQUAL_HEX8(0x80,fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[STATUS]);
 }
-*/
 void test_CALL_should_update_PC_to_0x12345(){
 	clearAllFileRegisters();
 	uint32 code = 0xec45f123;
@@ -521,4 +520,68 @@ void test_CALL_should_update_PC_to_0xfffff(){
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSH]);
 	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[TOSL]);
+}
+
+void test_ADDWF_should_save_answer_in_WREG(){
+	clearAllFileRegisters();
+	int code = 0x2401;
+
+	fileRegisters[WREG] = 0x7f;
+	fileRegisters[0x01] = 0x01;
+	
+	executeInstruction(code);
+
+	// - - - N OV Z DC C
+	//		 1  1 0  1 0
+	
+	TEST_ASSERT_EQUAL_HEX16(0x80,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX16(0x1A,fileRegisters[STATUS]);
+}
+
+void test_ADDWF_should_save_answer_in_fileRegister(){
+	clearAllFileRegisters();
+	int code = 0x2601;
+
+	fileRegisters[WREG] = 0xff;
+	fileRegisters[0x01] = 0x01;
+	
+	executeInstruction(code);
+
+	// - - - N OV Z DC C
+	//		 0  0 1  1 1
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x01]);
+	TEST_ASSERT_EQUAL_HEX16(0x07,fileRegisters[STATUS]);
+}
+
+void test_ADDWF_should_not_have_OV(){
+	clearAllFileRegisters();
+	int code = 0x2601;
+
+	fileRegisters[WREG] = 0xff;
+	fileRegisters[0x01] = 0x11;
+	
+	executeInstruction(code);
+
+	// - - - N OV Z DC C
+	//		 0  0 0  1 1
+	
+	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[0x01]);
+	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[STATUS]);
+}
+
+void test_ADDWF_should_not_have_any_StatusFlag(){
+	clearAllFileRegisters();
+	int code = 0x2601;
+
+	fileRegisters[WREG] = 0x50;
+	fileRegisters[0x01] = 0x20;
+	
+	executeInstruction(code);
+
+	// - - - N OV Z DC C
+	//		 0  0 0  0 0
+	
+	TEST_ASSERT_EQUAL_HEX16(0x70,fileRegisters[0x01]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[STATUS]);
 }
