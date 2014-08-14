@@ -77,6 +77,14 @@ void clearAllFileRegisters(){
 	
 }
 
+/**
+*	To get the current Program Counter in integer form, combined PCLATU,PCLATH,PCL
+*	
+*	Input:
+*		-
+*
+*	Return the current ProgramCounter
+*/
 int getProgramCounter(){
 
 	return	(fileRegisters[PCLATU]<<16) + 
@@ -84,6 +92,14 @@ int getProgramCounter(){
 			fileRegisters[PCL];
 }
 
+/**
+*	To set the program counter
+*	
+*	Input:
+*		programCounter
+*
+*	To update the latest program counter from int type to 3 different fileRegisters unsigned char type,
+*/
 void setProgramCounter (unsigned int programCounter){
 
 	fileRegisters[PCLATU] = (programCounter >> 16) & 0xff;
