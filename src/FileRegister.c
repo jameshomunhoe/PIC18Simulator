@@ -12,6 +12,20 @@
 unsigned char fileRegisters[4096];
 ShadowRegisters shadowRegister;
 
+/**
+ *
+ *	Get the data from address of file register based on the findActualFileRegister
+ *	function. When the data is store in address of file register then it can get the
+ *	data from the address of file register
+ *
+ *	Input	:
+ *		address is the address of file register
+ *		access is the bit(access or banked)
+ *	
+ *	Return	:
+ *		data
+ *
+ **/
 int getFileRegData(int address, int access){
 	int data;
 	int getAddress;
@@ -23,6 +37,20 @@ int getFileRegData(int address, int access){
 	return data;
 }
 
+/**
+ *
+ *	Set the data into the address of file register based on the findActualFileRegister
+ *	function. The data can be set and store in address of file register then it can get the
+ *	newData from the address of file register
+ *
+ *	Input	:
+ *		address is the address of file register
+ *		access is the bit(access or banked)
+ *	
+ *	Return	:
+ *		newData
+ *
+ **/
 int setFileRegData(int address, int access, int data){
 	int getAddress;
 	int newData;
@@ -36,6 +64,24 @@ int setFileRegData(int address, int access, int data){
 
 }
 
+/**
+ *
+ *	Find the actual file register based on the access and address. If the access
+ *	is 0 then it will go in to Access. If the access is 1 then it will go in to
+ *	to Banked. If it is Access then it will check for the range in AccessRange
+ *	and return address. If it is not in AccessRange then it will mask the address  
+ *	with 0xff and return the address if in AccessRange else it will put in to Banked F.
+ *	If in Banked then it will check for the BSR range else it will mask the BSR address
+ *	and get the last BSR. After check it will return the address.
+ *
+ *	Input 	:
+ *		address is the address of file register
+ *		access is the bit(access or banked)
+ *	
+ *	Return	:
+ *		address
+ *
+ **/
 int findActualFileRegister(int address, int access){
 	int actualAddress;
 
@@ -69,6 +115,11 @@ int findActualFileRegister(int address, int access){
 
 }
 
+/**
+ *
+ *	Clear all the data in FileRegisters
+ *
+ **/
 void clearAllFileRegisters(){
 	int i;
 
