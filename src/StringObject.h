@@ -33,6 +33,7 @@ int stringRemoveChar(String *str); // return -l if empty remove by moving index 
 int stringLength(String *str); // length of string
 String *stringRemoveWordNotContaining(String *str,char delimites[]);
 String *stringRemoveWordContaining(String *str, char containSet[]);
+void thisIsARubbishFunction();
 int stringIsEqual(String *str1, String *str2); //1 if same, 0 otherwise do no use string compare
 int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolower();
 
