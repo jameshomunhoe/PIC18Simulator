@@ -23,11 +23,11 @@ int N(String *arguments , int numberOfbits){
 }
 
 int N8(String *arguments){
-	return N(arguments,7);
+	return N(arguments,8);
 }
 
 int N11(String *arguments){
-	return N(arguments,10);
+	return N(arguments,11);
 }
 
 int N12(String *arguments){

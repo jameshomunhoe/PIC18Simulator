@@ -24,12 +24,14 @@ typedef struct {
   InstructionType type;
 } instructionTable;
 
+unsigned int runProgram(String *instruction);
 unsigned int interpret(String *instruction);
 instructionTable getInstruction(char *instruction);
 
 int extractValue(String *arguments);
 int extractDestination(String *arguments);
 int extractACCESSBANKED(String *arguments);
+
 #endif // Interpret_H
 
 

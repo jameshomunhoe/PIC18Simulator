@@ -3,7 +3,7 @@
 
 
 
-extern unsigned int maskTable[];
+extern unsigned int maskTable[32];
 
 
 #endif //_MASKTABLE_H_

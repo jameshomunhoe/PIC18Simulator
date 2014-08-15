@@ -2,6 +2,9 @@
 #include <malloc.h>
 #include "unity.h"
 #include "Interpret.h"
+#include "ExecutionTable.h"
+#include "FileRegister.h"
+#include "Execute.h"
 #include "String.h"
 #include "CException.h"
 #include "StringObject.h"
@@ -92,6 +95,14 @@ instructionTable instructions[] = {
 	{.instructionName = "LFSR" , .opCode = 0xF000EE00 , .type = FK_TYPE}
 
 };
+
+
+
+unsigned int runProgram(String *instruction){
+	
+	executeInstruction(interpret(instruction));
+
+}
 
 
 /**

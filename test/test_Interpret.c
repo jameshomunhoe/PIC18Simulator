@@ -1,6 +1,9 @@
 #include "unity.h"
 #include "Interpret.h"
+#include "FileRegister.h"
+#include "Execute.h"
 #include "CException.h"
+#include "ExecutionTable.h"
 #include "String.h"
 #include "StringObject.h"
 #include "Token.h"
@@ -517,5 +520,21 @@ void test_interpret_should_able_to_run_N12_GOTO(){
 	int test = interpret(string);
 
 	TEST_ASSERT_EQUAL_HEX32(0xf123ef45,test);
+
+}
+
+void test_runProgram_should_able_to_run_MOVWF(){
+	Text *text = textNew(" MOVWF 0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+	
+	fileRegisters[WREG] = 0x5;
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x5,fileRegisters[0x10]);
+	
 
 }

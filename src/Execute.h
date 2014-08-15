@@ -2,6 +2,7 @@
 #define _EXECUTE_H_
 
 #include "Types.h"
+#include "MaskTable.h"
 //easier to execute functions, input full opcode into parameter
 uint32 executeInstruction(uint32 code);
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize);
@@ -80,5 +81,6 @@ int executeINFSNZ(unsigned int code);
 int executeIORWF(unsigned int code);
 int executeMOVF(unsigned int code);
 int executeMOVFF(unsigned int code);
+
 
 #endif //_EXECUTE_H_
