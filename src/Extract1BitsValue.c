@@ -22,7 +22,7 @@ int operandExtract1BitsValue(String *arguments){
 		}
 	}
 	
-
+	operand1 = operand1 & 0x01;
 	
 	return operand1;
 }
