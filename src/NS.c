@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include "NS.h"
+#include "Extract1BitsValue.h"
+#include "ExtractValue.h"
+#include "Interpret.h"
 #include "StringObject.h"
 #include "String.h"
 #include "Text.h"
 #include "ErrorCode.h"
 #include "CException.h"
 #include "CustomTypeAssert.h"
-#include "Extract.h"
-#include "ExtractValue.h"
-#include "Extract1BitsValue.h"
 
 int NS(String *arguments){
 	int operand1;

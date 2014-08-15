@@ -1,7 +1,8 @@
 #ifndef ns_H
 #define ns_H
 
-#include "Extract.h"
+#include "Extract1BitsValue.h"
+#include "Interpret.h"
 
 int NS(String *arguments);
 

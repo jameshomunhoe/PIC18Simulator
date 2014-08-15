@@ -8,7 +8,9 @@ typedef enum{
 	FBA_TYPE,
 	FA_TYPE,
 	FSFD_TYPE,
-	N_TYPE,
+	N8_TYPE,
+	N11_TYPE,
+	N12_TYPE,
 	NS_TYPE,
 	S_TYPE,
 	K_TYPE,
@@ -27,7 +29,7 @@ instructionTable getInstruction(char *instruction);
 
 int extractValue(String *arguments);
 int extractDestination(String *arguments);
-int extractAccessBanked(String *arguments);
+int extractACCESSBANKED(String *arguments);
 #endif // Interpret_H
 
 

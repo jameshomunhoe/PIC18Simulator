@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "N.h"
-#include "Extract.h"
+#include "Interpret.h"
 #include "StringObject.h"
 #include "String.h"
 #include "CustomTypeAssert.h"
@@ -23,6 +23,10 @@ int N(String *arguments , int numberOfbits){
 }
 
 int N8(String *arguments){
+	return N(arguments,7);
+}
+
+int N11(String *arguments){
 	return N(arguments,7);
 }
 

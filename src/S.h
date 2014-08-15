@@ -1,7 +1,7 @@
 #ifndef s_H
 #define s_H
 
-#include "Extract.h"
+#include "Interpret.h"
 
 int S(String *arguments);
 

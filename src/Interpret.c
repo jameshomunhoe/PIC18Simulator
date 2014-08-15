@@ -10,8 +10,18 @@
 #include "CharSet.h"
 #include "ErrorCode.h"
 #include "CustomTypeAssert.h"
+#include "FA.h"
+#include "FBA.h"
+#include "FDA.h"
+#include "FsFd.h"
+#include "K.h"
+#include "N.h"
+#include "NS.h"
+#include "S.h"
+#include "Extract1BitsValue.h"
+#include "ExtractValue.h"
 #include "mock_Evaluate.h"
-#include "mock_OpCodeDecoder.h"
+
 
 #define INSTRUCTION_TABLE_SIZE	(sizeof(instructions)/sizeof(instructionTable))
 
@@ -56,17 +66,17 @@ instructionTable instructions[] = {
 	{.instructionName = "BTFSS" , .opCode = 0xA000 , .type = FBA_TYPE},
 	{.instructionName = "BTG" , .opCode = 0x7000 , .type = FBA_TYPE},
 	{.instructionName = "MOVFF" , .opCode = 0xF000C000 , .type = FSFD_TYPE},
-	{.instructionName = "BC" , .opCode = 0xE200 , .type = N_TYPE},
-	{.instructionName = "BN" , .opCode = 0xE600 , .type = N_TYPE},
-	{.instructionName = "BNC" , .opCode = 0xE300 , .type = N_TYPE},
-	{.instructionName = "BNN" , .opCode = 0xE700 , .type = N_TYPE},
-	{.instructionName = "BNOV" , .opCode = 0xE500 , .type = N_TYPE},
-	{.instructionName = "BNZ" , .opCode = 0xE100 , .type = N_TYPE},
-	{.instructionName = "BOV" , .opCode = 0xE400 , .type = N_TYPE},
-	{.instructionName = "BRA" , .opCode = 0xD000 , .type = N_TYPE},
-	{.instructionName = "BZ" , .opCode = 0xE000 , .type = N_TYPE},
-	{.instructionName = "GOTO" , .opCode = 0xF000EF00 , .type = N_TYPE},
-	{.instructionName = "RCALL" , .opCode = 0xD800 , .type = N_TYPE},
+	{.instructionName = "BC" , .opCode = 0xE200 , .type = N8_TYPE},
+	{.instructionName = "BN" , .opCode = 0xE600 , .type = N8_TYPE},
+	{.instructionName = "BNC" , .opCode = 0xE300 , .type = N8_TYPE},
+	{.instructionName = "BNN" , .opCode = 0xE700 , .type = N8_TYPE},
+	{.instructionName = "BNOV" , .opCode = 0xE500 , .type = N8_TYPE},
+	{.instructionName = "BNZ" , .opCode = 0xE100 , .type = N8_TYPE},
+	{.instructionName = "BOV" , .opCode = 0xE400 , .type = N8_TYPE},
+	{.instructionName = "BRA" , .opCode = 0xD000 , .type = N11_TYPE},
+	{.instructionName = "BZ" , .opCode = 0xE000 , .type = N12_TYPE},
+	{.instructionName = "GOTO" , .opCode = 0xF000EF00 , .type = N12_TYPE},
+	{.instructionName = "RCALL" , .opCode = 0xD800 , .type = N11_TYPE},
 	{.instructionName = "CALL" , .opCode = 0xF000EC00 , .type = NS_TYPE},
 	{.instructionName = "RETFIE" , .opCode = 0x0010 , .type = S_TYPE},
 	{.instructionName = "RETURN" , .opCode = 0x0012 , .type = S_TYPE},
@@ -106,16 +116,18 @@ unsigned int interpret(String *instruction){
 		return inst.opCode | FA(instruction);
 	else if(inst.type == FSFD_TYPE)
 		return inst.opCode | FSFD(instruction);
-	else if(inst.type == N_TYPE)
-		return inst.opCode | N(instruction);
+	else if(inst.type == N8_TYPE)
+		return inst.opCode | N8(instruction);	
+	else if(inst.type == N11_TYPE)
+		return inst.opCode | N11(instruction);	
+	else if(inst.type == N12_TYPE)
+		return inst.opCode | N12(instruction);
 	else if(inst.type == NS_TYPE)
 		return inst.opCode | NS(instruction);
 	else if(inst.type == S_TYPE)
 		return inst.opCode | S(instruction);
 	else if(inst.type == K_TYPE)
 		return inst.opCode | K(instruction);
-	else if(inst.type == FK_TYPE)
-		return inst.opCode | FK(instruction);
 	else
 		Throw(ERR_ILLEGAL_ARGUMENT);
 }
@@ -249,7 +261,7 @@ int extractDestination(String *arguments){
 * Return the value of access/banked
 * Throw if value is invalid
 */
-int extractAccessBanked(String *arguments){
+int extractACCESSBANKED(String *arguments){
 	char location;
 	char *returnChar;
 	int returnInt;

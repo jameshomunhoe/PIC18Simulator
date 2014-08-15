@@ -1,7 +1,7 @@
 #ifndef _EXTRACT_1BITS_VALUE_H_
 #define _EXTRACT_1BITS_VALUE_H_
 
-#include "Extract.h"
+#include "Interpret.h"
 
 int operandExtract1BitsValue(String *arguments);
 
