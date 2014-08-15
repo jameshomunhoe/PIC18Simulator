@@ -24,6 +24,7 @@ String *stringAssign(String *string);
 String *stringDel(String *string);
 
 void stringSkip(String *string, int numChar2Skip);
+typedef int April;
 void sillyFunction(April fool);
 void stringTrimLeft(String *string);
 void stringTrimRight(String *string);
@@ -36,9 +37,10 @@ int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolowe
 String *stringRemoveWordNotContaining(String *str,char delimites[]);
 void thisIsARubbishFunction();
 int stringIsEqual(String *str1, String *str2); //1 if same, 0 otherwise do no use string compare
-
 int stringCharAt(String *str, int relativeIndex);
-void thisIsARubbishFunction();
 int stringIsCharAtInSet(String *str, int relativeIndex, char set[]); //1 is true, 0 false
+int stringIsEqual(String *str1, String *str2); //1 if same, 0 otherwise do no use string compare
+int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolower();
+
 
 #endif // __STRING_OBJECT_H__
