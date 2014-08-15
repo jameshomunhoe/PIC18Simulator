@@ -23,12 +23,13 @@ void clearCarryFlag();
 void checkNegativeStatus(int newData);
 void checkZeroStatus(int newData);
 void checkCarryStatus(int newData);
-void checkOverFlow(int updataData, int overFlow);
+void checkOverFlowStatus(int updataData, int overFlow);
 void checkDigitalCarryStatus(int digitalCarry);
 int storeDestination(int destination, int address, int access, int data);
 void updateProgramCounter();
 void updateProgramCounterSkipIfClear(int data);
 void updateProgramCounterSkipIfSet(int data);
+int withdrawCarryStatus();
 
 //james
 int executeBC(unsigned int code);
@@ -60,5 +61,25 @@ int executeSUBWFB(unsigned int code);
 int executeSWAPF(unsigned int code);
 int executeTSTFSZ(unsigned int code);
 int executeXORWF(unsigned int code);
+
+//kenmun
+int executeADDWF(unsigned int code);
+int executeADDWFC(unsigned int code);
+int executeANDWF(unsigned int code);
+int executeCLRF(unsigned int code);
+int executeCOMF(unsigned int code);
+int executeCPFSEQorexecuteCPFSLT(unsigned int code);
+int executeCPFSGT(unsigned int code);
+int executeCPFSEQ(unsigned int code);
+int executeCPFSLT(unsigned int code);
+int executeDECF(unsigned int code);
+int executeDECFSZ(unsigned int code);
+int executeDCFSNZ(unsigned int code);
+int executeINCF(unsigned int code);
+int executeINCFSZ(unsigned int code);
+int executeINFSNZ(unsigned int code);
+int executeIORWF(unsigned int code);
+int executeMOVF(unsigned int code);
+int executeMOVFF(unsigned int code);
 
 #endif //_EXECUTE_H_

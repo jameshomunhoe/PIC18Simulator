@@ -11,6 +11,9 @@ int data;
 int destinationBit;
 int programCounter;
 int carry;
+int digitalCarry;
+int overFlow;
+int updateData;
 
 /**
 *	Table to mask off certain bits for getBitsAtOffset and setBitsAtOffset use
@@ -269,7 +272,7 @@ void checkCarryStatus(int newData){
 	}
 }
 
-void checkOverFlow(int updataData, int overFlow){
+void checkOverFlowStatus(int updataData, int overFlow){
 	if((updataData >> 8) == 1){
 		if(overFlow == 1){
 			clearOverFlowFlag();
@@ -324,7 +327,7 @@ uint32 executeInstruction(uint32 code){
 	}
 	//execute 32 bits instruction
 	else if(code > 0xffff){
-		executionTable[getBitsAtOffset(code,26,6)](code);
+		executionTable[getBitsAtOffset(code,10,6)](code);
 	}
 }
 
@@ -1024,7 +1027,7 @@ int executeSUBWF(unsigned int code){
 	checkNegativeStatus(newData);
 	checkZeroStatus(newData);
 	checkCarryStatus(newData);
-	checkOverFlow(newData, overFlowCheck);
+	checkOverFlowStatus(newData, overFlowCheck);
 	checkDigitalCarryStatus(digitalCarryCheck);
 
 	newData = storeDestination(destinationBit, address, access, newData);
@@ -1068,7 +1071,7 @@ int executeSUBWFB(unsigned int code){
 	checkNegativeStatus(newData);
 	checkZeroStatus(newData);
 	checkCarryStatus(newData);
-	checkOverFlow(newData, overFlowCheck);
+	checkOverFlowStatus(newData, overFlowCheck);
 	checkDigitalCarryStatus(digitalCarryCheck);
 
 	newData = storeDestination(destinationBit, address, access, newData);
@@ -1173,3 +1176,616 @@ int executeXORWF(unsigned int code){
 
 	return newData;
 }
+
+/**
+ *
+ * To check pervious data that had carry status!
+ *
+ **/
+int withdrawPerviousCarryStatus(){
+	fileRegisters[STATUS] = getBitsAtOffset(fileRegisters[STATUS],0,1);
+	
+	if(fileRegisters[STATUS] == 1){
+		carry = 1;
+	}else{
+		carry = 0;
+	}
+	return carry;
+}
+
+/**
+ *
+ *	ADD W and Carry bit to f
+ *
+ *	Operation : 
+ *		(W) + (f) + (C) -> dest
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		N,Z,C,OV,DC
+ *
+ **/
+int executeADDWFC(unsigned int code){
+	getInfoFromOffset(code);
+	carry = withdrawPerviousCarryStatus();
+	data = getFileRegData(address,access);
+	updateData = data + (fileRegisters[WREG]) + carry;
+	digitalCarry = (((data & 0x0f) + (fileRegisters[WREG] & 0x0f) + (carry))>>4);
+	overFlow = ((data & 0x7f) + (fileRegisters[WREG] & 0x7f) + carry)>>7;
+	
+	checkOverFlowStatus(updateData,overFlow);
+	checkCarryStatus(updateData);
+	checkZeroStatus(updateData);
+	checkNegativeStatus(updateData);
+	checkDigitalCarryStatus(digitalCarry);
+	
+	updateData = storeDestination(destinationBit, address, access, updateData);								
+	updateProgramCounter();
+	
+	return updateData;
+	
+	
+}
+
+/**
+ *
+ *	AND W with f
+ *
+ *	Operation : 
+ *		(W) .AND. (f)->dest
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		N,Z
+ *
+ **/
+int executeANDWF(unsigned int code){
+
+	getInfoFromOffset(code);
+
+	data = getFileRegData(address,access);
+	updateData = data & (fileRegisters[WREG]);
+	
+	checkZeroStatus(updateData);
+	checkNegativeStatus(updateData);
+	
+	updateData = storeDestination(destinationBit, address, access, updateData);
+	updateProgramCounter();
+	
+	return updateData;
+}
+
+/**
+ *
+ *	Clear f
+ *
+ *	Operation : 
+ *		000h->f
+ *		1->Z
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		Z
+ *
+ **/
+int executeCLRF(unsigned int code){
+	getInfoFromOffset(code);
+
+	data = getFileRegData(address,access);
+	updateData = data & 0x00000000;
+	
+	checkZeroStatus(updateData);
+	
+	updateData = storeDestination(destinationBit, address, access, updateData);
+	updateProgramCounter();
+	
+	return updateData;
+}
+
+/**
+ *
+ *	Complement f
+ *
+ *	Operation : 
+ *		~(f)->dest
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		N,Z
+ *
+ **/
+int executeCOMF(unsigned int code){
+
+	getInfoFromOffset(code);
+
+	data = getFileRegData(address,access);
+	updateData = ~(data);
+	
+	checkZeroStatus(updateData);
+	checkNegativeStatus(updateData);
+	
+	updateData = storeDestination(destinationBit, address, access, updateData);
+	updateProgramCounter();
+	
+	return updateData;
+}
+
+/**
+ *
+ *	Compare f with W, skip if f=W
+ *
+ *	Operation : 
+ *		(f)-(W)
+ *		skip if (f) = (W)
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		data
+ *
+ *	Status Affect:
+ *		None
+ *
+ **/
+int executeCPFSEQ(unsigned int code){
+
+	getInfoFromOffset(code);
+	
+	programCounter = getProgramCounter();
+	
+	data = getFileRegData(address,access);
+	if(data == fileRegisters[WREG]){
+		programCounter +=4;
+		setProgramCounter(programCounter);
+	}else{
+		programCounter +=2;
+		setProgramCounter(programCounter);
+	}	
+	data = storeDestination(destinationBit, address, access, data);
+	
+	return data;
+}
+
+/**
+ *
+ *	Compare f with W,skip if f<W
+ *
+ *	Operation : 
+ *		(f)-(W),
+ *		skip if (f)<(W)
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		None
+ *
+ **/
+int executeCPFSLT(unsigned int code){
+
+	getInfoFromOffset(code);
+	
+	programCounter = getProgramCounter();
+	
+	data = getFileRegData(address,access);
+	if(data >= fileRegisters[WREG]){
+		programCounter +=4;
+		setProgramCounter(programCounter);
+	}else{
+		programCounter +=2;
+		setProgramCounter(programCounter);
+	}	
+	
+	data = storeDestination(destinationBit, address, access, data);
+	
+	return data;
+}
+
+/**
+ *
+ *	Compare f with W,skip if f>W
+ *
+ *	Operation : 
+ *		(f)-(W),
+ *		skip if (f)>(W)
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		None
+ *
+ **/
+int executeCPFSGT(unsigned int code){
+
+	getInfoFromOffset(code);
+	
+	programCounter = getProgramCounter();
+	
+	data = getFileRegData(address,access);
+	if(data <= fileRegisters[WREG]){
+		programCounter +=4;
+		setProgramCounter(programCounter);
+	}else{
+		programCounter +=2;
+		setProgramCounter(programCounter);
+	}	
+	
+	data = storeDestination(destinationBit, address, access, data);
+	
+	return data;
+}
+
+/**
+ *
+ *	Decrement f
+ *
+ *	Operation : 
+ *		(f)-1 ->dest
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		data
+ *
+ *	Status Affect:
+ *		N,Z,C,OV,DC
+ *
+ **/
+int executeDECF(unsigned int code){
+
+	getInfoFromOffset(code);
+
+	data = getFileRegData(address,access);
+	digitalCarry = ((data & 0x0f) +((~(0x01)+1) & 0x0f)>>4);
+	overFlow = ((data & 0x7f) +((~(0x01)+1) & 0x7f))>>7;
+	data -= 1;
+	updateData = data;
+	
+	
+	checkCarryStatus(updateData);
+	checkZeroStatus(updateData);
+	checkNegativeStatus(updateData);
+	checkDigitalCarryStatus(digitalCarry);
+	checkOverFlowStatus(updateData,overFlow);
+	
+	updateData = storeDestination(destinationBit, address, access, updateData);
+	updateProgramCounter();
+	
+	return updateData;
+}
+
+/**
+ *
+ *	Decrement f,skip if 0
+ *
+ *	Operation : 
+ *		(f) - 1 ->dest
+ * 		skip if result = 0
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		None
+ *
+ **/
+int executeDECFSZ(unsigned int code){
+	getInfoFromOffset(code);
+	programCounter = getProgramCounter();
+	data = getFileRegData(address,access);
+	data -= 1;
+	
+	if(data == 0x00){
+		programCounter +=2;
+		setProgramCounter(programCounter);
+	}else{
+		programCounter +=4;
+		setProgramCounter(programCounter);
+	}
+	
+	data = storeDestination(destinationBit, address, access, data);
+	
+	return data;
+}
+
+/**
+ *
+ *	Decrement f, skip if not 0
+ *
+ *	Operation : 
+ *		(f) - 1 ->dest
+ *      skip if result != 0
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		None
+ *
+ **/
+int executeDCFSNZ(unsigned int code){
+	getInfoFromOffset(code);
+	programCounter = getProgramCounter();
+	data = getFileRegData(address,access);
+	data -= 1;
+	
+	if(data != 0x00){
+		programCounter +=4;
+		setProgramCounter(programCounter);
+	}else{
+		programCounter +=2;
+		setProgramCounter(programCounter);
+	}
+	
+	data = storeDestination(destinationBit, address, access, data);
+	
+	return data;
+}
+
+/**
+ *
+ *	Increment f
+ *
+ *	Operation : 
+ *		(f) + 1 -> dest
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		N,Z,C,DC,OV
+ *
+ **/
+int executeINCF(unsigned int code){
+	//dc ov
+	getInfoFromOffset(code);
+
+	data = getFileRegData(address,access);
+	digitalCarry = (((data & 0x0f) + 1)>>4);
+	overFlow = (((data & 0x7f) + 1))>>7;
+	data += 1;
+	updateData = data;
+	
+	checkCarryStatus(updateData);
+	checkZeroStatus(updateData);
+	checkNegativeStatus(updateData);
+	checkDigitalCarryStatus(digitalCarry);
+	checkOverFlowStatus(updateData,overFlow);
+	
+	updateData = storeDestination(destinationBit, address, access, updateData);
+	updateProgramCounter();
+	return updateData;
+}
+
+/**
+ *
+ *	Increment f, skip if 0
+ *
+ *	Operation : 
+ *		(f) + 1 ->dest
+ *		skip if result = 0
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		None
+ *
+ **/
+int executeINCFSZ(unsigned int code){
+	int value;
+	getInfoFromOffset(code);
+	programCounter = getProgramCounter();
+	data = getFileRegData(address,access);
+	data += 1;
+	value = data & 0x000;
+	
+	if(value == 0x00){
+		programCounter +=2;
+		setProgramCounter(programCounter);
+	}else{
+		programCounter +=4;
+		setProgramCounter(programCounter);
+	}
+	
+	data = storeDestination(destinationBit, address, access, data);
+	
+	return data;
+}
+
+/**
+ *
+ *	Increment f,skip if not 0
+ *
+ *	Operation : 
+ *		(f) + 1 ->dest
+ *		skip if result != 0
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		None
+ *
+ **/
+int executeINFSNZ(unsigned int code){
+	int value;
+	getInfoFromOffset(code);
+	programCounter = getProgramCounter();
+	data = getFileRegData(address,access);
+	data += 1;
+	value = data & 0x000;
+	
+	if(value != 0x00){
+		programCounter +=4;
+		setProgramCounter(programCounter);
+	}else{
+		programCounter +=2;
+		setProgramCounter(programCounter);
+	}
+	
+	data = storeDestination(destinationBit, address, access, data);
+	
+	return data;
+}
+
+/**
+ *
+ *	Inclusive OR W with f
+ *
+ *	Operation : 
+ *		(W).OR.(f) -> dest
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		N,Z
+ *
+ **/
+int executeIORWF(unsigned int code){
+	getInfoFromOffset(code);
+
+	data = getFileRegData(address,access);
+	updateData = data | fileRegisters[WREG];
+	
+	checkZeroStatus(updateData);
+	checkNegativeStatus(updateData);
+	
+	updateData = storeDestination(destinationBit, address, access, updateData);
+	updateProgramCounter();
+	
+	return updateData;
+}
+
+/**
+ *
+ *	Move f
+ *
+ *	Operation : 
+ *		F->dest
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *	
+ *	Return :
+ *		updateData
+ *
+ *	Status Affect:
+ *		N,Z
+ *
+ **/
+int executeMOVF(unsigned int code){
+	getInfoFromOffset(code);
+
+	data = getFileRegData(address,access);
+	fileRegisters[WREG]  = data;
+	updateData = fileRegisters[WREG];
+	
+	checkZeroStatus(updateData);
+	checkNegativeStatus(updateData);
+	
+	updateData = storeDestination(destinationBit, address, access, updateData);
+	updateProgramCounter();
+	
+	return updateData;
+}
+
+/**
+ *
+ *	Move source file to destination file
+ *
+ *	Operation : 
+ *		Fs->Fd
+ *
+ *	Input :
+ *		code is the opcode for instruction word
+ *
+ *	Status Affect:
+ *		None
+ *
+ **/
+int executeMOVFF(unsigned int code){
+
+	unsigned int sourceAddress,destAddress;
+
+	sourceAddress = getBitsAtOffset(code, 0, 12);
+	destAddress = getBitsAtOffset(code, 16, 12);
+	
+	fileRegisters[destAddress] = fileRegisters[sourceAddress]; 
+	updateProgramCounter();
+
+	return 1;
+}
+
+/**
+ *
+ * To consider CPFSEQ or CPFSLT instruction to be taken!
+ *
+ **/
+int executeCPFSEQorexecuteCPFSLT(unsigned int code){
+	int instruction = (code&0xff00)>>8;
+	
+	switch(instruction){
+		case 0x62:
+		executeCPFSEQ(code);
+		break;
+		case 0x63:
+		executeCPFSEQ(code);
+		break;
+		case 0x61:
+		executeCPFSLT(code);
+		break;
+		case 0x60:
+		executeCPFSLT(code);
+		break;
+	}
+}
+
