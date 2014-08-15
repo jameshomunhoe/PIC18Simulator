@@ -7,6 +7,29 @@ uint32 executeInstruction(uint32 code);
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize);
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize);
 
+//shyanfeng
+int getInfoFromOffset(unsigned int code);
+int withdrawPreviousCarryForSUBWFB();
+void setNegativeFlag();
+void clearNegativeFlag();
+void setOverFlowFlag();
+void clearOverFlowFlag();
+void setZeroFlag();
+void clearZeroFlag();
+void setDigitalCarryFlag();
+void clearDigitalCarryFlag();
+void setCarryFlag();
+void clearCarryFlag();
+void checkNegativeStatus(int newData);
+void checkZeroStatus(int newData);
+void checkCarryStatus(int newData);
+void checkOverFlow(int updataData, int overFlow);
+void checkDigitalCarryStatus(int digitalCarry);
+int storeDestination(int destination, int address, int access, int data);
+void updateProgramCounter();
+void updateProgramCounterSkipIfClear(int data);
+void updateProgramCounterSkipIfSet(int data);
+
 //james
 int executeBC(unsigned int code);
 int executeBNC(unsigned int code);
