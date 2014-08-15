@@ -31,11 +31,11 @@ void stringTrim(String *string);
 
 int stringRemoveChar(String *str); // return -l if empty remove by moving index number
 int stringLength(String *str); // length of string
-String *stringRemoveWordNotContaining(String *str,char delimites[]);
 String *stringRemoveWordContaining(String *str, char containSet[]);
+int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolower();
+String *stringRemoveWordNotContaining(String *str,char delimites[]);
 void thisIsARubbishFunction();
 int stringIsEqual(String *str1, String *str2); //1 if same, 0 otherwise do no use string compare
-int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolower();
 
 int stringCharAt(String *str, int relativeIndex);
 void thisIsARubbishFunction();
