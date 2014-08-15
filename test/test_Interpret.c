@@ -856,6 +856,160 @@ void test_runProgram_should_able_to_run_MOVFF(){
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
 }
 
+void test_runProgram_should_able_to_run_BC(){
+	Text *text = textNew(" BC 0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+	fileRegisters[STATUS] = 0x01;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+}
+
+void test_runProgram_should_able_to_run_BNC(){
+	Text *text = textNew(" BNC 0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+	fileRegisters[STATUS] = 0x00;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+}
+
+void test_runProgram_should_able_to_run_BNZ(){
+	Text *text = textNew(" BNZ 0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+	fileRegisters[STATUS] = 0x00;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+}
+
+void test_runProgram_should_able_to_run_BZ(){
+	Text *text = textNew(" BZ 0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+	fileRegisters[STATUS] = 0x04;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+}
+
+void test_runProgram_should_able_to_run_BRA(){
+	Text *text = textNew(" BRA 0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+}
+/*
+void test_runProgram_should_able_to_run_CALL(){
+	Text *text = textNew(" CALL 1,20");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+}
+*/
+
+void test_runProgram_should_able_to_run_NEGF(){
+	Text *text = textNew(" NEGF 0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+	fileRegisters[0x10] = 0x3A;
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0xC6,fileRegisters[0x10]);
+}
+
+/*
+void test_runProgram_should_able_to_run_RLCF(){
+	Text *text = textNew(" RLCF 0x10,0,0");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0xCC,fileRegisters[WREG]);
+}
+*/
+
+/*
+void test_runProgram_should_able_to_run_RRNCF(){
+	Text *text = textNew(" RRNCF 0x10,0,0");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL(0xCC,fileRegisters[WREG]);
+}
+*/
+
+
 
 
 
