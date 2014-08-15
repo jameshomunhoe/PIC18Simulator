@@ -11,7 +11,18 @@
 #define TOSH	0xffe
 #define TOSL	0xffd
 
+#include "Types.h"
+
+typedef struct ShadowRegisters{
+  uint8 WREGS;
+  uint8 STATUSS;
+  uint8 BSRS;
+} ShadowRegisters;
+
 extern unsigned char fileRegisters[4096];
+extern ShadowRegisters shadowRegister;
+
+
 
 int getFileRegData(int address, int access);
 int setFileRegData(int address, int access, int data);

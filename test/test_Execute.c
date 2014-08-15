@@ -411,6 +411,9 @@ void test_MOVWF_should_move_value_of_50_to_fileRegisters_0x01(){
 	executeInstruction(code);
 	
 	TEST_ASSERT_EQUAL_HEX8(0x50,fileRegisters[0x01]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }
 
 void test_MOVWF_should_move_value_of_60_to_fileRegisters_0xf00(){
@@ -422,6 +425,9 @@ void test_MOVWF_should_move_value_of_60_to_fileRegisters_0xf00(){
 	executeInstruction(code);
 	
 	TEST_ASSERT_EQUAL_HEX8(0x60,fileRegisters[0xf00]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }
 
 void test_RLCF_should_return_0xfe(){
@@ -433,6 +439,9 @@ void test_RLCF_should_return_0xfe(){
 	
 	TEST_ASSERT_EQUAL_HEX8(0xfe,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL(0x11,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 	
 }
 
@@ -445,6 +454,9 @@ void test_RLCF_should_return_0x00(){
 	
 	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX8(0x5,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 	
 }
 
@@ -458,6 +470,9 @@ void test_RLCF_should_shift_in_from_carry(){
 	
 	TEST_ASSERT_EQUAL_HEX8(0xE1,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 	
 }
 
@@ -470,6 +485,9 @@ void test_RRNCF_should_shift_0x70_to_0x38(){
 	
 	TEST_ASSERT_EQUAL_HEX8(0x38,fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }
 
 void test_RRNCF_should_shift_0x01_to_0x80(){
@@ -481,6 +499,9 @@ void test_RRNCF_should_shift_0x01_to_0x80(){
 	
 	TEST_ASSERT_EQUAL_HEX8(0x80,fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }
 void test_CALL_should_update_PC_to_0x12345(){
 	clearAllFileRegisters();
@@ -522,6 +543,35 @@ void test_CALL_should_update_PC_to_0xfffff(){
 	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[TOSL]);
 }
 
+void test_CALL_should_update_shadowRegister(){
+	clearAllFileRegisters();
+	uint32 code = 0xedffffff;
+
+
+	fileRegisters[PCLATU] = 0xff;
+	fileRegisters[PCLATH] = 0xff;
+	fileRegisters[PCL] = 0xff;
+	
+	//for shadow register testing purpose
+	fileRegisters[WREG] = 0x01;
+	fileRegisters[BSR] = 0x02;
+	fileRegisters[STATUS] = 0x03;
+	
+	executeInstruction(code);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xf,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[PCL]);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[TOSH]);
+	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[TOSL]);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x01,shadowRegister.WREGS);
+	TEST_ASSERT_EQUAL_HEX16(0x02,shadowRegister.BSRS);
+	TEST_ASSERT_EQUAL_HEX16(0x03,shadowRegister.STATUSS);
+}
+
 void test_ADDWF_should_save_answer_in_WREG(){
 	clearAllFileRegisters();
 	int code = 0x2401;
@@ -536,6 +586,9 @@ void test_ADDWF_should_save_answer_in_WREG(){
 	
 	TEST_ASSERT_EQUAL_HEX16(0x80,fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL_HEX16(0x1A,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }
 
 void test_ADDWF_should_save_answer_in_fileRegister(){
@@ -552,6 +605,9 @@ void test_ADDWF_should_save_answer_in_fileRegister(){
 	
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX16(0x07,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }
 
 void test_ADDWF_should_not_have_OV(){
@@ -568,6 +624,9 @@ void test_ADDWF_should_not_have_OV(){
 	
 	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }
 
 void test_ADDWF_should_not_have_any_StatusFlag(){
@@ -584,4 +643,7 @@ void test_ADDWF_should_not_have_any_StatusFlag(){
 	
 	TEST_ASSERT_EQUAL_HEX16(0x70,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }

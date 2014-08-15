@@ -10,6 +10,7 @@
 #define isInRangeOfBSR (fileRegisters[BSR] >= 0x0 && fileRegisters[BSR] <= 0x15)
 
 unsigned char fileRegisters[4096];
+ShadowRegisters shadowRegister;
 
 int getFileRegData(int address, int access){
 	int data;

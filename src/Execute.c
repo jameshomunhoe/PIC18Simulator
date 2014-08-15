@@ -31,6 +31,7 @@ uint32 maskTable[32] = { 	0x0,
 */
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
 	
+	//set and cap at maximum valid value
 	if(offset >= 0 && bitSize > 0){
 		if(offset >31)
 			offset = 31;
@@ -46,7 +47,7 @@ uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
 }
 
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize){
-
+	
 	 *dataPtr =  *dataPtr &(~(maskTable[bitSize]<<offset));
 	 *dataPtr = *dataPtr|((dataToWrite & maskTable[bitSize]) << offset);
 
@@ -127,11 +128,11 @@ void clearAllFlag(){
 *	A universal function to decode and execute the opCode (for execution use)
 */
 uint32 executeInstruction(uint32 code){
-	
+	//execute 16 bits instruction
 	if(code < 0x10000){
 		executionTable[getBitsAtOffset(code,10,6)](code);
 	}
-	
+	//execute 32 bits instruction
 	else if(code > 0xffff){		
 		executionTable[getBitsAtOffset(code,26,6)](code);
 	}
@@ -268,11 +269,21 @@ int executeBRA(unsigned int code){
 	return programCounter;
 }
 
+/**
+*	To execute MOVWF instructions
+*	
+*	Input:
+*		full opcode
+*
+*	Move the value from working register (WREG) to fileRegisters
+*/
 int executeMOVWF(unsigned int code){
 
 	fileRegisters[findActualFileRegister(getBitsAtOffset(code,0,8),
 				  getBitsAtOffset(code,8,1))] 
 				  = fileRegisters[WREG];
+				 
+	setProgramCounter(getProgramCounter() + 2);
 
 }
 
@@ -293,6 +304,8 @@ int executeNEGF(unsigned int code){
 	fileValue = getFileRegData(fileAddress,accessBanked);
 	fileValue = ~fileValue+1;
 	setFileRegData(fileAddress,accessBanked,fileValue);
+	
+	setProgramCounter(getProgramCounter() + 2);
 	
 	return fileValue;
 }
@@ -324,14 +337,20 @@ int executeRLCF(unsigned int code){
 	else
 		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
 	
+	//Status update
 	clearAllFlag();
 	
+	//C
 	if(getBitsAtOffset(fileValue,8,1))
 		setCarryFlag();
+	//N
 	if(getBitsAtOffset(fileValue,7,1))
 		setNegativeFlag();
+	//Z
 	if(getBitsAtOffset(fileValue,0,8) == 0)
 		setZeroFlag();
+	
+	setProgramCounter(getProgramCounter() + 2);
 
 }
 
@@ -363,12 +382,17 @@ int executeRRNCF(unsigned int code){
 	else
 		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
 	
+	//Status update
 	clearAllFlag();
 	
+	//N
 	if(getBitsAtOffset(fileValue,7,1))
 		setNegativeFlag();
+	//Z
 	if(getBitsAtOffset(fileValue,0,8) == 0)
 		setZeroFlag();
+		
+	setProgramCounter(getProgramCounter() + 2);
 
 }
 
@@ -395,7 +419,13 @@ int executeCALL(unsigned int code){
 	fileRegisters[TOSL] = getBitsAtOffset(topOfStack,0,8);
 	
 	setProgramCounter(pcDestination);
-	//shadowRegister part haven't done
+	
+	//shadowRegister part 's = 1'
+	if(shadowBit == 1){
+	shadowRegister.WREGS = fileRegisters[WREG];
+	shadowRegister.BSRS = fileRegisters[BSR];
+	shadowRegister.STATUSS = fileRegisters[STATUS];
+	}
 }
 
 /**
@@ -446,7 +476,8 @@ int executeADDWF(unsigned int code){
 	//N
 	if(getBitsAtOffset(fileValue,7,1))
 		setNegativeFlag();
-
+		
+	setProgramCounter(getProgramCounter() + 2);
 }
 
 /**
