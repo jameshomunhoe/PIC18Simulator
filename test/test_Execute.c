@@ -6,7 +6,7 @@
 void setUp(void){}
 void tearDown(void){}
 
-//executionTable[(0xFC00 & code)>>10](code);
+// executionTable[(0xFC00 & code)>>10](code);
 
 void test_setBitsAtOffset(){
 	int value = 0x1E36;
@@ -301,8 +301,8 @@ void test_BC_should_increase_ProgramCounter_from_0xFF_to_0x1ff(){
 	
 	data = executeInstruction(code);
 	
-	//	ff + (7f * 2) + 2 = ff + fe + 2
-	//					  = 1ff
+		// ff + (7f * 2) + 2 = ff + fe + 2
+						  // = 1ff
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[PCL]);
@@ -322,8 +322,8 @@ void test_BC_should_decrease_ProgramCounter_from_0xFF_to_0xFD(){
 	
 	data = executeInstruction(code);
 	
-	//	ff + (-2 * 2) + 2 = ff + (-4) + 2
-	//					  = 0xfd
+		// ff + (-2 * 2) + 2 = ff + (-4) + 2
+						  // = 0xfd
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0xfd,fileRegisters[PCL]);
@@ -375,8 +375,8 @@ void test_BNC_should_increase_ProgramCounter_from_0xFF_to_0x1ff(){
 	
 	data = executeInstruction(code);
 	
-	//	ff + (7f * 2) + 2 = ff + fe + 2
-	//					  = 1ff
+		// ff + (7f * 2) + 2 = ff + fe + 2
+						  // = 1ff
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[PCL]);
@@ -396,8 +396,8 @@ void test_BNC_should_decrease_ProgramCounter_from_0xFF_to_0xFD(){
 	
 	data = executeInstruction(code);
 	
-	//	ff + (-2 * 2) + 2 = ff + (-4) + 2
-	//					  = 0xfd
+		// ff + (-2 * 2) + 2 = ff + (-4) + 2
+						  // = 0xfd
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0xfd,fileRegisters[PCL]);
@@ -449,8 +449,8 @@ void test_BZ_should_increase_ProgramCounter_from_0xFF_to_0x1ff(){
 	
 	data = executeInstruction(code);
 	
-	//	ff + (7f * 2) + 2 = ff + fe + 2
-	//					  = 1ff
+		// ff + (7f * 2) + 2 = ff + fe + 2
+						  // = 1ff
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[PCL]);
@@ -470,8 +470,8 @@ void test_BZ_should_decrease_ProgramCounter_from_0xFF_to_0xFD(){
 	
 	data = executeInstruction(code);
 	
-	//	ff + (-2 * 2) + 2 = ff + (-4) + 2
-	//					  = 0xfd
+		// ff + (-2 * 2) + 2 = ff + (-4) + 2
+						  // = 0xfd
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0xfd,fileRegisters[PCL]);
@@ -523,8 +523,8 @@ void test_BNZ_should_increase_ProgramCounter_from_0xFF_to_0x1ff(){
 	
 	data = executeInstruction(code);
 	
-	//	ff + (7f * 2) + 2 = ff + fe + 2
-	//					  = 1ff
+		// ff + (7f * 2) + 2 = ff + fe + 2
+						  // = 1ff
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[PCL]);
@@ -544,8 +544,8 @@ void test_BNZ_should_decrease_ProgramCounter_from_0xFF_to_0xFD(){
 	
 	data = executeInstruction(code);
 	
-	//	ff + (-2 * 2) + 2 = ff + (-4) + 2
-	//					  = 0xfd
+		// ff + (-2 * 2) + 2 = ff + (-4) + 2
+						  // = 0xfd
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0xfd,fileRegisters[PCL]);
@@ -767,9 +767,10 @@ void test_RRNCF_should_shift_0x01_to_0x80(){
 	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
 }
+
 void test_CALL_should_update_PC_to_0x12345(){
 	clearAllFileRegisters();
-	uint32 code = 0xec45f123;
+	uint32 code = 0xf345ec12;
 	
 	fileRegisters[PCLATU] = 0x00;
 	fileRegisters[PCLATH] = 0x00;
@@ -789,7 +790,7 @@ void test_CALL_should_update_PC_to_0x12345(){
 
 void test_CALL_should_update_PC_to_0xfffff(){
 	clearAllFileRegisters();
-	uint32 code = 0xecffffff;
+	uint32 code = 0xffffecff;
 
 
 	fileRegisters[PCLATU] = 0xff;
@@ -809,14 +810,14 @@ void test_CALL_should_update_PC_to_0xfffff(){
 
 void test_CALL_should_update_shadowRegister(){
 	clearAllFileRegisters();
-	uint32 code = 0xedffffff;
+	uint32 code = 0xffffedff;
 
 
 	fileRegisters[PCLATU] = 0xff;
 	fileRegisters[PCLATH] = 0xff;
 	fileRegisters[PCL] = 0xff;
 	
-	//for shadow register testing purpose
+	// for shadow register testing purpose
 	fileRegisters[WREG] = 0x01;
 	fileRegisters[BSR] = 0x02;
 	fileRegisters[STATUS] = 0x03;
@@ -846,7 +847,7 @@ void test_ADDWF_should_save_answer_in_WREG(){
 	executeInstruction(code);
 
 	// - - - N OV Z DC C
-	//		 1  1 0  1 0
+			 // 1  1 0  1 0
 	
 	TEST_ASSERT_EQUAL_HEX16(0x80,fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL_HEX16(0x1A,fileRegisters[STATUS]);
@@ -865,7 +866,7 @@ void test_ADDWF_should_save_answer_in_fileRegister(){
 	executeInstruction(code);
 
 	// - - - N OV Z DC C
-	//		 0  0 1  1 1
+			 // 0  0 1  1 1
 	
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX16(0x07,fileRegisters[STATUS]);
@@ -884,7 +885,7 @@ void test_ADDWF_should_not_have_OV(){
 	executeInstruction(code);
 
 	// - - - N OV Z DC C
-	//		 0  0 0  1 1
+			 // 0  0 0  1 1
 	
 	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[STATUS]);
@@ -903,7 +904,7 @@ void test_ADDWF_should_not_have_any_StatusFlag(){
 	executeInstruction(code);
 
 	// - - - N OV Z DC C
-	//		 0  0 0  0 0
+			 // 0  0 0  0 0
 	
 	TEST_ASSERT_EQUAL_HEX16(0x70,fileRegisters[0x01]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[STATUS]);
@@ -2054,6 +2055,7 @@ void test_executeSUBWFB_0x03_banked_should_sub_with_borrow_and_return_0x0_and_st
 	
 }
 
+
 void test_executeSUBWF_0x03_access_should_sub_and_return_0x01_and_store_in_file_register(){
 	int code;
 	int data;
@@ -2201,9 +2203,7 @@ void test_executeADDWFC_is_in_FileRegister_and_BANKED(){
 	TEST_ASSERT_EQUAL(0x12, fileRegisters[STATUS]);
 }
 
-/*
-*	checking ANDWF
-*/
+
 void test_executeANDWF_is_in_FileRegister_and_BANKED(){
 	int code;
 	int data;
@@ -2250,9 +2250,6 @@ void test_executeANDWF_is_in_FileRegister_and_ACCESS(){
 	TEST_ASSERT_EQUAL(0x10, fileRegisters[STATUS]);
 }
 
-/*
-*	checking CLRF
-*/
 void test_executeCLRF_is_in_BANKED(){
 	int code;
 	int data;
@@ -2293,9 +2290,7 @@ void test_executeCLRF_is_in_ACCESS(){
 	TEST_ASSERT_EQUAL(0x04, fileRegisters[STATUS]);
 }
 
-/*
-*	checking COMF
-*/
+
 void test_executeCOMF_is_in_FileRegister_and_BANKED(){
 	int code;
 	int data;
@@ -2325,9 +2320,6 @@ void test_executeCOMF_is_in_FileRegister_and_ACCESS(){
 	fileRegisters[PCLATH] = 0x00;
 	fileRegisters[PCL] = 0x01;
 	
-	printf("%x \n",data);
-	printf("%x",fileRegisters[STATUS]);
-	
 	code = 0x1F31;
 	data = executeInstruction(code);
 	
@@ -2338,9 +2330,6 @@ void test_executeCOMF_is_in_FileRegister_and_ACCESS(){
 	TEST_ASSERT_EQUAL(0x04, fileRegisters[STATUS]);
 }
 
-/*
-*	checking CPFSEQ
-*/
 void test_executeCPFSEQ_is_in_BANKED(){
 	int code;
 	int data;
@@ -2584,7 +2573,6 @@ void test_executeMOVF_BANKED_and_File_Register(){
 	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[PCL]);
 	TEST_ASSERT_EQUAL(0x00, fileRegisters[STATUS]);
 }
-
 void test_executeMOVFF(){
 	int code;
 	int data;
@@ -2600,5 +2588,4 @@ void test_executeMOVFF(){
 	TEST_ASSERT_EQUAL(0x13, fileRegisters[0x131]);
 	TEST_ASSERT_EQUAL(0x13, fileRegisters[0x132]);
 }
-
 

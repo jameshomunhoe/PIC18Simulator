@@ -321,14 +321,9 @@ void clearAllFlag(){
 *	A universal function to decode and execute the opCode (for execution use)
 */
 uint32 executeInstruction(uint32 code){
-	//execute 16 bits instruction
-	if(code < 0x10000){
+
 		executionTable[getBitsAtOffset(code,10,6)](code);
-	}
-	//execute 32 bits instruction
-	else if(code > 0xffff){
-		executionTable[getBitsAtOffset(code,10,6)](code);
-	}
+
 }
 
 /**
@@ -511,6 +506,7 @@ int executeBZ(unsigned int code){
 *	set the program counter according to the amount from opcode if the ZERO flag is 0
 */
 int executeBNZ(unsigned int code){
+	
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, zeroBit = 0;
 
@@ -692,15 +688,15 @@ int executeCALL(unsigned int code){
 	uint32 pcDestination,currentPC,topOfStack;
 	int shadowBit;
 
-	pcDestination = ((getBitsAtOffset(code,0,12))<<8 | getBitsAtOffset(code,16,8));
-	shadowBit = getBitsAtOffset(code,24,1);
+	pcDestination = ((getBitsAtOffset(code,0,8))<<12 | getBitsAtOffset(code,16,12));
+	shadowBit = getBitsAtOffset(code,8,1);
 	currentPC = getProgramCounter();
 
 	topOfStack = currentPC + 4;
 	fileRegisters[TOSU] = getBitsAtOffset(topOfStack,16,5);
 	fileRegisters[TOSH] = getBitsAtOffset(topOfStack,8,8);
 	fileRegisters[TOSL] = getBitsAtOffset(topOfStack,0,8);
-
+	
 	setProgramCounter(pcDestination);
 
 	//shadowRegister part 's = 1'
@@ -775,12 +771,7 @@ int executeConditionalBranch(unsigned int code){
 
 	int instruction;
 
-	if(code < 0x10000)
 		instruction = getBitsAtOffset(code,8,8);
-
-	else if(code > 0xffff)
-		instruction = getBitsAtOffset(code,24,8);
-
 
 
 	switch(instruction){
