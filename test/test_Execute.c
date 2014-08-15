@@ -837,7 +837,7 @@ void test_CALL_should_update_shadowRegister(){
 	TEST_ASSERT_EQUAL_HEX16(0x03,shadowRegister.STATUSS);
 }
 
-void test_ADDWF_should_save_answer_in_WREG(){
+/*void test_ADDWF_should_save_answer_in_WREG(){
 	clearAllFileRegisters();
 	int code = 0x2401;
 
@@ -911,7 +911,7 @@ void test_ADDWF_should_not_have_any_StatusFlag(){
 	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
-}
+}*/
 
 void test_executeBCF_0xf1_access_should_clear_bit7_and_return_0x71(){
 	int code;
@@ -2177,7 +2177,7 @@ void test_executeSUBWF_0x02_banked_should_sub_and_return_0xff_and_store_in_WREG(
 	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
 	
 }
-
+/*
 void test_executeADDWFC_is_in_FileRegister_and_BANKED(){
 	int code;
 	int data;
@@ -2588,4 +2588,4 @@ void test_executeMOVFF(){
 	TEST_ASSERT_EQUAL(0x13, fileRegisters[0x131]);
 	TEST_ASSERT_EQUAL(0x13, fileRegisters[0x132]);
 }
-
+*/
