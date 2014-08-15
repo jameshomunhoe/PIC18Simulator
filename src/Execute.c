@@ -59,6 +59,28 @@ typedef struct ffInstruction{
  }code;
 }ffInstruction;
 
+typedef struct nInstruction{
+ union{
+	uint32 raw;
+	struct{
+		uint32 address:8;
+		uint32 opcode:8;
+		uint32 undefined:16;
+	}fragments;
+ }code;
+}nInstruction;
+
+typedef struct BRAnInstruction{
+ union{
+	uint32 raw;
+	struct{
+		uint32 address:11;
+		uint32 opcode:5;
+		uint32 undefined:16;
+	}fragments;
+ }code;
+}BRAnInstruction;
+
 /**
 *	Table to mask off certain bits for getBitsAtOffset and setBitsAtOffset use
 */
@@ -446,7 +468,10 @@ void updateProgramCounterSkipIfSet(int data){
 *	set the program counter according to the amount from opcode if the CARRY flag is 1
 */
 int executeBC(unsigned int code){
-	signed char skipAmount = getBitsAtOffset(code,0,8);
+	nInstruction inst;
+	inst.code.raw = code;
+	
+	signed char skipAmount = inst.code.fragments.address;
 	int programCounter, carryBit = 0;
 
 
@@ -473,7 +498,11 @@ int executeBC(unsigned int code){
 *	set the program counter according to the amount from opcode if the CARRY flag is 0
 */
 int executeBNC(unsigned int code){
-	signed char skipAmount = getBitsAtOffset(code,0,8);
+	
+	nInstruction inst;
+	inst.code.raw = code;
+	
+	signed char skipAmount = inst.code.fragments.address;
 	int programCounter, carryBit = 0;
 
 
@@ -500,7 +529,11 @@ int executeBNC(unsigned int code){
 *	set the program counter according to the amount from opcode if the ZERO flag is 1
 */
 int executeBZ(unsigned int code){
-	signed char skipAmount = getBitsAtOffset(code,0,8);
+
+	nInstruction inst;
+	inst.code.raw = code;
+	
+	signed char skipAmount = inst.code.fragments.address;
 	int programCounter, zeroBit = 0;
 
 
@@ -527,8 +560,10 @@ int executeBZ(unsigned int code){
 *	set the program counter according to the amount from opcode if the ZERO flag is 0
 */
 int executeBNZ(unsigned int code){
+	nInstruction inst;
+	inst.code.raw = code;
 	
-	signed char skipAmount = getBitsAtOffset(code,0,8);
+	signed char skipAmount = inst.code.fragments.address;
 	int programCounter, zeroBit = 0;
 
 
@@ -555,7 +590,11 @@ int executeBNZ(unsigned int code){
 *	Set the program counter by adding or subtracting according to the amount given in the opcode
 */
 int executeBRA(unsigned int code){
-	int skipAmount = getBitsAtOffset(code,0,11);
+	
+	BRAnInstruction inst;
+	inst.code.raw = code;
+	
+	int skipAmount = inst.code.fragments.address;
 	int programCounter = getProgramCounter();
 	int negativeValue = ((~skipAmount) + 1) & 0x3ff;
 
@@ -578,9 +617,12 @@ int executeBRA(unsigned int code){
 *	Move the value from working register (WREG) to fileRegisters
 */
 int executeMOVWF(unsigned int code){
-
-	fileRegisters[findActualFileRegister(getBitsAtOffset(code,0,8),
-				  getBitsAtOffset(code,8,1))]
+	
+	afInstruction inst;
+	inst.code.raw = code;
+	
+	fileRegisters[findActualFileRegister(inst.code.fragments.address,
+				  inst.code.fragments.access)]
 				  = fileRegisters[WREG];
 
 	setProgramCounter(getProgramCounter() + 2);
@@ -597,13 +639,17 @@ int executeMOVWF(unsigned int code){
 */
 int executeNEGF(unsigned int code){
 
-	int fileValue,fileAddress,accessBanked;
-	fileAddress = getBitsAtOffset(code,0,8);
-	accessBanked = getBitsAtOffset(code,8,1);
+	afInstruction inst;
+	inst.code.raw = code;
+	
+	int fileValue;
 
-	fileValue = getFileRegData(fileAddress,accessBanked);
+	fileValue = getFileRegData(inst.code.fragments.address,
+								inst.code.fragments.access);
 	fileValue = ~fileValue+1;
-	setFileRegData(fileAddress,accessBanked,fileValue);
+	setFileRegData( inst.code.fragments.address,
+					inst.code.fragments.access,
+					fileValue);
 
 	setProgramCounter(getProgramCounter() + 2);
 
@@ -621,19 +667,22 @@ int executeNEGF(unsigned int code){
 int executeRLCF(unsigned int code){
 	// 0 to WREG 1 to fileReg
 	//C,N,Z
-	int fileAddress,accessBanked,destination,carryBit;
+	dafInstruction inst;
+	inst.code.raw = code;
+	int carryBit;
 	unsigned int fileValue;
 
-	fileAddress = getBitsAtOffset(code,0,8);
-	accessBanked = getBitsAtOffset(code,8,1);
-	destination = getBitsAtOffset(code,9,1);
 	carryBit = getBitsAtOffset(fileRegisters[STATUS],0,1);
 
-	fileValue = getFileRegData(fileAddress,accessBanked);
+	fileValue = getFileRegData(inst.code.fragments.address,
+								inst.code.fragments.access);
+								
 	fileValue = (fileValue << 1) + carryBit;
 
-	if(destination == 1)
-		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
+	if(inst.code.fragments.destinationBit == 1)
+		setFileRegData(inst.code.fragments.address,
+						inst.code.fragments.access,
+						getBitsAtOffset(fileValue,0,8));
 	else
 		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
 
@@ -665,20 +714,23 @@ int executeRLCF(unsigned int code){
 int executeRRNCF(unsigned int code){
 	// 0 to WREG 1 to fileReg
 	//N,Z
-	int fileAddress,accessBanked,destination,lastBit;
+	dafInstruction inst;
+	inst.code.raw = code;
+	
+	int lastBit;
 	unsigned int fileValue;
 
-	fileAddress = getBitsAtOffset(code,0,8);
-	accessBanked = getBitsAtOffset(code,8,1);
-	destination = getBitsAtOffset(code,9,1);
-
-	fileValue = getFileRegData(fileAddress,accessBanked);
+	fileValue = getFileRegData(inst.code.fragments.address,
+								inst.code.fragments.access);
+								
 	lastBit = getBitsAtOffset(fileValue,0,1);
 	fileValue = fileValue >> 1;
 	setBitsAtOffset(&fileValue,lastBit,7,1);
 
-	if(destination == 1)
-		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
+	if(inst.code.fragments.destinationBit == 1)
+		setFileRegData(inst.code.fragments.address,
+						inst.code.fragments.access,
+						getBitsAtOffset(fileValue,0,8));
 	else
 		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
 
@@ -738,14 +790,14 @@ int executeCALL(unsigned int code){
 *	and save to either one of them depending on the destination requested
 */
 int executeADDWF(unsigned int code){
-
-	int fileValue,fileAddress,accessBanked,destination;
+	dafInstruction inst;
+	inst.code.raw = code;
+	
+	int fileValue;
 	int carryBit8,carry6to7,carry3to4;
-	fileAddress = getBitsAtOffset(code,0,8);
-	accessBanked = getBitsAtOffset(code,8,1);
-	destination = getBitsAtOffset(code,9,1);
 
-	fileValue = getFileRegData(fileAddress,accessBanked);
+	fileValue = getFileRegData(inst.code.fragments.address,
+								inst.code.fragments.access);
 
 	//for OV and DC checking
 	carryBit8 = (fileValue + fileRegisters[WREG]) >> 8;
@@ -754,8 +806,10 @@ int executeADDWF(unsigned int code){
 
 	fileValue += fileRegisters[WREG];
 
-	if(destination == 1)
-		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
+	if(inst.code.fragments.destinationBit == 1)
+		setFileRegData(inst.code.fragments.address,
+						inst.code.fragments.access,
+						getBitsAtOffset(fileValue,0,8));
 	else
 		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
 
