@@ -398,40 +398,124 @@ void test_getInstruction_should_get_opCode_RETLW(){
 	TEST_ASSERT_EQUAL(K_TYPE,test.type);
 }
 
-void test_interpret_should_able_to_get_correct_value(){
-	Text *text = textNew(" ADDWF  0x80, F,BANKED");
+void test_interpret_should_able_to_run_FDA_ADDWF(){
+	Text *text = textNew(" ADDWF  0x180, F");
 	String *string = stringNew(text);
-	
-	char *stringMock = "0x80";
-	evaluate_ExpectAndReturn(stringMock,0x80);
-	//FDA_ExpectAndReturn(string,0x320);
+
+	char *stringMock = "0x180";
+	evaluate_ExpectAndReturn(stringMock,0x180);
+
 	int test = interpret(string);
 
-	TEST_ASSERT_EQUAL_HEX32(0x2620,test);
+	TEST_ASSERT_EQUAL_HEX32(0x2780,test);
 
 }
 
-// void test_interpret_should_throw_an_error_for_unexist_instruction(){
-	// Text *text = textNew(" SUBWFWFWF  0x20, F, BANKED");
-	// String *string = stringNew(text);
-	// int e;
+void test_interpret_should_able_to_run_FA_CLRF(){
+	Text *text = textNew(" CLRF  0x210");
+	String *string = stringNew(text);
 
-	// Try{
-		// int test = interpret(string);}
-	// Catch(e){
-		// TEST_ASSERT_EQUAL(ERR_ILLEGAL_ARGUMENT,e);
-	// }
-// }
+	char *stringMock = "0x210";
+	evaluate_ExpectAndReturn(stringMock,0x210);
+	int test = interpret(string);
 
-// void test_interpret_should_throw_an_error_for_invalid_input_instruction(){
-	// Text *text = textNew(" SUBWF  0x20, HAHA, BANKED");
-	// String *string = stringNew(text);
-	// int e;
+	TEST_ASSERT_EQUAL_HEX32(0x6b10,test);
 
-	// FDA_ExpectAndThrow(string,ERR_ILLEGAL_ARGUMENT);
-	// Try{
-		// int test = interpret(string);}
-	// Catch(e){
-		// TEST_ASSERT_EQUAL(ERR_ILLEGAL_ARGUMENT,e);
-	// }
-// }
+}
+
+void test_interpret_should_able_to_run_FBA_BCF(){
+	Text *text = textNew(" BCF  0x10, 5, ACCESS ");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+	
+	stringMock = "5";
+	evaluate_ExpectAndReturn(stringMock,0x5);
+	int test = interpret(string);
+
+	TEST_ASSERT_EQUAL_HEX32(0x9a10,test);
+
+}
+
+void test_interpret_should_able_to_run_FsFd_MOVFF(){
+	Text *text = textNew(" MOVFF  0x10, 0x11 ");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+	
+	stringMock = "0x11";
+	evaluate_ExpectAndReturn(stringMock,0x11);
+	int test = interpret(string);
+
+	TEST_ASSERT_EQUAL_HEX32(0xf011c010,test);
+
+}
+
+void test_interpret_should_able_to_run_K_ADDLW(){
+	Text *text = textNew(" ADDLW  0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+	
+	int test = interpret(string);
+
+	TEST_ASSERT_EQUAL_HEX32(0x0f10,test);
+
+}
+
+void test_interpret_should_able_to_run_NS_CALL(){
+	Text *text = textNew(" CALL  0x12345, 1");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x12345";
+	evaluate_ExpectAndReturn(stringMock,0x12345);
+	
+	stringMock = "1";
+	evaluate_ExpectAndReturn(stringMock,1);
+	int test = interpret(string);
+
+	TEST_ASSERT_EQUAL_HEX32(0xf123ed45,test);
+
+}
+
+void test_interpret_should_able_to_run_N8_BC(){
+	Text *text = textNew(" BC 0x10");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+	
+	int test = interpret(string);
+
+	TEST_ASSERT_EQUAL_HEX32(0xe210,test);
+
+}
+
+void test_interpret_should_able_to_run_N11_BRA(){
+	Text *text = textNew(" BRA 0x7ff");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x7ff";
+	evaluate_ExpectAndReturn(stringMock,0x7ff);
+	
+	int test = interpret(string);
+
+	TEST_ASSERT_EQUAL_HEX32(0xd7ff,test);
+
+}
+
+void test_interpret_should_able_to_run_N12_GOTO(){
+	Text *text = textNew(" GOTO 0x12345");
+	String *string = stringNew(text);
+
+	char *stringMock = "0x12345";
+	evaluate_ExpectAndReturn(stringMock,0x12345);
+	
+	int test = interpret(string);
+
+	TEST_ASSERT_EQUAL_HEX32(0xf123ef45,test);
+
+}

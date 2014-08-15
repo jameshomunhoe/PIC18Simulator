@@ -18,7 +18,7 @@ int NS(String *arguments){
 	operand1 = operand1ExtractValue(arguments);
 	operand2 = operandExtract1BitsValue(arguments);
 	
-	return opcode = (0x0<<24) + (operand1<<16) + (operand2<<8) + (operand1 & 0xff);
+	return opcode = ((operand1&0xfff00)<<8) | (operand2<<8) | (operand1 & 0xff);
 
 
 }

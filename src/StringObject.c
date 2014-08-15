@@ -304,22 +304,13 @@ String *stringRemoveWordContaining(String *str, char containSet[]){
 * Return 0 otherwise
 */
 int stringIsEqual(String *str1, String *str2){
-	int i;
-	int actualLength;
-	int actualLength2;
-	char *actualString;
-	char *actualString2;
-
-	actualString = &str1->text->string[str1->start];
-	actualString2 = &str2->text->string[str2->start];
-
-	actualLength = strlen(actualString);
-	actualLength2 = strlen(actualString2);
-
-	if(actualLength == actualLength2){
-		for(i=0;i<actualLength;i++){
-			if(actualString[i] != actualString2[i])
+	int i,j,h;
+	
+	if(stringLength(str1) == stringLength(str2)){
+		for(h=0,i=str1->start,j=str2->start ; h < stringLength(str1) ; i++,j++,h++){
+			if(str1->text->string[i] != str2->text->string[j]){
 				return 0;
+			}
 		}
 		return 1;
 	}
@@ -338,22 +329,13 @@ int stringIsEqual(String *str1, String *str2){
 * Return 0 otherwise
 */
 int stringIsEqualCaseInsensitive(String *str1, String *str2){
-	int i;
-	int actualLength;
-	int actualLength2;
-	char *actualString;
-	char *actualString2;
+	int i,j,h;
 
-	actualString = &str1->text->string[str1->start];
-	actualString2 = &str2->text->string[str2->start];
-
-	actualLength = strlen(actualString);
-	actualLength2 = strlen(actualString2);
-
-	if(actualLength == actualLength2){
-		for(i=0;i<actualLength;i++){
-			if(tolower(actualString[i]) != tolower(actualString2[i]))
+	if(stringLength(str1) == stringLength(str2)){
+		for(h=0,i=str1->start,j=str2->start ; h < stringLength(str1) ; i++,j++,h++){
+			if(tolower(str1->text->string[i]) != tolower(str2->text->string[j])){
 				return 0;
+			}
 		}
 		return 1;
 	}

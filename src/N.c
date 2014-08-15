@@ -27,9 +27,16 @@ int N8(String *arguments){
 }
 
 int N11(String *arguments){
-	return N(arguments,7);
+	return N(arguments,10);
 }
 
 int N12(String *arguments){
-	return N(arguments,11);
+	int operand1;
+	int opcode;
+	
+	operand1 = operand1ExtractValue(arguments);
+	
+	return opcode = ((operand1&0xfff00)<<8) | (operand1 & 0xff);
+
+
 }

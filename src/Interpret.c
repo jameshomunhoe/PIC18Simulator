@@ -275,7 +275,7 @@ int extractACCESSBANKED(String *arguments){
 	if(stringLength(arguments) == 0 ||stringCharAt(arguments,0) == ';')
 		Throw(ERR_NO_ARGUMENT);
 
-	stringTrimLeft(arguments);
+	stringTrim(arguments);
 
 	if(stringLength(arguments) == 0 ||stringCharAt(arguments,0) == ';')
 		Throw(ERR_EMPTY_ARGUMENT);
@@ -283,13 +283,13 @@ int extractACCESSBANKED(String *arguments){
 	string = stringRemoveWordNotContaining(arguments,",;");
 
 	stringTrim(string);
-
+	
 	if(stringLength(string) == 0){
 		if(stringCharAt(arguments,0) == ',')
 			stringRemoveChar(arguments);
 		Throw(ERR_EMPTY_ARGUMENT);
 	}
-
+	
 	else if(stringLength(string) == 6){
 
 		if(stringIsEqual(string,banked))

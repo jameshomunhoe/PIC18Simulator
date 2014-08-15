@@ -36,8 +36,6 @@ int stringIsEqual(String *str1, String *str2); //1 if same, 0 otherwise do no us
 int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolower();
 int stringCharAt(String *str, int relativeIndex);
 int stringIsCharAtInSet(String *str, int relativeIndex, char set[]); //1 is true, 0 false
-int stringIsEqual(String *str1, String *str2); //1 if same, 0 otherwise do no use string compare
-int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolower();
 
 
 #endif // __STRING_OBJECT_H__
