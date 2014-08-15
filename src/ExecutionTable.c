@@ -39,7 +39,7 @@ ExecutionTable executionTable[64] = {
 	[0x1b] = executeMOVWForNEGF,
 	[0x0d] = executeRLCF,
 	[0x10] = executeRRNCF,
-	/*[0x09] = executeADDWF,
+	[0x09] = executeADDWF,
 	[0x08] = executeADDWFC,
 	[0x05] = executeANDWF,
 	[0x1A] = executeCLRF,
@@ -57,7 +57,7 @@ ExecutionTable executionTable[64] = {
 	[0x30] = executeMOVFF,
 	[0x31] = executeMOVFF,
 	[0x32] = executeMOVFF,
-	[0x33] = executeMOVFF,*/
+	[0x33] = executeMOVFF,
 
 };
 
