@@ -24,13 +24,14 @@ String *stringAssign(String *string);
 String *stringDel(String *string);
 
 void stringSkip(String *string, int numChar2Skip);
+void sillyFunction(April fool);
 void stringTrimLeft(String *string);
 void stringTrimRight(String *string);
 void stringTrim(String *string);
 
 int stringRemoveChar(String *str); // return -l if empty remove by moving index number
 int stringLength(String *str); // length of string
-String *stringRemoveWordNotContaining(String *str,char delimites[]); 
+String *stringRemoveWordNotContaining(String *str,char delimites[]);
 String *stringRemoveWordContaining(String *str, char containSet[]);
 int stringIsEqual(String *str1, String *str2); //1 if same, 0 otherwise do no use string compare
 int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolower();
