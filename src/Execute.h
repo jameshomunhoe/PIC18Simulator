@@ -8,7 +8,6 @@ uint32 getBitsAtOffset(uint32 data, int offset, int bitSize);
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize);
 
 //shyanfeng
-int getInfoFromOffset(unsigned int code);
 int withdrawPreviousCarryForSUBWFB();
 void setNegativeFlag();
 void clearNegativeFlag();
