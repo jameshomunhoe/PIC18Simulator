@@ -40,7 +40,6 @@ ExecutionTable executionTable[64] = {
 	[0x0d] = executeRLCF,
 	[0x10] = executeRRNCF,
 	[0x09] = executeADDWF
-	
+
 };
 
-	

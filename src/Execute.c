@@ -7,21 +7,21 @@
 /**
 *	Table to mask off certain bits for getBitsAtOffset and setBitsAtOffset use
 */
-uint32 maskTable[32] = { 	0x0, 
-							0x1, 0x3, 0x7, 0xf, 
+uint32 maskTable[32] = { 	0x0,
+							0x1, 0x3, 0x7, 0xf,
 							0x1f, 0x3f, 0x7f, 0xff,
-							0x1ff, 0x3ff, 0x7ff, 0xfff, 
-							0x1fff, 0x3fff, 0x7fff, 0xffff, 
-							0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 
-							0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 
-							0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 
+							0x1ff, 0x3ff, 0x7ff, 0xfff,
+							0x1fff, 0x3fff, 0x7fff, 0xffff,
+							0x1ffff, 0x3ffff, 0x7ffff, 0xfffff,
+							0x1fffff, 0x3fffff, 0x7fffff, 0xffffff,
+							0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff,
 							0x1fffffff, 0x3fffffff, 0x7fffffff
 						};
 
 
 /**
 *	To get certain amount of Bits from a variable
-*	
+*
 *	Input:
 *		Variable to extract the value out
 *		Starting bit
@@ -30,16 +30,16 @@ uint32 maskTable[32] = { 	0x0,
 *	A universal function to decode and execute the opCode (for execution use)
 */
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
-	
+
 	//set and cap at maximum valid value
 	if(offset >= 0 && bitSize > 0){
 		if(offset >31)
 			offset = 31;
 		if(bitSize > 31)
 			bitSize = 31;
-		
+
 		data = (data >> offset) & maskTable[bitSize];
-		
+
 		return data;
 	}
 	else
@@ -47,7 +47,7 @@ uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
 }
 
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize){
-	
+
 	 *dataPtr =  *dataPtr &(~(maskTable[bitSize]<<offset));
 	 *dataPtr = *dataPtr|((dataToWrite & maskTable[bitSize]) << offset);
 
@@ -105,7 +105,7 @@ void clearCarryFlag(){
 
 /**
 *	Clear all status flag
-*	
+*
 *	Input:
 *		-
 *
@@ -121,7 +121,7 @@ void clearAllFlag(){
 
 /**
 *	To execute an instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -133,14 +133,14 @@ uint32 executeInstruction(uint32 code){
 		executionTable[getBitsAtOffset(code,10,6)](code);
 	}
 	//execute 32 bits instruction
-	else if(code > 0xffff){		
+	else if(code > 0xffff){
 		executionTable[getBitsAtOffset(code,26,6)](code);
 	}
 }
 
 /**
 *	To execute BNZ instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -149,25 +149,25 @@ uint32 executeInstruction(uint32 code){
 int executeBC(unsigned int code){
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, carryBit = 0;
-	
-	
+
+
 	programCounter = getProgramCounter();
 	carryBit = getBitsAtOffset(fileRegisters[STATUS],0,1);
-	
+
 	if(carryBit)
 		programCounter += 2 + (2*skipAmount);
 	else
 		programCounter += 2;
-		
+
 	setProgramCounter(programCounter);
-	
+
 	return programCounter;
-	
+
 }
 
 /**
 *	To execute BNC instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -176,25 +176,25 @@ int executeBC(unsigned int code){
 int executeBNC(unsigned int code){
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, carryBit = 0;
-	
-	
+
+
 	programCounter = getProgramCounter();
 	carryBit = getBitsAtOffset(fileRegisters[STATUS],0,1);
-	
+
 	if(carryBit)
 		programCounter += 2;
 	else
 		programCounter += 2 + (2*skipAmount);
-		
+
 	setProgramCounter(programCounter);
-	
+
 	return programCounter;
-	
+
 }
-	
+
 /**
 *	To execute BZ instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -203,25 +203,25 @@ int executeBNC(unsigned int code){
 int executeBZ(unsigned int code){
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, zeroBit = 0;
-	
-	
+
+
 	programCounter = getProgramCounter();
 	zeroBit = getBitsAtOffset(fileRegisters[STATUS],2,1);
-	
+
 	if(zeroBit)
 		programCounter += 2 + (2*skipAmount);
 	else
 		programCounter += 2;
-		
+
 	setProgramCounter(programCounter);
-	
+
 	return programCounter;
 
 }
 
 /**
 *	To execute BNZ instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -230,25 +230,25 @@ int executeBZ(unsigned int code){
 int executeBNZ(unsigned int code){
 	signed char skipAmount = getBitsAtOffset(code,0,8);
 	int programCounter, zeroBit = 0;
-	
-	
+
+
 	programCounter = getProgramCounter();
 	zeroBit = getBitsAtOffset(fileRegisters[STATUS],2,1);
-	
+
 	if(zeroBit)
 		programCounter += 2;
 	else
 		programCounter += 2 + (2*skipAmount);
-		
+
 	setProgramCounter(programCounter);
-	
+
 	return programCounter;
-	
+
 }
 
 /**
 *	To execute BRA instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -258,20 +258,20 @@ int executeBRA(unsigned int code){
 	int skipAmount = getBitsAtOffset(code,0,11);
 	int programCounter = getProgramCounter();
 	int negativeValue = ((~skipAmount) + 1) & 0x3ff;
-		
+
 	if((skipAmount & 0x400)>>10 == 1)
 		programCounter = programCounter + 2 - (2*negativeValue);
 	else
 		programCounter = programCounter + 2 + (2*skipAmount);
-	
+
 	setProgramCounter(programCounter);
-	
+
 	return programCounter;
 }
 
 /**
 *	To execute MOVWF instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -280,39 +280,39 @@ int executeBRA(unsigned int code){
 int executeMOVWF(unsigned int code){
 
 	fileRegisters[findActualFileRegister(getBitsAtOffset(code,0,8),
-				  getBitsAtOffset(code,8,1))] 
+				  getBitsAtOffset(code,8,1))]
 				  = fileRegisters[WREG];
-				 
+
 	setProgramCounter(getProgramCounter() + 2);
 
 }
 
 /**
 *	To execute NEGF instructions
-*	
+*
 *	Input:
 *		full opcode
 *
 *	2nd's compliment the fileRegister's value
 */
 int executeNEGF(unsigned int code){
-	
+
 	int fileValue,fileAddress,accessBanked;
 	fileAddress = getBitsAtOffset(code,0,8);
 	accessBanked = getBitsAtOffset(code,8,1);
-	
+
 	fileValue = getFileRegData(fileAddress,accessBanked);
 	fileValue = ~fileValue+1;
 	setFileRegData(fileAddress,accessBanked,fileValue);
-	
+
 	setProgramCounter(getProgramCounter() + 2);
-	
+
 	return fileValue;
 }
 
 /**
 *	To execute RLCF instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -323,23 +323,23 @@ int executeRLCF(unsigned int code){
 	//C,N,Z
 	int fileAddress,accessBanked,destination,carryBit;
 	unsigned int fileValue;
-	
+
 	fileAddress = getBitsAtOffset(code,0,8);
 	accessBanked = getBitsAtOffset(code,8,1);
 	destination = getBitsAtOffset(code,9,1);
 	carryBit = getBitsAtOffset(fileRegisters[STATUS],0,1);
-	
+
 	fileValue = getFileRegData(fileAddress,accessBanked);
 	fileValue = (fileValue << 1) + carryBit;
-	
+
 	if(destination == 1)
 		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
 	else
 		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
-	
+
 	//Status update
 	clearAllFlag();
-	
+
 	//C
 	if(getBitsAtOffset(fileValue,8,1))
 		setCarryFlag();
@@ -349,14 +349,14 @@ int executeRLCF(unsigned int code){
 	//Z
 	if(getBitsAtOffset(fileValue,0,8) == 0)
 		setZeroFlag();
-	
+
 	setProgramCounter(getProgramCounter() + 2);
 
 }
 
 /**
 *	To execute RRNCF instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -367,38 +367,38 @@ int executeRRNCF(unsigned int code){
 	//N,Z
 	int fileAddress,accessBanked,destination,lastBit;
 	unsigned int fileValue;
-	
+
 	fileAddress = getBitsAtOffset(code,0,8);
 	accessBanked = getBitsAtOffset(code,8,1);
 	destination = getBitsAtOffset(code,9,1);
-	
+
 	fileValue = getFileRegData(fileAddress,accessBanked);
 	lastBit = getBitsAtOffset(fileValue,0,1);
 	fileValue = fileValue >> 1;
 	setBitsAtOffset(&fileValue,lastBit,7,1);
-	
+
 	if(destination == 1)
 		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
 	else
 		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
-	
+
 	//Status update
 	clearAllFlag();
-	
+
 	//N
 	if(getBitsAtOffset(fileValue,7,1))
 		setNegativeFlag();
 	//Z
 	if(getBitsAtOffset(fileValue,0,8) == 0)
 		setZeroFlag();
-		
+
 	setProgramCounter(getProgramCounter() + 2);
 
 }
 
 /**
 *	To execute CALL instructions
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -408,18 +408,18 @@ int executeCALL(unsigned int code){
 
 	uint32 pcDestination,currentPC,topOfStack;
 	int shadowBit;
-	
+
 	pcDestination = ((getBitsAtOffset(code,0,12))<<8 | getBitsAtOffset(code,16,8));
 	shadowBit = getBitsAtOffset(code,24,1);
 	currentPC = getProgramCounter();
-	
+
 	topOfStack = currentPC + 4;
 	fileRegisters[TOSU] = getBitsAtOffset(topOfStack,16,5);
 	fileRegisters[TOSH] = getBitsAtOffset(topOfStack,8,8);
 	fileRegisters[TOSL] = getBitsAtOffset(topOfStack,0,8);
-	
+
 	setProgramCounter(pcDestination);
-	
+
 	//shadowRegister part 's = 1'
 	if(shadowBit == 1){
 	shadowRegister.WREGS = fileRegisters[WREG];
@@ -430,11 +430,11 @@ int executeCALL(unsigned int code){
 
 /**
 *	To execute ADDWF instructions
-*	
+*
 *	Input:
 *		full opcode
 *
-*	Add the value of the address in opcode with WREG, 
+*	Add the value of the address in opcode with WREG,
 *	and save to either one of them depending on the destination requested
 */
 int executeADDWF(unsigned int code){
@@ -444,21 +444,21 @@ int executeADDWF(unsigned int code){
 	fileAddress = getBitsAtOffset(code,0,8);
 	accessBanked = getBitsAtOffset(code,8,1);
 	destination = getBitsAtOffset(code,9,1);
-	
+
 	fileValue = getFileRegData(fileAddress,accessBanked);
-	
+
 	//for OV and DC checking
 	carryBit8 = (fileValue + fileRegisters[WREG]) >> 8;
 	carry6to7 = (getBitsAtOffset(fileValue,0,7) + getBitsAtOffset(fileRegisters[WREG],0,7))>>7;
 	carry3to4 = (getBitsAtOffset(fileValue,0,4) + getBitsAtOffset(fileRegisters[WREG],0,4))>>4;
-	
+
 	fileValue += fileRegisters[WREG];
-	
+
 	if(destination == 1)
 		setFileRegData(fileAddress,accessBanked,getBitsAtOffset(fileValue,0,8));
 	else
 		fileRegisters[WREG] = getBitsAtOffset(fileValue,0,8);
-	
+
 	//Status flag
 	clearAllFlag();
 	//C
@@ -476,13 +476,13 @@ int executeADDWF(unsigned int code){
 	//N
 	if(getBitsAtOffset(fileValue,7,1))
 		setNegativeFlag();
-		
+
 	setProgramCounter(getProgramCounter() + 2);
 }
 
 /**
 *	To execute all ConditionalBranch due to address clashing in table
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -491,47 +491,47 @@ int executeADDWF(unsigned int code){
 int executeConditionalBranch(unsigned int code){
 
 	int instruction;
-	
+
 	if(code < 0x10000)
 		instruction = getBitsAtOffset(code,8,8);
-	
+
 	else if(code > 0xffff)
 		instruction = getBitsAtOffset(code,24,8);
-	
 
-	
+
+
 	switch(instruction){
-	
+
 	case 0xe2:
 	executeBC(code);
 	break;
-	
+
 	case 0xe3:
 	executeBNC(code);
 	break;
-	
+
 	case 0xe0:
 	executeBZ(code);
 	break;
-	
+
 	case 0xe1:
 	executeBNZ(code);
 	break;
-	
+
 	case 0xec:
 	executeCALL(code);
 	break;
-	
+
 	case 0xed:
 	executeCALL(code);
 	break;
-	
+
 	}
 }
 
 /**
 *	To execute MOVWF or NEGF due to address clashing in table
-*	
+*
 *	Input:
 *		full opcode
 *
@@ -539,21 +539,21 @@ int executeConditionalBranch(unsigned int code){
 */
 int executeMOVWForNEGF(unsigned int code){
 	int instruction = (code & 0xff00)>>8;
-	
+
 	switch(instruction){
-	
+
 	case 0x6e:
 	executeMOVWF(code);
 	break;
-	
+
 	case 0x6f:
 	executeMOVWF(code);
 	break;
-	
+
 	case 0x6c:
 	executeNEGF(code);
 	break;
-	
+
 	case 0x6d:
 	executeNEGF(code);
 	break;

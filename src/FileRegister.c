@@ -15,30 +15,30 @@ ShadowRegisters shadowRegister;
 int getFileRegData(int address, int access){
 	int data;
 	int getAddress;
-	
+
 	getAddress = findActualFileRegister(address, access);
 	data = fileRegisters[getAddress];
 	// printf("%x\n", data);
-	
+
 	return data;
 }
 
 int setFileRegData(int address, int access, int data){
 	int getAddress;
 	int newData;
-	
+
 	getAddress = findActualFileRegister(address, access);
 	fileRegisters[getAddress] = data;
 	newData = fileRegisters[getAddress];
 	// printf("%x\n", newData);
-	
+
 	return newData;
-	
+
 }
 
 int findActualFileRegister(int address, int access){
 	int actualAddress;
-	
+
 	if(access == 0){
 		if(isInFirstAccessRange || isInSecondAccessRange){
 			return address;
@@ -64,23 +64,23 @@ int findActualFileRegister(int address, int access){
 			return actualAddress;
 		}
 	}
-	
+
 	return address;
 
 }
 
 void clearAllFileRegisters(){
 	int i;
-	
+
 	for(i = 0; i < 4096; i++){
 		fileRegisters[i] = 0;
 	}
-	
+
 }
 
 /**
 *	To get the current Program Counter in integer form, combined PCLATU,PCLATH,PCL
-*	
+*
 *	Input:
 *		-
 *
@@ -88,14 +88,14 @@ void clearAllFileRegisters(){
 */
 int getProgramCounter(){
 
-	return	(fileRegisters[PCLATU]<<16) + 
-			(fileRegisters[PCLATH]<<8) + 
+	return	(fileRegisters[PCLATU]<<16) +
+			(fileRegisters[PCLATH]<<8) +
 			fileRegisters[PCL];
 }
 
 /**
 *	To set the program counter
-*	
+*
 *	Input:
 *		programCounter
 *
@@ -106,5 +106,5 @@ void setProgramCounter (unsigned int programCounter){
 	fileRegisters[PCLATU] = (programCounter >> 16) & 0xff;
 	fileRegisters[PCLATH] = (programCounter >> 8) & 0xff;
 	fileRegisters[PCL]	  = programCounter & 0xff;
-	
+
 }

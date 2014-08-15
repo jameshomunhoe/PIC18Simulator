@@ -8,7 +8,7 @@
 *
 * Input:
 *	text	is the text that will be dump
-* 
+*
 */
 void textDump(Text *text){
 	if(text==NULL){
@@ -24,7 +24,7 @@ void textDump(Text *text){
 * Input:
 *	charStr	the string of character that will be created in the text object
 *
-* Return the text that have created 
+* Return the text that have created
 */
 Text *textNew(char *charStr){
 	// Character string copy from charStr to text->string
@@ -54,7 +54,7 @@ Text *textAssign(Text *text){
 * Input:
 *	text	the text that will be removed
 *
-* Return the text that left 
+* Return the text that left
 */
 Text *textDel(Text *text){
 	//check if text reference not equals to 0x80000000
@@ -62,7 +62,7 @@ Text *textDel(Text *text){
 	//do normal delete
 	//else do nth
 	int i;
-	
+
 	if(text->reference < 0x80000000 && text->reference > 0){
 		text->reference--;
 		if(text->reference == 0){
@@ -71,7 +71,7 @@ Text *textDel(Text *text){
 			}
 			free(text);
 			return NULL;
-		}		
+		}
 	}
 	return text;
 }

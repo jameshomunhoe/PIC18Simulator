@@ -32,7 +32,7 @@ instructionTable instructions[] = {
 	{.instructionName = "INFSNZ" , .opCode = 0x4800 , .type = FDA_TYPE},
 	{.instructionName = "IORWF" , .opCode = 0x1000 , .type = FDA_TYPE},
 	{.instructionName = "MOVF" , .opCode = 0x5000 , .type = FDA_TYPE},
-	{.instructionName = "RLCF" , .opCode = 0x3400 , .type = FDA_TYPE}, 
+	{.instructionName = "RLCF" , .opCode = 0x3400 , .type = FDA_TYPE},
 	{.instructionName = "RLNCF" , .opCode = 0x4400 , .type = FDA_TYPE},
 	{.instructionName = "RRCF" , .opCode = 0x3000 , .type = FDA_TYPE},
 	{.instructionName = "RRNCF" , .opCode = 0x4000 , .type = FDA_TYPE},
@@ -89,7 +89,7 @@ instructionTable instructions[] = {
 *
 * Input:
 *	String	instructions,with appropriate arguments
-* 
+*
 * Return OpCode in int type
 */
 unsigned int interpret(String *instruction){
@@ -97,7 +97,7 @@ unsigned int interpret(String *instruction){
 	String *instString = stringRemoveWordNotContaining(instruction," ");
 	char *instChar = stringSubstringInChar(instString,0,instString->length);
 	instructionTable inst = getInstruction(instChar);
-	
+
 	if(inst.type == FDA_TYPE)
 		return inst.opCode | FDA(instruction);
 	else if(inst.type == FBA_TYPE)
@@ -126,12 +126,12 @@ unsigned int interpret(String *instruction){
 *
 * Input:
 *	char	the instruction name
-* 
+*
 * Return the instructions in instructionTable type
 */
 instructionTable getInstruction(char *instructionName){
 	int i;
-	
+
 	for(i=0;i < INSTRUCTION_TABLE_SIZE; i++){
 		if(strcmp(instructions[i].instructionName,instructionName) == 0){
 			return instructions[i];
@@ -146,35 +146,35 @@ instructionTable getInstruction(char *instructionName){
 *
 * Input:
 *	String	the whole argument
-* 
+*
 * Return the value of the address
 * Throw if value is invalid
 */
 int extractValue(String *arguments){
-	
+
 	char *returnChar;
 	int returnInt;
 	String *string;
 	stringTrimLeft(arguments);
-	
+
 	if(stringCharAt(arguments,0) == ',')
 		stringRemoveChar(arguments);
-		
+
 	if(stringCharAt(arguments,0) == ';' || stringLength(arguments) == 0)
 		Throw(ERR_NO_ARGUMENT);
-		
+
 	string = stringRemoveWordNotContaining(arguments,",;");
 	stringTrim(string);
-	
+
 	if(stringLength(string) == 0)
 		Throw(ERR_EMPTY_ARGUMENT);
-		
+
 	returnChar = stringSubstringInChar(string,0,string->length);
 	returnInt = evaluate(returnChar);
-	
-		
+
+
 	free(string);
-	
+
 	return returnInt;
 } //pass to jason
 
@@ -184,38 +184,38 @@ int extractValue(String *arguments){
 *
 * Input:
 *	String	the whole argument
-* 
+*
 * Return the value of the location
 * Throw if value is invalid
 */
 int extractDestination(String *arguments){
-	
-	
+
+
 	char location;
 	char *returnChar;
 	int returnInt;
 	String *string;
-	
+
 	if(stringCharAt(arguments,0) == ',')
 		stringRemoveChar(arguments);
-	
+
 	if(stringLength(arguments) == 0 ||stringCharAt(arguments,0) == ';')
 		Throw(ERR_NO_ARGUMENT);
-		
+
 	stringTrimLeft(arguments);
-	
+
 	if(stringLength(arguments) == 0 || stringCharAt(arguments,0)== ';')
 		Throw(ERR_EMPTY_ARGUMENT);
-		
+
 	string = stringRemoveWordNotContaining(arguments,",;");
 	stringTrim(string);
-	
+
 	if(stringLength(string) == 0){
 		if(stringCharAt(arguments,0) == ',')
 			stringRemoveChar(arguments);
 		Throw(ERR_EMPTY_ARGUMENT);
 	}
-	
+
 	else if(stringLength(string) == 1){
 		location = stringCharAt(string,0);
 		if(location == 'F')
@@ -231,11 +231,11 @@ int extractDestination(String *arguments){
 		returnChar = stringSubstringInChar(string,0,string->length);
 		returnInt = evaluate(returnChar);
 	}
-	
-	
+
+
 	free(string);
 	return returnInt;
-	
+
 
 }//if f, return 1, w is 0
 
@@ -245,7 +245,7 @@ int extractDestination(String *arguments){
 *
 * Input:
 *	String	the whole argument
-* 
+*
 * Return the value of access/banked
 * Throw if value is invalid
 */
@@ -256,30 +256,30 @@ int extractAccessBanked(String *arguments){
 	String *string;
 	String *banked = stringNew(textNew("BANKED")); //1
 	String *access = stringNew(textNew("ACCESS")); //0
-	
+
 	if(stringCharAt(arguments,0) == ',')
 		stringRemoveChar(arguments);
-		
+
 	if(stringLength(arguments) == 0 ||stringCharAt(arguments,0) == ';')
 		Throw(ERR_NO_ARGUMENT);
-		
+
 	stringTrimLeft(arguments);
-	
+
 	if(stringLength(arguments) == 0 ||stringCharAt(arguments,0) == ';')
 		Throw(ERR_EMPTY_ARGUMENT);
-		
+
 	string = stringRemoveWordNotContaining(arguments,",;");
-	
+
 	stringTrim(string);
-	
+
 	if(stringLength(string) == 0){
 		if(stringCharAt(arguments,0) == ',')
 			stringRemoveChar(arguments);
 		Throw(ERR_EMPTY_ARGUMENT);
 	}
-	
+
 	else if(stringLength(string) == 6){
-		
+
 		if(stringIsEqual(string,banked))
 			returnInt = 1;
 		else if(stringIsEqual(string,access))
@@ -293,10 +293,10 @@ int extractAccessBanked(String *arguments){
 		returnChar = stringSubstringInChar(string,0,string->length);
 		returnInt = evaluate(returnChar);
 	}
-	
+
 	if(stringCharAt(arguments,0) == ',')
 		stringRemoveChar(arguments);
-	
+
 	free(string);
 	return returnInt;
 

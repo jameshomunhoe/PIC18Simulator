@@ -21,12 +21,12 @@ typedef enum {
   MUL_OP,             // *  (infix)
   DIV_OP,             // /  (infix)
   MOD_OP,             // %  (infix)
-  BITWISE_AND_OP,     // &  (infix)  
-  BITWISE_OR_OP,      // |  (infix)  
-  BITWISE_XOR_OP,     // ^  (infix)  
-  BITWISE_NOT_OP,     // ~  (infix)  
-  LOGICAL_AND_OP,     // && (infix)  
-  LOGICAL_OR_OP,      // || (infix)  
+  BITWISE_AND_OP,     // &  (infix)
+  BITWISE_OR_OP,      // |  (infix)
+  BITWISE_XOR_OP,     // ^  (infix)
+  BITWISE_NOT_OP,     // ~  (infix)
+  LOGICAL_AND_OP,     // && (infix)
+  LOGICAL_OR_OP,      // || (infix)
   LOGICAL_NOT_OP,     // !  (prefix)
   OPENING_BRACKET_OP, // (  (prefix)
   CLOSING_BRACKET_OP, // )  (prefix)
@@ -50,7 +50,7 @@ typedef struct {
   OperatorID id;
   int precedence;
   Affix affix;
-  Associativity assoc;  
+  Associativity assoc;
 } OperatorInfo;
 
 typedef struct {
