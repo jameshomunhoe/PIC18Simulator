@@ -4,16 +4,7 @@
 #include "Execute.h"
 #include "Types.h"
 
-int address;
-int access;
-int bit;
-int data;
-int destinationBit;
-int programCounter;
-int carry;
-int digitalCarry;
-int overFlow;
-int updateData;
+
 
 typedef unsigned int uint32;
 typedef unsigned short int uint16;
@@ -128,7 +119,8 @@ void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSiz
  *
  **/
 int withdrawPreviousCarryForSUBWFB(){
-
+	int carry;
+	
 	fileRegisters[STATUS] = getBitsAtOffset(fileRegisters[STATUS], 0, 1);
 	if(fileRegisters[STATUS] == 1){
 		carry = 0;
