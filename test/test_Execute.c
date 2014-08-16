@@ -771,7 +771,7 @@ void test_RRNCF_should_shift_0x01_to_0x80(){
 
 void test_CALL_should_update_PC_to_0x12345(){
 	clearAllFileRegisters();
-	uint32 code = 0xf345ec12;
+	uint32 code = 0xf123ec45;
 	
 	fileRegisters[PCLATU] = 0x00;
 	fileRegisters[PCLATH] = 0x00;
@@ -838,7 +838,7 @@ void test_CALL_should_update_shadowRegister(){
 	TEST_ASSERT_EQUAL_HEX16(0x03,shadowRegister.STATUSS);
 }
 
-/*void test_ADDWF_should_save_answer_in_WREG(){
+void test_ADDWF_should_save_answer_in_WREG(){
 	clearAllFileRegisters();
 	int code = 0x2401;
 
@@ -912,7 +912,7 @@ void test_ADDWF_should_not_have_any_StatusFlag(){
 	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
-}*/
+}
 
 void test_executeBCF_0xf1_access_should_clear_bit7_and_return_0x71(){
 	int code;
