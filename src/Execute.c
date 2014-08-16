@@ -751,7 +751,7 @@ int executeCALL(unsigned int code){
 	uint32 pcDestination,currentPC,topOfStack;
 	int shadowBit;
 
-	pcDestination = ((getBitsAtOffset(code,0,8))<<12 | getBitsAtOffset(code,16,12));
+	pcDestination = ((getBitsAtOffset(code,16,12))<<8 | getBitsAtOffset(code,0,8));
 	shadowBit = getBitsAtOffset(code,8,1);
 	currentPC = getProgramCounter();
 
