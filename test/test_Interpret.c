@@ -536,5 +536,472 @@ void test_runProgram_should_able_to_run_MOVWF(){
 	
 	TEST_ASSERT_EQUAL_HEX16(0x5,fileRegisters[0x10]);
 	
+}
 
+void test_runProgram_should_able_to_run_BSF_ACCESS(){
+	Text *text = textNew(" BSF 0x10, 4, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x10] = 0xef;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x22;
+	
+	char *stringMock = "0x10";
+	evaluate_ExpectAndReturn(stringMock,0x10);
+	
+	stringMock = "4";
+	evaluate_ExpectAndReturn(stringMock,4);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x24,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BSF_BANKED(){
+	Text *text = textNew(" BSF 0x33, 6, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x9;
+	fileRegisters[0x933] = 0xab;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x24;
+	
+	char *stringMock = "0x33";
+	evaluate_ExpectAndReturn(stringMock,0x33);
+	
+	stringMock = "6";
+	evaluate_ExpectAndReturn(stringMock,6);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xeb,fileRegisters[0x933]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x26,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BCF_ACCESS(){
+	Text *text = textNew(" BCF 0x15, 1, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x15] = 0x42;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x26;
+	
+	char *stringMock = "0x15";
+	evaluate_ExpectAndReturn(stringMock,0x15);
+	
+	stringMock = "1";
+	evaluate_ExpectAndReturn(stringMock,1);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x40,fileRegisters[0x15]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x28,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BCF_BANKED(){
+	Text *text = textNew(" BCF 0x56, 7, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x3;
+	fileRegisters[0x356] = 0xc2;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x28;
+	
+	char *stringMock = "0x56";
+	evaluate_ExpectAndReturn(stringMock,0x56);
+	
+	stringMock = "7";
+	evaluate_ExpectAndReturn(stringMock,7);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x42,fileRegisters[0x356]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x2a,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BTFSC_ACCESS_should_not_skip(){
+	Text *text = textNew(" BTFSC 0x23, 7, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x23] = 0x83;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x23";
+	evaluate_ExpectAndReturn(stringMock,0x23);
+	
+	stringMock = "7";
+	evaluate_ExpectAndReturn(stringMock,7);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x83,fileRegisters[0x23]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BTFSC_BANKED_should_skip(){
+	Text *text = textNew(" BTFSC 0x44, 5, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x7;
+	fileRegisters[0x744] = 0xc1;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x44";
+	evaluate_ExpectAndReturn(stringMock,0x44);
+	
+	stringMock = "5";
+	evaluate_ExpectAndReturn(stringMock,5);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xc1,fileRegisters[0x744]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x14,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BTFSS_ACCESS_should_not_skip(){
+	Text *text = textNew(" BTFSS 0xe3, 4, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0xe3] = 0x83;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0xe3";
+	evaluate_ExpectAndReturn(stringMock,0xe3);
+	
+	stringMock = "4";
+	evaluate_ExpectAndReturn(stringMock,4);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x83,fileRegisters[0xe3]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BTFSS_BANKED_should_skip(){
+	Text *text = textNew(" BTFSS 0x76, 7, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x5;
+	fileRegisters[0x576] = 0xd4;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x76";
+	evaluate_ExpectAndReturn(stringMock,0x76);
+	
+	stringMock = "7";
+	evaluate_ExpectAndReturn(stringMock,7);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xd4,fileRegisters[0x576]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x14,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BTG_ACCESS_should_toggle(){
+	Text *text = textNew(" BTG 0x5a, 4, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x5a] = 0xee;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x5a";
+	evaluate_ExpectAndReturn(stringMock,0x5a);
+	
+	stringMock = "4";
+	evaluate_ExpectAndReturn(stringMock,4);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xfe,fileRegisters[0x5a]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_BTG_BANKED_should_toggle(){
+	Text *text = textNew(" BTG 0xca, 6, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0xf;
+	fileRegisters[0xfca] = 0x2e;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0xca";
+	evaluate_ExpectAndReturn(stringMock,0xca);
+	
+	stringMock = "6";
+	evaluate_ExpectAndReturn(stringMock,6);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x6e,fileRegisters[0xfca]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_SWAPF_ACCESS_should_swap(){
+	Text *text = textNew(" SWAPF 0x48, F, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x48] = 0x3d;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x48";
+	evaluate_ExpectAndReturn(stringMock,0x48);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xd3,fileRegisters[0x48]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_SWAPF_BANKED_should_swap(){
+	Text *text = textNew(" SWAPF 0x52, F, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x72;
+	fileRegisters[0x252] = 0x74;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x52";
+	evaluate_ExpectAndReturn(stringMock,0x52);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x47,fileRegisters[0x252]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_TSTFSZ_ACCESS_should_skip(){
+	Text *text = textNew(" TSTFSZ 0x45, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x45] = 0x00;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x45";
+	evaluate_ExpectAndReturn(stringMock,0x45);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x45]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x14,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_TSTFSZ_BANKED_should_not_skip(){
+	Text *text = textNew(" TSTFSZ 0x64, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x6;
+	fileRegisters[0x664] = 0x87;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x64";
+	evaluate_ExpectAndReturn(stringMock,0x64);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x87,fileRegisters[0x664]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_XORWF_ACCESS_should_xor(){
+	Text *text = textNew(" XORWF 0x67, F, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x67] = 0xaf;
+	fileRegisters[WREG] = 0xb5;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x67";
+	evaluate_ExpectAndReturn(stringMock,0x67);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x1a,fileRegisters[0x67]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_XORWF_BANKED_should_xor(){
+	Text *text = textNew(" XORWF 0x41, W, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x5;
+	fileRegisters[0x541] = 0xfa;
+	fileRegisters[WREG] = 0x5b;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x41";
+	evaluate_ExpectAndReturn(stringMock,0x41);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0xa1,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_SUBWF_ACCESS_should_sub(){
+	Text *text = textNew(" SUBWF 0x34, F, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x34] = 0x03;
+	fileRegisters[WREG] = 0x02;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x34";
+	evaluate_ExpectAndReturn(stringMock,0x34);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[0x34]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_SUBWF_BANKED_should_sub(){
+	Text *text = textNew(" SUBWF 0x9a, W, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x7;
+	fileRegisters[0x79a] = 0x02;
+	fileRegisters[WREG] = 0x02;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x9a";
+	evaluate_ExpectAndReturn(stringMock,0x9a);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_SUBWFB_ACCESS_should_sub_with_borrow(){
+	Text *text = textNew(" SUBWFB 0x4c, F, ACCESS");
+	String *string = stringNew(text);
+	
+	fileRegisters[0x4c] = 0x19;
+	fileRegisters[WREG] = 0x0d;
+	fileRegisters[STATUS] = 0x01;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0x4c";
+	evaluate_ExpectAndReturn(stringMock,0x4c);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x0c,fileRegisters[0x4c]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
+}
+
+void test_runProgram_should_able_to_run_SUBWFB_BANKED_should_sub_with_borrow(){
+	Text *text = textNew(" SUBWFB 0xca, W, BANKED");
+	String *string = stringNew(text);
+	
+	fileRegisters[BSR] = 0x4;
+	fileRegisters[0x4ca] = 0x1b;
+	fileRegisters[WREG] = 0x1a;
+	fileRegisters[STATUS] = 0x00;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
+	
+	char *stringMock = "0xca";
+	evaluate_ExpectAndReturn(stringMock,0xca);
+	
+	runProgram(string);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	
 }
