@@ -2585,8 +2585,8 @@ void test_executeMOVFF(){
 	code = 0xF132C131;
 	data = executeInstruction(code);
 	
-	
 	TEST_ASSERT_EQUAL(0x13, fileRegisters[0x131]);
 	TEST_ASSERT_EQUAL(0x13, fileRegisters[0x132]);
 }
+
 
