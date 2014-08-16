@@ -30,7 +30,6 @@
 void setUp(void){}
 void tearDown(void){}
 
-
 void test_extractValue_should_return_correct_value_in_integer(void){
 	Text *text = textNew("12+34,f,BANKED");
 	String *string = stringNew(text);
