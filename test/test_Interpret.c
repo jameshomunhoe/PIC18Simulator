@@ -522,6 +522,8 @@ void test_interpret_should_able_to_run_N12_GOTO(){
 
 }
 
+// Main test
+
 void test_runProgram_should_able_to_run_MOVWF(){
 	Text *text = textNew(" MOVWF 0x10");
 	String *string = stringNew(text);
@@ -530,10 +532,16 @@ void test_runProgram_should_able_to_run_MOVWF(){
 	evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[WREG] = 0x5;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
 	
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x5,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_ADDWF(){
@@ -545,10 +553,18 @@ void test_runProgram_should_able_to_run_ADDWF(){
 	
 	fileRegisters[WREG] = 0x5;
 	fileRegisters[0x10] = 0x10;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
 	
 	runProgram(string);
 	
+
 	TEST_ASSERT_EQUAL_HEX16(0x15,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_ADDWFC(){
@@ -561,10 +577,17 @@ void test_runProgram_should_able_to_run_ADDWFC(){
 	fileRegisters[STATUS] = 0x01;
 	fileRegisters[WREG] = 0x5;
 	fileRegisters[0x10] = 0x10;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
 	
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_ANDWF(){
@@ -576,10 +599,17 @@ void test_runProgram_should_able_to_run_ANDWF(){
 	
 	fileRegisters[WREG] = 0x11;
 	fileRegisters[0x10] = 0x12;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
 	
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_CLRF(){
@@ -591,10 +621,17 @@ void test_runProgram_should_able_to_run_CLRF(){
 	
 	
 	fileRegisters[0x10] = 0x12;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
 	
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x04,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_COMF(){
@@ -603,6 +640,9 @@ void test_runProgram_should_able_to_run_COMF(){
 
 	char *stringMock = "0x10";
 	evaluate_ExpectAndReturn(stringMock,0x10);
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
 	
 	
 	fileRegisters[0x10] = 0x12;
@@ -610,6 +650,10 @@ void test_runProgram_should_able_to_run_COMF(){
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0xED,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x10,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_CPFSEQ(){
@@ -690,6 +734,7 @@ void test_runProgram_should_able_to_run_DECF(){
 	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x0A,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_DECFSZ(){
@@ -750,6 +795,7 @@ void test_runProgram_should_able_to_run_INCF(){
 	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_INCFSZ(){
@@ -811,6 +857,7 @@ void test_runProgram_should_able_to_run_IORWF(){
 	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_MOVF(){
@@ -831,6 +878,7 @@ void test_runProgram_should_able_to_run_MOVF(){
 	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_MOVFF(){
@@ -975,10 +1023,17 @@ void test_runProgram_should_able_to_run_NEGF(){
 	evaluate_ExpectAndReturn(stringMock,0x10);
 
 	fileRegisters[0x10] = 0x3A;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x00;
 	
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL(0xC6,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x04,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x0,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x0,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x2,fileRegisters[PCL]);
 }
 
 
@@ -993,6 +1048,7 @@ void test_runProgram_should_able_to_run_RLCF(){
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL(0x1e,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
 }
 
 
@@ -1008,6 +1064,8 @@ void test_runProgram_should_able_to_run_RRNCF(){
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL(0x08,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	
 }
 
 
