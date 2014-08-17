@@ -1485,3 +1485,4 @@ void test_runProgram_should_able_to_run_SUBWFB_BANKED_should_sub_with_borrow(){
 	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
 	
 }
+
