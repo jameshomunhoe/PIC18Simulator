@@ -3,6 +3,8 @@
 
 #include "Text.h"
 #include "StringObject.h"
+#include "Stack.h"
+#include "stackForEvaluate.h"
 
 //Throw(ERR_NUMBER_NOT_WELL_FORMED);
 typedef enum {
@@ -21,15 +23,18 @@ typedef enum {
   MUL_OP,             // *  (infix)
   DIV_OP,             // /  (infix)
   MOD_OP,             // %  (infix)
-  BITWISE_AND_OP,     // &  (infix)
-  BITWISE_OR_OP,      // |  (infix)
-  BITWISE_XOR_OP,     // ^  (infix)
-  BITWISE_NOT_OP,     // ~  (infix)
-  LOGICAL_AND_OP,     // && (infix)
-  LOGICAL_OR_OP,      // || (infix)
+  BITWISE_AND_OP,     // &  (infix)  
+  BITWISE_OR_OP,      // |  (infix)  
+  BITWISE_XOR_OP,     // ^  (infix)  
+  BITWISE_NOT_OP,     // ~  (infix)  
+  LOGICAL_AND_OP,     // && (infix)  
+  LOGICAL_OR_OP,      // || (infix)  
   LOGICAL_NOT_OP,     // !  (prefix)
   OPENING_BRACKET_OP, // (  (prefix)
   CLOSING_BRACKET_OP, // )  (prefix)
+  INCREMENT_OP,		 // ++(prefix)
+  DECREMENT_OP,			// --(prefix)
+  HASH_OP			// #(illegal)
 } OperatorID;
 
 typedef enum {
@@ -50,7 +55,7 @@ typedef struct {
   OperatorID id;
   int precedence;
   Affix affix;
-  Associativity assoc;
+  Associativity assoc;  
 } OperatorInfo;
 
 typedef struct {
@@ -76,11 +81,17 @@ typedef struct {
 Number *numberNew(int value); //1st
 Operator *operatorNewBySymbol(char *symbol);//3rd
 Operator *operatorNewByID(OperatorID id);
+OperatorInfo *operatorFindInfoByID(OperatorID id);
+OperatorInfo *operatorFindAlternateInfoByID(OperatorID id);
+OperatorInfo *operatorFindInfoByName(char *symbol);
+OperatorInfo *operatorFindAlternateInfoByName(char *symbol);
 Identifier *identifierNew(Text *name);//2nd
 Token *getToken(String *str);
 void tokenDel(Token *token);
 void tokenDump(Token *token);
-// int evaluateExpression(char *expression);
+int isOperator(Token * unknownToken);
+int isNumber(Token * unknownToken);
+
 
 
 #endif // Token_H

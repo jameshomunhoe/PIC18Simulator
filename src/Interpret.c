@@ -23,7 +23,7 @@
 #include "S.h"
 #include "Extract1BitsValue.h"
 #include "ExtractValue.h"
-#include "mock_Evaluate.h"
+#include "Evaluate.h"
 
 
 #define INSTRUCTION_TABLE_SIZE	(sizeof(instructions)/sizeof(instructionTable))
@@ -193,7 +193,7 @@ int extractValue(String *arguments){
 		Throw(ERR_EMPTY_ARGUMENT);
 
 	returnChar = stringSubstringInChar(string,0,string->length);
-	returnInt = evaluate(returnChar);
+	returnInt = evaluateExpression(returnChar);
 
 
 	free(string);
@@ -247,12 +247,12 @@ int extractDestination(String *arguments){
 			returnInt = 0;
 		else{
 			returnChar = stringSubstringInChar(string,0,string->length);
-			returnInt =  evaluate(returnChar);
+			returnInt =  evaluateExpression(returnChar);
 		}
 	}
 	else{
 		returnChar = stringSubstringInChar(string,0,string->length);
-		returnInt = evaluate(returnChar);
+		returnInt = evaluateExpression(returnChar);
 	}
 
 
@@ -309,12 +309,12 @@ int extractACCESSBANKED(String *arguments){
 			returnInt = 0;
 		else{
 			returnChar = stringSubstringInChar(string,0,string->length);
-			returnInt =  evaluate(returnChar);
+			returnInt =  evaluateExpression(returnChar);
 		}
 	}
 	else{
 		returnChar = stringSubstringInChar(string,0,string->length);
-		returnInt = evaluate(returnChar);
+		returnInt = evaluateExpression(returnChar);
 	}
 
 	if(stringCharAt(arguments,0) == ',')
