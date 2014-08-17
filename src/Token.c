@@ -11,8 +11,8 @@
 #define	ALTERNATIVE_OPERATOR_TABLE_SIZE	(sizeof(alternativeOperatorTable)/sizeof(OperatorInfo))
 
 OperatorInfo mainOperatorTable[] = {
-  {.symbol="~", .id=BITWISE_NOT_OP, .precedence=150, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
-  {.symbol="!", .id=LOGICAL_NOT_OP, .precedence=150, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
+  {.symbol="~", .id=BITWISE_NOT_OP, .precedence=150, .affix=PREFIX, .assoc=LEFT_TO_RIGHT},
+  {.symbol="!", .id=LOGICAL_NOT_OP, .precedence=150, .affix=PREFIX, .assoc=LEFT_TO_RIGHT},
   {.symbol="*", .id=MUL_OP, .precedence=100, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   {.symbol="/", .id=DIV_OP, .precedence=100, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   {.symbol="%", .id=MOD_OP, .precedence=100, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
@@ -245,4 +245,142 @@ void tokenDump(Token *token){
 	}else{
 		printf("Unknown Token\n");
 	}
+}
+
+/**
+ * Find Operator token using id
+ *
+ * Input:
+ *    id in string of characters, i.e., MUL_OP
+ *          and CLOSING_BRACKET_OP.
+ *
+ * Return the Operator object
+ */
+OperatorInfo *operatorFindInfoByID(OperatorID id){
+	int i;
+	
+	for(i=0;i < MAIN_OPERATOR_TABLE_SIZE; i++){
+		if(mainOperatorTable[i].id==id)
+		{
+			return &mainOperatorTable[i];
+		}
+	}
+	return NULL;
+}
+
+/*
+	This function will determine token is operator or not.
+	
+	input :
+	unknownToken		The token that consists the type.(number, operator)
+	
+	output:
+	none
+	
+	return:
+	0					indicate it is not an operator
+	1					indicate it is an operator
+*/
+
+int isOperator (Token * unknownToken)
+{
+	if(unknownToken->type==OPERATOR_TOKEN)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+/*
+	This function will determine token is number or not.
+	
+	input :
+	unknownToken		The token that consists the type.(number, operator)
+	
+	output:
+	none
+	
+	return:
+	0					indicate it is not a number
+	1					indicate it is a number
+*/
+int isNumber (Token * unknownToken)
+{
+	
+	if(unknownToken->type==NUMBER_TOKEN)
+	{	
+		return 1;
+	}
+	else	
+	{
+		return 0;
+	}
+}
+
+/**
+ * Find Operator token using symbol
+ *
+ * Input:
+ *   symbol in string of characters, i.e.,+ 
+ *          and *,%
+ *
+ * Return the Operator object
+ */
+OperatorInfo *operatorFindInfoByName(char *symbol){
+	int i;
+	
+	for(i=0;i < MAIN_OPERATOR_TABLE_SIZE; i++){
+		if(strcmp(mainOperatorTable[i].symbol,symbol)==0)
+		{
+			return &mainOperatorTable[i];
+		}
+	}
+	return NULL;
+}
+
+/**
+ * Find Operator token using symbol
+ *	This function is to find operator at Alternate operator table
+ * Input:
+ *   symbol is id in string of characters, i.e., +
+ *         -
+ *
+ * Return the Operator object
+ */
+ 
+OperatorInfo *operatorFindAlternateInfoByName(char *symbol){
+	int i;
+	
+	for(i=0;i < ALTERNATIVE_OPERATOR_TABLE_SIZE; i++){
+		if(strcmp(alternativeOperatorTable[i].symbol,symbol)==0){
+			return &alternativeOperatorTable[i];
+		}
+		
+	}
+	return NULL;
+}
+
+/**
+ * Find Operator token using id in alternate operator table
+ *
+ * Input:
+ *   symbol is id in string of characters, i.e., MINUS_OP
+ *          and ADD_OP.
+ *
+ * Return the Operator object
+ */
+ 
+OperatorInfo *operatorFindAlternateInfoByID(OperatorID id){
+	int i;
+	
+	for(i=0;i < ALTERNATIVE_OPERATOR_TABLE_SIZE; i++){
+		if(alternativeOperatorTable[i].id==id){
+			return &alternativeOperatorTable[i];
+		}
+		
+	}
+	return NULL;
 }
