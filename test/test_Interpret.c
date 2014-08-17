@@ -538,10 +538,10 @@ void test_runProgram_should_able_to_run_MOVWF(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x5,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x05,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_ADDWF(){
@@ -560,11 +560,11 @@ void test_runProgram_should_able_to_run_ADDWF(){
 	runProgram(string);
 	
 
-	TEST_ASSERT_EQUAL_HEX16(0x15,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x15,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_ADDWFC(){
@@ -583,11 +583,11 @@ void test_runProgram_should_able_to_run_ADDWFC(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x16,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_ANDWF(){
@@ -605,11 +605,11 @@ void test_runProgram_should_able_to_run_ANDWF(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_CLRF(){
@@ -627,11 +627,11 @@ void test_runProgram_should_able_to_run_CLRF(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x04,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x04,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_COMF(){
@@ -649,11 +649,11 @@ void test_runProgram_should_able_to_run_COMF(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0xED,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x10,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0xED,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_CPFSEQ(){
@@ -670,10 +670,10 @@ void test_runProgram_should_able_to_run_CPFSEQ(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x04,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x04,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_CPFSGT(){
@@ -690,10 +690,10 @@ void test_runProgram_should_able_to_run_CPFSGT(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x04,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x04,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_CPFSLT(){
@@ -710,10 +710,10 @@ void test_runProgram_should_able_to_run_CPFSLT(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x13,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x04,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x13,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x04,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_DECF(){
@@ -730,11 +730,11 @@ void test_runProgram_should_able_to_run_DECF(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x0A,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x0A,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_DECFSZ(){
@@ -751,10 +751,10 @@ void test_runProgram_should_able_to_run_DECFSZ(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_DCFSNZ(){
@@ -771,10 +771,10 @@ void test_runProgram_should_able_to_run_DCFSNZ(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x0F,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x04,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x0F,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x04,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_INCF(){
@@ -791,11 +791,11 @@ void test_runProgram_should_able_to_run_INCF(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x11,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x11,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_INCFSZ(){
@@ -812,10 +812,10 @@ void test_runProgram_should_able_to_run_INCFSZ(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_INFSNZ(){
@@ -832,10 +832,10 @@ void test_runProgram_should_able_to_run_INFSNZ(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x11,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x11,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_IORWF(){
@@ -853,11 +853,11 @@ void test_runProgram_should_able_to_run_IORWF(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_MOVF(){
@@ -874,11 +874,11 @@ void test_runProgram_should_able_to_run_MOVF(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[WREG]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
 }
 
 void test_runProgram_should_able_to_run_MOVFF(){
@@ -897,10 +897,10 @@ void test_runProgram_should_able_to_run_MOVFF(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[0x12]);
-	TEST_ASSERT_EQUAL(0x02,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x10,fileRegisters[0x12]);
+	TEST_ASSERT_EQUAL_HEX8(0x02,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_BC(){
@@ -916,9 +916,9 @@ void test_runProgram_should_able_to_run_BC(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_BNC(){
@@ -934,9 +934,9 @@ void test_runProgram_should_able_to_run_BNC(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_BNZ(){
@@ -952,9 +952,9 @@ void test_runProgram_should_able_to_run_BNZ(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_BZ(){
@@ -970,9 +970,9 @@ void test_runProgram_should_able_to_run_BZ(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_BRA(){
@@ -988,9 +988,9 @@ void test_runProgram_should_able_to_run_BRA(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL(0x22,fileRegisters[PCL]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x22,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
 }
 
 void test_runProgram_should_able_to_run_CALL(){
@@ -1009,9 +1009,9 @@ void test_runProgram_should_able_to_run_CALL(){
 	fileRegisters[PCL] = 0x00;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x0,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x1,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x23,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x0,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x1,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x23,fileRegisters[PCL]);
 }
 
 
@@ -1029,11 +1029,11 @@ void test_runProgram_should_able_to_run_NEGF(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL(0xC6,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x04,fileRegisters[STATUS]);
-	TEST_ASSERT_EQUAL_HEX16(0x0,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x0,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x2,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0xC6,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x04,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x0,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x0,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x2,fileRegisters[PCL]);
 }
 
 
@@ -1047,8 +1047,8 @@ void test_runProgram_should_able_to_run_RLCF(){
 	fileRegisters[0x10] = 0x0f;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL(0x1e,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x1e,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
 }
 
 
@@ -1063,8 +1063,8 @@ void test_runProgram_should_able_to_run_RRNCF(){
 	fileRegisters[0x10] = 0x10;
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL(0x08,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x08,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
 	
 }
 
@@ -1087,10 +1087,10 @@ void test_runProgram_should_able_to_run_BSF_ACCESS(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0xff,fileRegisters[0x10]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x24,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0xff,fileRegisters[0x10]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x24,fileRegisters[PCL]);
 	
 }
 
@@ -1112,10 +1112,10 @@ void test_runProgram_should_able_to_run_BSF_BANKED(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0xeb,fileRegisters[0x933]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x26,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0xeb,fileRegisters[0x933]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x26,fileRegisters[PCL]);
 	
 }
 
@@ -1136,10 +1136,10 @@ void test_runProgram_should_able_to_run_BCF_ACCESS(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x40,fileRegisters[0x15]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x28,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x40,fileRegisters[0x15]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x28,fileRegisters[PCL]);
 	
 }
 
@@ -1161,10 +1161,10 @@ void test_runProgram_should_able_to_run_BCF_BANKED(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x42,fileRegisters[0x356]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x2a,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x42,fileRegisters[0x356]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x2a,fileRegisters[PCL]);
 	
 }
 
@@ -1185,10 +1185,10 @@ void test_runProgram_should_able_to_run_BTFSC_ACCESS_should_not_skip(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x83,fileRegisters[0x23]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x83,fileRegisters[0x23]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1210,10 +1210,10 @@ void test_runProgram_should_able_to_run_BTFSC_BANKED_should_skip(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0xc1,fileRegisters[0x744]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x14,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0xc1,fileRegisters[0x744]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x14,fileRegisters[PCL]);
 	
 }
 
@@ -1234,10 +1234,10 @@ void test_runProgram_should_able_to_run_BTFSS_ACCESS_should_not_skip(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x83,fileRegisters[0xe3]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x83,fileRegisters[0xe3]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1259,10 +1259,10 @@ void test_runProgram_should_able_to_run_BTFSS_BANKED_should_skip(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0xd4,fileRegisters[0x576]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x14,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0xd4,fileRegisters[0x576]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x14,fileRegisters[PCL]);
 	
 }
 
@@ -1283,10 +1283,10 @@ void test_runProgram_should_able_to_run_BTG_ACCESS_should_toggle(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0xfe,fileRegisters[0x5a]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0xfe,fileRegisters[0x5a]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1308,10 +1308,10 @@ void test_runProgram_should_able_to_run_BTG_BANKED_should_toggle(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x6e,fileRegisters[0xfca]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x6e,fileRegisters[0xfca]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1329,10 +1329,10 @@ void test_runProgram_should_able_to_run_SWAPF_ACCESS_should_swap(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0xd3,fileRegisters[0x48]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0xd3,fileRegisters[0x48]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1351,10 +1351,10 @@ void test_runProgram_should_able_to_run_SWAPF_BANKED_should_swap(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x47,fileRegisters[0x252]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x47,fileRegisters[0x252]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1372,10 +1372,10 @@ void test_runProgram_should_able_to_run_TSTFSZ_ACCESS_should_skip(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[0x45]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x14,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[0x45]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x14,fileRegisters[PCL]);
 	
 }
 
@@ -1394,10 +1394,10 @@ void test_runProgram_should_able_to_run_TSTFSZ_BANKED_should_not_skip(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x87,fileRegisters[0x664]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x87,fileRegisters[0x664]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1416,11 +1416,11 @@ void test_runProgram_should_able_to_run_XORWF_ACCESS_should_xor(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x1a,fileRegisters[0x67]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[STATUS]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x1a,fileRegisters[0x67]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1440,11 +1440,11 @@ void test_runProgram_should_able_to_run_XORWF_BANKED_should_xor(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x23,fileRegisters[WREG]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[STATUS]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x23,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1463,11 +1463,11 @@ void test_runProgram_should_able_to_run_SUBWF_ACCESS_should_sub(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[0x34]);
-	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[STATUS]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x01,fileRegisters[0x34]);
+	TEST_ASSERT_EQUAL_HEX8(0x03,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1487,11 +1487,11 @@ void test_runProgram_should_able_to_run_SUBWF_BANKED_should_sub(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[WREG]);
-	TEST_ASSERT_EQUAL_HEX16(0x07,fileRegisters[STATUS]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX8(0x07,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1511,11 +1511,11 @@ void test_runProgram_should_able_to_run_SUBWFB_ACCESS_should_sub_with_borrow(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x0c,fileRegisters[0x4c]);
-	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[STATUS]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x0c,fileRegisters[0x4c]);
+	TEST_ASSERT_EQUAL_HEX8(0x01,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -1536,11 +1536,11 @@ void test_runProgram_should_able_to_run_SUBWFB_BANKED_should_sub_with_borrow(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[WREG]);
-	TEST_ASSERT_EQUAL_HEX16(0x07,fileRegisters[STATUS]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
-	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
-	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX8(0x07,fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX8(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
 
