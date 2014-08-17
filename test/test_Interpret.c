@@ -1359,6 +1359,7 @@ void test_runProgram_should_able_to_run_XORWF_ACCESS_should_xor(){
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x1a,fileRegisters[0x67]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
@@ -1370,8 +1371,8 @@ void test_runProgram_should_able_to_run_XORWF_BANKED_should_xor(){
 	String *string = stringNew(text);
 	
 	fileRegisters[BSR] = 0x5;
-	fileRegisters[0x541] = 0xfa;
-	fileRegisters[WREG] = 0x5b;
+	fileRegisters[0x541] = 0x42;
+	fileRegisters[WREG] = 0x61;
 	fileRegisters[PCLATU] = 0x00;
 	fileRegisters[PCLATH] = 0x00;
 	fileRegisters[PCL] = 0x10;
@@ -1381,7 +1382,8 @@ void test_runProgram_should_able_to_run_XORWF_BANKED_should_xor(){
 	
 	runProgram(string);
 	
-	TEST_ASSERT_EQUAL_HEX16(0xa1,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX16(0x23,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
@@ -1404,6 +1406,7 @@ void test_runProgram_should_able_to_run_SUBWF_ACCESS_should_sub(){
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[0x34]);
+	TEST_ASSERT_EQUAL_HEX16(0x03,fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
@@ -1427,6 +1430,7 @@ void test_runProgram_should_able_to_run_SUBWF_BANKED_should_sub(){
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX16(0x07,fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
@@ -1450,6 +1454,7 @@ void test_runProgram_should_able_to_run_SUBWFB_ACCESS_should_sub_with_borrow(){
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x0c,fileRegisters[0x4c]);
+	TEST_ASSERT_EQUAL_HEX16(0x01,fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
@@ -1474,6 +1479,7 @@ void test_runProgram_should_able_to_run_SUBWFB_BANKED_should_sub_with_borrow(){
 	runProgram(string);
 	
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL_HEX16(0x07,fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
