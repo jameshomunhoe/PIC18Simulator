@@ -354,6 +354,30 @@ void test_evaluate_expression_involve_prefix_postfix_and_infix_expression_3(void
 
 }
 
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	)	|				|		|		|		|
+	|	25	|		|	(	|				|	25	|		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluate_expression_involve_prefix_postfix_and_infix_expression_4(void){
+	
+	int check;
+	check=evaluateExpression("(25)");
+	TEST_ASSERT_EQUAL(25,check);
+}
+
+void test_evaluate_expression_involve_prefix_postfix_and_infix_expression_5(void){
+	
+	int check;
+	check=evaluateExpression("((((25))))");
+	TEST_ASSERT_EQUAL(25,check);
+}
 
 
 /****************************************************************************
@@ -361,23 +385,23 @@ void test_evaluate_expression_involve_prefix_postfix_and_infix_expression_3(void
 	|		|		|		|				|		|		|		|
 	|		|		|		|				|		|		|		|
 	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|	2	|		|	+	|				|		|		|		|
+	|	5	|		|		|				|		|		|		|
+	|	2	|		|		|				|		|		|		|
 	numberstack		operatorStack			numberstack		operatorStack
 			BEFORE									  AFTER
 ****************************************************************************/
-
-void test_should_throw_error_illegal_argument_for_2_plus(void){
+void test_should_throw_error_expecting_operator_of_2_space_5(void){
+	
 	int check;
 	CEXCEPTION_T e;
 	Try{
-		check=evaluateExpression("2+");
+		check=evaluateExpression("2 5");
 	}Catch(e)
 	{
-		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER_OR_PREFIX,e);
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_OPERATOR,e);
 	}
+	
 }
-
 
 /****************************************************************************
 	|		|		|		|				|		|		|		|

@@ -25,15 +25,7 @@ void tearDown(void){}
 					2)Stack *numberStack
 					3)Stack *operatorStack
 
- Using following mock function : 
-								1)stringCreate()
-								2)getToken()
-								3)stackPop()  
-								4)stackPush()
-								5)createNumberToken()
-								6)operatorEvaluate
-								
- ***********************************************************************/	
+***********************************************************************/	
 
  void test_tryEvaluateOperatorOnStackThenPush_will_push_OperatorToken_if_Operator_Stack_is_empty(void){
 	Stack numberStack;
