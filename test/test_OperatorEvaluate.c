@@ -18,20 +18,51 @@ void setUp(void){}
 void tearDown(void){}
 
 /***********************************************************************	
- Test on function operatorEvaluate
+ Test on function on operatorEvaluate.c
  Input parameter : 
 					1)Stack *numberStack
 					2)Operator *opeToken
 
- Using following mock function : 
-								1)stringCreate()
-								2)getToken()
-								3)stackPop()  
-								4)stackPush()
-								5)createNumberToken()
-								
- ***********************************************************************/	
+***********************************************************************/	
  
+void test_operaratorPrefixEvalute_should_calculate_prefix_expression(void){
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	Number *Ans;
+	
+	//Initialize tokenizer,token and stack
+	String tokenizer = {.text = t"-2"};
+	Operator plus = {.type= OPERATOR_TOKEN, .info=operatorFindAlternateInfoByID(PLUS_OP)};
+	Operator minus = {.type= OPERATOR_TOKEN, .info=operatorFindAlternateInfoByID(MINUS_OP)};
+	Number number2 = {.type= NUMBER_TOKEN, .value=2};
+	
+	
+	stackPush(&minus,operatorStack);
+	stackPush(&number2,numberStack);
+	
+	operatorPrefixEvaluate(numberStack,&minus);
+	Ans=(Number*)stackPop(numberStack);
+	TEST_ASSERT_EQUAL(-2,Ans->value);
+}
+
+void test_operaratorPrefixEvalute_should_calculate_prefix_expression2(void){
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	Number *Ans;
+	
+	//Initialize tokenizer,token and stack
+	String tokenizer = {.text = t"!12"};
+	Operator logicalNot = {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(LOGICAL_NOT_OP)};
+	Number number12 = {.type= NUMBER_TOKEN, .value=12};
+	
+	stackPush(&logicalNot,operatorStack);
+	stackPush(&number12,numberStack);
+	
+	operatorPrefixEvaluate(numberStack,&logicalNot);
+	Ans=(Number*)stackPop(numberStack);
+	TEST_ASSERT_EQUAL(0,Ans->value);
+}
+
  void test_operatorEvaluate_should_throw_error_when_encounter_invalid_operator(void){
 	
 	Stack *numberStack=createStack();
@@ -59,8 +90,8 @@ void test_operatorEvaluate_100_MINUS_37(void)
 {
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
-	Token *tempToken;
-	Number *tempAns;
+	
+	Number *Ans;
 	int check;
 	//Initialize tokenizer,token and stack
 	String tokenizer = {.text = t"100-37"};
@@ -73,11 +104,13 @@ void test_operatorEvaluate_100_MINUS_37(void)
 	stackPush(&minus,operatorStack);
 	stackPush(&number37,numberStack);
 	
-	
 	operatorInfixEvaluate(numberStack,&minus);
+	Ans=(Number*)stackPop(numberStack);
+	TEST_ASSERT_EQUAL(63,Ans->value);
 }
 
-void test_operatorEvaluate_opening_bracket_3_should_throw_error(void){
+void test_operatorEvaluate_close_bracket_3_should_throw_error(void){
+	ErrorCode e;
 	Token *tempToken;
 	Number *tempAns;
 	Stack *numberStack=createStack();
@@ -85,14 +118,18 @@ void test_operatorEvaluate_opening_bracket_3_should_throw_error(void){
 	int check;
 	//Initialize tokenizer,token and stack
 	
-	Operator openBracket = {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(OPENING_BRACKET_OP)};
+	Operator closeBracket = {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(CLOSING_BRACKET_OP)};
 	Number number3 = {.type= NUMBER_TOKEN, .value=3};
 	
-	stackPush(&openBracket,operatorStack);
+	stackPush(&closeBracket,operatorStack);
 	stackPush(&number3,numberStack);
-	stackPush(NULL,operatorStack);
 	
-	operatorEvaluate(numberStack,&openBracket);
+	Try{
+		operatorEvaluate(numberStack,&closeBracket);
+	}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_OPENING_BRACKET,e);
+	}
 }
 
 

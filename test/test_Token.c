@@ -441,6 +441,8 @@ Test function on 1)OperatorInfo *operatorFindInfoByID(OperatorID id);
 				2)OperatorInfo *operatorFindAlternateInfoByID(OperatorID id);
 				3)OperatorInfo *operatorFindInfoByName(char *symbol);
 				4)OperatorInfo *operatorFindAlternateInfoByName(char *symbol);
+				5)int isOperator();
+				6)int isNumber();
 *************************************************************************************/
 
 void test_OperatorFindInfoByID_should_get_ADD_OP_info(void){
@@ -512,4 +514,24 @@ void test_OperatorFindAlternateInfoByName_should_get_MINUS_OP_info(void){
 	TEST_ASSERT_EQUAL(MINUS_OP, info->id);
 	TEST_ASSERT_EQUAL_STRING("-", info->symbol);
 }
+
+void test_isNumber_and_isOperator_should_get_only_number_token_and_operator_token(void){
+	Text *newText=textNew("1+2");
+	String *tokenizer = stringNew(newText);
+	
+	Token* token =getToken(tokenizer);
+	if(isNumber(token)){
+		TEST_ASSERT_EQUAL(1,((Number*)token)->value);
+	}
+	token =getToken(tokenizer);
+	if(isOperator(token)){
+		TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	}
+	token =getToken(tokenizer);
+	if(isNumber(token)){
+		TEST_ASSERT_EQUAL(2,((Number*)token)->value);
+	}
+}
+
+
 

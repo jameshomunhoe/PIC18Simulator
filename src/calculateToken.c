@@ -59,6 +59,9 @@ int calculate(Operator *opeToken, Number *first, Number *second){
 			answer=first->value||second->value;
 		break;
 		
+		case CLOSING_BRACKET_OP:
+			Throw(ERR_EXPECTING_OPENING_BRACKET);
+		break;
 
 		default:
 		{
