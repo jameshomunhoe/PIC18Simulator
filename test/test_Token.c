@@ -103,6 +103,7 @@ void test_operatorNewByID_should_retun_NULL(){
 	TEST_ASSERT_EQUAL(NULL,operator);
 }
 
+
 void test_getToken_sould_return_NumberToken_324(void){
 	int test;
 	Text *text = textNew("324 123 435 01010");
@@ -433,4 +434,104 @@ void test_getToken_should_fix_bug_for_close_bracket(void){
 	TEST_ASSERT_EQUAL_STRING(")",((Operator *)token)->info->symbol);
 	
 }
+
+/********************************************************************************
+Jason
+Test function on 1)OperatorInfo *operatorFindInfoByID(OperatorID id);
+				2)OperatorInfo *operatorFindAlternateInfoByID(OperatorID id);
+				3)OperatorInfo *operatorFindInfoByName(char *symbol);
+				4)OperatorInfo *operatorFindAlternateInfoByName(char *symbol);
+				5)int isOperator();
+				6)int isNumber();
+*************************************************************************************/
+
+void test_OperatorFindInfoByID_should_get_ADD_OP_info(void){
+	OperatorInfo *info = operatorFindInfoByID(ADD_OP);
+	TEST_ASSERT_NOT_NULL(info);
+	TEST_ASSERT_EQUAL(ADD_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("+", info->symbol);
+}
+
+void test_OperatorFindInfoByID_should_get_MODULUS_OP_info(void){
+	OperatorInfo *info = operatorFindInfoByID(MOD_OP);
+	TEST_ASSERT_NOT_NULL(info);
+	TEST_ASSERT_EQUAL(MOD_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("%", info->symbol);
+}
+
+void test_OperatorFindInfoByID_should_get_OPENING_BRACKET_OP_info(void){
+	OperatorInfo *info = operatorFindInfoByID(OPENING_BRACKET_OP);
+	TEST_ASSERT_NOT_NULL(info);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("(", info->symbol);
+}
+
+void test_OperatorFindAlternateInfoByID_should_get_PLUS_OP_info(void){
+	OperatorInfo *info = operatorFindAlternateInfoByID(PLUS_OP);
+	TEST_ASSERT_NOT_NULL(info);
+	TEST_ASSERT_EQUAL(PLUS_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("+", info->symbol);
+}
+
+void test_OperatorFindAlternateInfoByID_should_get_MINUS_OP_info(void){
+	OperatorInfo *info = operatorFindAlternateInfoByID(MINUS_OP);
+	TEST_ASSERT_NOT_NULL(info);
+	TEST_ASSERT_EQUAL(MINUS_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("-", info->symbol);
+}
+
+void test_OperatorFindInfoByName_should_get_DIV_OP_info(void){
+	OperatorInfo *info = operatorFindInfoByName("/");
+	TEST_ASSERT_NOT_NULL(info);
+	TEST_ASSERT_EQUAL(DIV_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("/", info->symbol);
+}
+
+void test_OperatorFindInfoByName_should_get_BITWISE_NOT_OP_info(void){
+	OperatorInfo *info = operatorFindInfoByName("~");
+	TEST_ASSERT_NOT_NULL(info)
+	TEST_ASSERT_EQUAL(BITWISE_NOT_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("~", info->symbol);
+}
+
+void test_OperatorFindInfoByName_should_get_BITWISE_XOR_OP_info(void){
+	OperatorInfo *info = operatorFindInfoByName("^");
+	TEST_ASSERT_NOT_NULL(info)
+	TEST_ASSERT_EQUAL(BITWISE_XOR_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("^", info->symbol);
+}
+
+void test_OperatorFindAlternateInfoByName_should_get_PLUS_OP_info(void){
+	OperatorInfo *info = operatorFindAlternateInfoByName("+");
+	TEST_ASSERT_NOT_NULL(info)
+	TEST_ASSERT_EQUAL(PLUS_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("+", info->symbol);
+}
+
+void test_OperatorFindAlternateInfoByName_should_get_MINUS_OP_info(void){
+	OperatorInfo *info = operatorFindAlternateInfoByName("-");
+	TEST_ASSERT_NOT_NULL(info)
+	TEST_ASSERT_EQUAL(MINUS_OP, info->id);
+	TEST_ASSERT_EQUAL_STRING("-", info->symbol);
+}
+
+void test_isNumber_and_isOperator_should_get_only_number_token_and_operator_token(void){
+	Text *newText=textNew("1+2");
+	String *tokenizer = stringNew(newText);
+	
+	Token* token =getToken(tokenizer);
+	if(isNumber(token)){
+		TEST_ASSERT_EQUAL(1,((Number*)token)->value);
+	}
+	token =getToken(tokenizer);
+	if(isOperator(token)){
+		TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	}
+	token =getToken(tokenizer);
+	if(isNumber(token)){
+		TEST_ASSERT_EQUAL(2,((Number*)token)->value);
+	}
+}
+
+
 

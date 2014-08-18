@@ -46,7 +46,6 @@ void tryEvaluateOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,St
 			stackPush(previousToken,operatorStack);
 		}
 		stackPush(newToken,operatorStack);
-		
 	}
 }
 
@@ -100,13 +99,4 @@ void tryConvertToPrefix(Operator *opeToken){
 	}
 }
 
-void tryConvertToInfix(Operator *opeToken){
-	
-	int i;
-	OperatorInfo *info=operatorFindInfoByName(opeToken->info->symbol);
-	opeToken->info=info;
-	if(opeToken->info == NULL)
-	{
-		Throw(ERR_CANNOT_CONVERT_TO_INFIX);
-	}
-}
+
