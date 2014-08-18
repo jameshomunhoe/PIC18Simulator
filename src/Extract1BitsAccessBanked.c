@@ -7,6 +7,20 @@
 #include "ErrorCode.h"
 #include "Extract1BitsAccessBanked.h"
 
+/*
+*	Operation:
+*		To Catch No Argument and Empty Argument Value,extract value
+*
+*	Data:
+*		if fileRegister from 00 to 80 and ff0 to fff:
+*			Banked fileRegister
+*       if fileRegister from 81 to ff1
+*			Access fileRegister
+*
+*  Return:
+*		operand3 value
+*
+*/
 int extract1bitsACCESSBANKED(String *arguments,int fileReg){
 	ErrorCode error;
 	int operand3;

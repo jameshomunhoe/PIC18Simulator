@@ -8,7 +8,16 @@
 #include "ErrorCode.h"
 
 
-
+/*
+*	Extract 8bit Value to operand1
+*	
+*	Operation:
+*		if nothing is throw
+*
+*  Return:
+*		operand1 value
+*
+*/
 int operand1ExtractValue(String *arguments){
 	ErrorCode error;
 	int operand1;

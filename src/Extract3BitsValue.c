@@ -7,9 +7,20 @@
 #include "ErrorCode.h"
 #include "Extract3BitsValue.h"
 
-
-
-
+/*
+*	Extract 3 bit value to operand2
+*	
+*	Operation:
+*		To Catch No Argument and Empty Argument Value,extract value
+*
+*	Throw:
+*		NO argument
+*		Not empty argument but illegal argument
+*
+*  Return:
+*		operand2 value
+*
+*/
 int extract3BitsValue(String *arguments){
 	ErrorCode error;
 	int operand2;
