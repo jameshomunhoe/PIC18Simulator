@@ -400,7 +400,7 @@ int stringIsCharAtInSet(String *str, int relativeIndex, char set[]){
 int stringToInteger(String *str){
 
 	char *string = stringSubstringInChar(str,0,str->length);
-	int forReturn = atoi(string);
+	int forReturn = strtol(string,NULL,0);
 
 	free(string);
 

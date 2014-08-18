@@ -17,7 +17,7 @@ void test_NS_operand1_should_mock_and_return_0x00440144(void){
 	int value;
 	int e;
 	
-	Text *text = textNew("135");
+	Text *text = textNew("0x44, 1");
 	String *str = stringNew(text);
 	
 	extractValue_ExpectAndReturn(str, 0x44);
@@ -25,7 +25,7 @@ void test_NS_operand1_should_mock_and_return_0x00440144(void){
 	
 	value = NS(str);
 
-	TEST_ASSERT_EQUAL_HEX32(value, 0x00440144);
+	TEST_ASSERT_EQUAL_HEX32(0x00000144, value);
 
 }
 
@@ -33,15 +33,15 @@ void test_NS_operand1_should_mock_and_return_0x00670067(void){
 	int value;
 	int e;
 	
-	Text *text = textNew("135");
+	Text *text = textNew("0x12345");
 	String *str = stringNew(text);
 	
-	extractValue_ExpectAndReturn(str, 0x67);
+	extractValue_ExpectAndReturn(str, 0x12345);
 	extractValue_ExpectAndReturn(str, 0);
 	
 	value = NS(str);
 
-	TEST_ASSERT_EQUAL_HEX32(value, 0x00670067);
+	TEST_ASSERT_EQUAL_HEX32(0x001230045,value);
 
 }
 
@@ -57,7 +57,7 @@ void test_NS_operand1_should_mock_and_return_0x02670067(void){
 	
 	value = NS(str);
 
-	TEST_ASSERT_EQUAL_HEX32(value, 0x02670067);
+	TEST_ASSERT_EQUAL_HEX32(0x00020067, value);
 
 }
 

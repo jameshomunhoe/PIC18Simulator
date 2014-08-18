@@ -97,12 +97,12 @@ void test_extractValue_should_supports_FsFd_instruction(void){
 	int test;
 
 	stringMock = "123";
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
 	stringMock = "321";
-	//evaluate_ExpectAndReturn(stringMock,321);
+	////evaluate_ExpectAndReturn(stringMock,321);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(321,test);
 }
@@ -114,7 +114,7 @@ void test_extractDestination_should_return_correct_value_in_integer(void){
 	char *stringMock = "12+34";
 	int test;
 
-	//evaluate_ExpectAndReturn(stringMock,46);
+	////evaluate_ExpectAndReturn(stringMock,46);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(46,test);
 
@@ -155,12 +155,12 @@ void test_extractDestination_should_get_value_from_evaluate(void){
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
 	stringMock = "1";
-	//evaluate_ExpectAndReturn(stringMock,1);
+	////evaluate_ExpectAndReturn(stringMock,1);
 	test = extractDestination(string);
 	TEST_ASSERT_EQUAL(1,test);
 
@@ -173,7 +173,7 @@ void test_extractDestination_should_get_value_from_F(void){
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
@@ -189,7 +189,7 @@ void test_extractDestination_should_throw_with_invalid_argument(void){
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
@@ -211,7 +211,7 @@ void test_extractACCESSBANKED_should_return_correct_value_in_integer(void){
 	char *stringMock = "12+34";
 	int test;
 
-	//evaluate_ExpectAndReturn(stringMock,46);
+	////evaluate_ExpectAndReturn(stringMock,46);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(46,test);
 
@@ -219,7 +219,7 @@ void test_extractACCESSBANKED_should_return_correct_value_in_integer(void){
 	TEST_ASSERT_EQUAL(1,test);
 
 	stringMock = "3";
-	//evaluate_ExpectAndReturn(stringMock,3);
+	////evaluate_ExpectAndReturn(stringMock,3);
 	test = extractACCESSBANKED(string);
 	TEST_ASSERT_EQUAL(3,test);
 }
@@ -231,7 +231,7 @@ void test_extractACCESSBANKED_should_throw_error_with_empty_argument(void){
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
@@ -254,7 +254,7 @@ void test_extractACCESSBANKED_should_throw_error_with_empty_argument_semicolon(v
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
@@ -277,7 +277,7 @@ void test_extractAccessBaked_should_get_value_from_ACCESS(void){
 	char *stringMock = "1+2";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,3);
+	////evaluate_ExpectAndReturn(stringMock,3);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(3,test);
 
@@ -298,17 +298,17 @@ void test_extractACCESSBANKED_should_get_value_from_evaluate(void){
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
 	stringMock = "1";
-	//evaluate_ExpectAndReturn(stringMock,1);
+	////evaluate_ExpectAndReturn(stringMock,1);
 	test = extractDestination(string);
 	TEST_ASSERT_EQUAL(1,test);
 
 	stringMock = "1+2";
-	//evaluate_ExpectAndReturn(stringMock,3);
+	////evaluate_ExpectAndReturn(stringMock,3);
 	test = extractACCESSBANKED(string);
 	TEST_ASSERT_EQUAL(3,test);
 
@@ -321,7 +321,7 @@ void test_extractACCESSBANKED_should_get_value_from_evaluate(void){
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
@@ -345,7 +345,7 @@ void test_extractACCESSBANKED_should_get_value_from_evaluate(void){
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
@@ -369,7 +369,7 @@ void test_extractACCESSBANKED_should_get_value_from_evaluate(void){
 	char *stringMock = "123";
 	int test,e;
 
-	//evaluate_ExpectAndReturn(stringMock,123);
+	////evaluate_ExpectAndReturn(stringMock,123);
 	test = extractValue(string);
 	TEST_ASSERT_EQUAL(123,test);
 
@@ -405,54 +405,39 @@ void test_getInstruction_should_get_opCode_RETLW(){
 }
 
 void test_interpret_should_able_to_run_FDA_ADDWF(){
-	Text *text = textNew(" 180, F");
+	Text *text = textNew(" ADDWF  0x80, F");
 	String *string = stringNew(text);
-
-	char *stringMock = "180";
-	//evaluate_ExpectAndReturn(stringMock,0x180);
 
 	int test = interpret(string);
 
-	TEST_ASSERT_EQUAL_HEX32(0x2780,test);
+	TEST_ASSERT_EQUAL_HEX32(0x2680,test);
 
 }
-/*
+
 void test_interpret_should_able_to_run_FA_CLRF(){
-	Text *text = textNew(" CLRF  0x210");
+	Text *text = textNew(" CLRF  0x10");
 	String *string = stringNew(text);
 
-	char *stringMock = "0x210";
-	//evaluate_ExpectAndReturn(stringMock,0x210);
 	int test = interpret(string);
 
-	TEST_ASSERT_EQUAL_HEX32(0x6b10,test);
-
+	TEST_ASSERT_EQUAL_HEX32(0x6a10,test);
 }
 
 void test_interpret_should_able_to_run_FBA_BCF(){
 	Text *text = textNew(" BCF  0x10, 5, ACCESS ");
 	String *string = stringNew(text);
 
-	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
-	
-	stringMock = "5";
-	//evaluate_ExpectAndReturn(stringMock,0x5);
 	int test = interpret(string);
 
 	TEST_ASSERT_EQUAL_HEX32(0x9a10,test);
 
 }
 
+
 void test_interpret_should_able_to_run_FsFd_MOVFF(){
 	Text *text = textNew(" MOVFF  0x10, 0x11 ");
 	String *string = stringNew(text);
 
-	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
-	
-	stringMock = "0x11";
-	//evaluate_ExpectAndReturn(stringMock,0x11);
 	int test = interpret(string);
 
 	TEST_ASSERT_EQUAL_HEX32(0xf011c010,test);
@@ -464,7 +449,7 @@ void test_interpret_should_able_to_run_K_ADDLW(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
+	////evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	int test = interpret(string);
 
@@ -476,11 +461,6 @@ void test_interpret_should_able_to_run_NS_CALL(){
 	Text *text = textNew(" CALL  0x12345, 1");
 	String *string = stringNew(text);
 
-	char *stringMock = "0x12345";
-	//evaluate_ExpectAndReturn(stringMock,0x12345);
-	
-	stringMock = "1";
-	//evaluate_ExpectAndReturn(stringMock,1);
 	int test = interpret(string);
 
 	TEST_ASSERT_EQUAL_HEX32(0xf123ed45,test);
@@ -492,7 +472,7 @@ void test_interpret_should_able_to_run_N8_BC(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
+	////evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	int test = interpret(string);
 
@@ -505,7 +485,7 @@ void test_interpret_should_able_to_run_N11_BRA(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x7ff";
-	//evaluate_ExpectAndReturn(stringMock,0x7ff);
+	////evaluate_ExpectAndReturn(stringMock,0x7ff);
 	
 	int test = interpret(string);
 
@@ -518,7 +498,7 @@ void test_interpret_should_able_to_run_N12_GOTO(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x12345";
-	//evaluate_ExpectAndReturn(stringMock,0x12345);
+	////evaluate_ExpectAndReturn(stringMock,0x12345);
 	
 	int test = interpret(string);
 
@@ -533,7 +513,7 @@ void test_runProgram_should_able_to_run_MOVWF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
+	////evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[WREG] = 0x5;
 	fileRegisters[PCLATU] = 0x00;
@@ -553,7 +533,7 @@ void test_runProgram_should_able_to_run_ADDWF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
+	////evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[WREG] = 0x5;
 	fileRegisters[0x10] = 0x10;
@@ -576,7 +556,7 @@ void test_runProgram_should_able_to_run_ADDWFC(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
+	////evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[STATUS] = 0x01;
 	fileRegisters[WREG] = 0x5;
@@ -599,7 +579,7 @@ void test_runProgram_should_able_to_run_ANDWF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
+	////evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[WREG] = 0x11;
 	fileRegisters[0x10] = 0x12;
@@ -621,7 +601,7 @@ void test_runProgram_should_able_to_run_CLRF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	//evaluate_ExpectAndReturn(stringMock,0x10);
+	////evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	
 	fileRegisters[0x10] = 0x12;
@@ -643,7 +623,7 @@ void test_runProgram_should_able_to_run_COMF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	fileRegisters[PCLATU] = 0x00;
 	fileRegisters[PCLATH] = 0x00;
 	fileRegisters[PCL] = 0x00;
@@ -665,7 +645,7 @@ void test_runProgram_should_able_to_run_CPFSEQ(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[WREG] = 0x12;
 	fileRegisters[0x10] = 0x12;
@@ -685,7 +665,7 @@ void test_runProgram_should_able_to_run_CPFSGT(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[WREG] = 0x13;
 	fileRegisters[0x10] = 0x12;
@@ -705,7 +685,7 @@ void test_runProgram_should_able_to_run_CPFSLT(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[WREG] = 0x12;
 	fileRegisters[0x10] = 0x13;
@@ -725,7 +705,7 @@ void test_runProgram_should_able_to_run_DECF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 
 	fileRegisters[0x10] = 0x13;
@@ -746,7 +726,7 @@ void test_runProgram_should_able_to_run_DECFSZ(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 
 	fileRegisters[0x10] = 0x01;
@@ -766,7 +746,7 @@ void test_runProgram_should_able_to_run_DCFSNZ(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 
 	fileRegisters[0x10] = 0x10;
@@ -786,7 +766,7 @@ void test_runProgram_should_able_to_run_INCF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 
 	fileRegisters[0x10] = 0x10;
@@ -807,7 +787,7 @@ void test_runProgram_should_able_to_run_INCFSZ(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 
 	fileRegisters[0x10] = 0xff;
@@ -827,7 +807,7 @@ void test_runProgram_should_able_to_run_INFSNZ(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 
 	fileRegisters[0x10] = 0x10;
@@ -847,7 +827,7 @@ void test_runProgram_should_able_to_run_IORWF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 
 	fileRegisters[0x10] = 0x10;
@@ -869,7 +849,7 @@ void test_runProgram_should_able_to_run_MOVF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	fileRegisters[WREG] = 0x11;
 	fileRegisters[0x10] = 0x10;
@@ -890,9 +870,9 @@ void test_runProgram_should_able_to_run_MOVFF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	char *stringMock1 = "0x12";
-	evaluate_ExpectAndReturn(stringMock1,0x12);
+	//evaluate_ExpectAndReturn(stringMock1,0x12);
 	
 	fileRegisters[0x12] = 0x11;
 	fileRegisters[0x10] = 0x10;
@@ -912,7 +892,7 @@ void test_runProgram_should_able_to_run_BC(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 
 	fileRegisters[STATUS] = 0x01;
 	fileRegisters[PCLATU] = 0x00;
@@ -930,7 +910,7 @@ void test_runProgram_should_able_to_run_BNC(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 
 	fileRegisters[STATUS] = 0x00;
 	fileRegisters[PCLATU] = 0x00;
@@ -948,7 +928,7 @@ void test_runProgram_should_able_to_run_BNZ(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 
 	fileRegisters[STATUS] = 0x00;
 	fileRegisters[PCLATU] = 0x00;
@@ -966,7 +946,7 @@ void test_runProgram_should_able_to_run_BZ(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 
 	fileRegisters[STATUS] = 0x04;
 	fileRegisters[PCLATU] = 0x00;
@@ -984,7 +964,7 @@ void test_runProgram_should_able_to_run_BRA(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 
 
 	fileRegisters[PCLATU] = 0x00;
@@ -1002,10 +982,10 @@ void test_runProgram_should_able_to_run_CALL(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x123";
-	evaluate_ExpectAndReturn(stringMock,0x123);
+	//evaluate_ExpectAndReturn(stringMock,0x123);
 	
 	stringMock = "1";
-	evaluate_ExpectAndReturn(stringMock,1);
+	//evaluate_ExpectAndReturn(stringMock,1);
 
 
 	fileRegisters[PCLATU] = 0x00;
@@ -1024,7 +1004,7 @@ void test_runProgram_should_able_to_run_NEGF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 
 	fileRegisters[0x10] = 0x3A;
 	fileRegisters[PCLATU] = 0x00;
@@ -1046,7 +1026,7 @@ void test_runProgram_should_able_to_run_RLCF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 
 	fileRegisters[0x10] = 0x0f;
 	runProgram(string);
@@ -1062,7 +1042,7 @@ void test_runProgram_should_able_to_run_RRNCF(){
 	String *string = stringNew(text);
 
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 
 	fileRegisters[0x10] = 0x10;
 	runProgram(string);
@@ -1084,10 +1064,10 @@ void test_runProgram_should_able_to_run_BSF_ACCESS(){
 	fileRegisters[PCL] = 0x22;
 	
 	char *stringMock = "0x10";
-	evaluate_ExpectAndReturn(stringMock,0x10);
+	//evaluate_ExpectAndReturn(stringMock,0x10);
 	
 	stringMock = "4";
-	evaluate_ExpectAndReturn(stringMock,4);
+	//evaluate_ExpectAndReturn(stringMock,4);
 	
 	runProgram(string);
 	
@@ -1109,10 +1089,10 @@ void test_runProgram_should_able_to_run_BSF_BANKED(){
 	fileRegisters[PCL] = 0x24;
 	
 	char *stringMock = "0x33";
-	evaluate_ExpectAndReturn(stringMock,0x33);
+	//evaluate_ExpectAndReturn(stringMock,0x33);
 	
 	stringMock = "6";
-	evaluate_ExpectAndReturn(stringMock,6);
+	//evaluate_ExpectAndReturn(stringMock,6);
 	
 	runProgram(string);
 	
@@ -1133,10 +1113,10 @@ void test_runProgram_should_able_to_run_BCF_ACCESS(){
 	fileRegisters[PCL] = 0x26;
 	
 	char *stringMock = "0x15";
-	evaluate_ExpectAndReturn(stringMock,0x15);
+	//evaluate_ExpectAndReturn(stringMock,0x15);
 	
 	stringMock = "1";
-	evaluate_ExpectAndReturn(stringMock,1);
+	//evaluate_ExpectAndReturn(stringMock,1);
 	
 	runProgram(string);
 	
@@ -1158,10 +1138,10 @@ void test_runProgram_should_able_to_run_BCF_BANKED(){
 	fileRegisters[PCL] = 0x28;
 	
 	char *stringMock = "0x56";
-	evaluate_ExpectAndReturn(stringMock,0x56);
+	//evaluate_ExpectAndReturn(stringMock,0x56);
 	
 	stringMock = "7";
-	evaluate_ExpectAndReturn(stringMock,7);
+	//evaluate_ExpectAndReturn(stringMock,7);
 	
 	runProgram(string);
 	
@@ -1182,10 +1162,10 @@ void test_runProgram_should_able_to_run_BTFSC_ACCESS_should_not_skip(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x23";
-	evaluate_ExpectAndReturn(stringMock,0x23);
+	//evaluate_ExpectAndReturn(stringMock,0x23);
 	
 	stringMock = "7";
-	evaluate_ExpectAndReturn(stringMock,7);
+	//evaluate_ExpectAndReturn(stringMock,7);
 	
 	runProgram(string);
 	
@@ -1207,10 +1187,10 @@ void test_runProgram_should_able_to_run_BTFSC_BANKED_should_skip(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x44";
-	evaluate_ExpectAndReturn(stringMock,0x44);
+	//evaluate_ExpectAndReturn(stringMock,0x44);
 	
 	stringMock = "5";
-	evaluate_ExpectAndReturn(stringMock,5);
+	//evaluate_ExpectAndReturn(stringMock,5);
 	
 	runProgram(string);
 	
@@ -1231,10 +1211,10 @@ void test_runProgram_should_able_to_run_BTFSS_ACCESS_should_not_skip(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0xe3";
-	evaluate_ExpectAndReturn(stringMock,0xe3);
+	//evaluate_ExpectAndReturn(stringMock,0xe3);
 	
 	stringMock = "4";
-	evaluate_ExpectAndReturn(stringMock,4);
+	//evaluate_ExpectAndReturn(stringMock,4);
 	
 	runProgram(string);
 	
@@ -1256,10 +1236,10 @@ void test_runProgram_should_able_to_run_BTFSS_BANKED_should_skip(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x76";
-	evaluate_ExpectAndReturn(stringMock,0x76);
+	//evaluate_ExpectAndReturn(stringMock,0x76);
 	
 	stringMock = "7";
-	evaluate_ExpectAndReturn(stringMock,7);
+	//evaluate_ExpectAndReturn(stringMock,7);
 	
 	runProgram(string);
 	
@@ -1280,10 +1260,10 @@ void test_runProgram_should_able_to_run_BTG_ACCESS_should_toggle(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x5a";
-	evaluate_ExpectAndReturn(stringMock,0x5a);
+	//evaluate_ExpectAndReturn(stringMock,0x5a);
 	
 	stringMock = "4";
-	evaluate_ExpectAndReturn(stringMock,4);
+	//evaluate_ExpectAndReturn(stringMock,4);
 	
 	runProgram(string);
 	
@@ -1305,10 +1285,10 @@ void test_runProgram_should_able_to_run_BTG_BANKED_should_toggle(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0xca";
-	evaluate_ExpectAndReturn(stringMock,0xca);
+	//evaluate_ExpectAndReturn(stringMock,0xca);
 	
 	stringMock = "6";
-	evaluate_ExpectAndReturn(stringMock,6);
+	//evaluate_ExpectAndReturn(stringMock,6);
 	
 	runProgram(string);
 	
@@ -1329,7 +1309,7 @@ void test_runProgram_should_able_to_run_SWAPF_ACCESS_should_swap(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x48";
-	evaluate_ExpectAndReturn(stringMock,0x48);
+	//evaluate_ExpectAndReturn(stringMock,0x48);
 	
 	runProgram(string);
 	
@@ -1351,7 +1331,7 @@ void test_runProgram_should_able_to_run_SWAPF_BANKED_should_swap(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x52";
-	evaluate_ExpectAndReturn(stringMock,0x52);
+	//evaluate_ExpectAndReturn(stringMock,0x52);
 	
 	runProgram(string);
 	
@@ -1372,7 +1352,7 @@ void test_runProgram_should_able_to_run_TSTFSZ_ACCESS_should_skip(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x45";
-	evaluate_ExpectAndReturn(stringMock,0x45);
+	//evaluate_ExpectAndReturn(stringMock,0x45);
 	
 	runProgram(string);
 	
@@ -1394,7 +1374,7 @@ void test_runProgram_should_able_to_run_TSTFSZ_BANKED_should_not_skip(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x64";
-	evaluate_ExpectAndReturn(stringMock,0x64);
+	//evaluate_ExpectAndReturn(stringMock,0x64);
 	
 	runProgram(string);
 	
@@ -1416,7 +1396,7 @@ void test_runProgram_should_able_to_run_XORWF_ACCESS_should_xor(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x67";
-	evaluate_ExpectAndReturn(stringMock,0x67);
+	//evaluate_ExpectAndReturn(stringMock,0x67);
 	
 	runProgram(string);
 	
@@ -1440,7 +1420,7 @@ void test_runProgram_should_able_to_run_XORWF_BANKED_should_xor(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x41";
-	evaluate_ExpectAndReturn(stringMock,0x41);
+	//evaluate_ExpectAndReturn(stringMock,0x41);
 	
 	runProgram(string);
 	
@@ -1463,7 +1443,7 @@ void test_runProgram_should_able_to_run_SUBWF_ACCESS_should_sub(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x34";
-	evaluate_ExpectAndReturn(stringMock,0x34);
+	//evaluate_ExpectAndReturn(stringMock,0x34);
 	
 	runProgram(string);
 	
@@ -1487,7 +1467,7 @@ void test_runProgram_should_able_to_run_SUBWF_BANKED_should_sub(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x9a";
-	evaluate_ExpectAndReturn(stringMock,0x9a);
+	//evaluate_ExpectAndReturn(stringMock,0x9a);
 	
 	runProgram(string);
 	
@@ -1511,7 +1491,7 @@ void test_runProgram_should_able_to_run_SUBWFB_ACCESS_should_sub_with_borrow(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0x4c";
-	evaluate_ExpectAndReturn(stringMock,0x4c);
+	//evaluate_ExpectAndReturn(stringMock,0x4c);
 	
 	runProgram(string);
 	
@@ -1536,7 +1516,7 @@ void test_runProgram_should_able_to_run_SUBWFB_BANKED_should_sub_with_borrow(){
 	fileRegisters[PCL] = 0x10;
 	
 	char *stringMock = "0xca";
-	//evaluate_ExpectAndReturn(stringMock,0xca);
+	//////evaluate_ExpectAndReturn(stringMock,0xca);
 	
 	runProgram(string);
 	
@@ -1547,5 +1527,5 @@ void test_runProgram_should_able_to_run_SUBWFB_BANKED_should_sub_with_borrow(){
 	TEST_ASSERT_EQUAL_HEX8(0x12,fileRegisters[PCL]);
 	
 }
-*/
+
 

@@ -9,6 +9,19 @@
 #include "Interpret.h"
 #include "ExtractValue.h"
 
+/**
+ *	FSFD
+ *	
+ *	To generate the opcode based on the operand1 and operand2. The operand2 is 
+ *	to get the value and shifted to left 16 times and return. The operand1 is 
+ *	to get the value and return.
+ *
+ *	Input 	:
+ *		arguments
+ *
+ *	Return	:
+ *		opcode
+ **/
 int FSFD(String *arguments){
 	int operand1;
 	int operand2;

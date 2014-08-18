@@ -531,6 +531,7 @@ void test_evaluatePostfixesAndInfix_throw_error_expecting_open_bracket(void){
 		TEST_ASSERT_EQUAL(ERR_EXPECTING_OPENING_BRACKET,e);
 	}
 }
+
 void test_evaluatePostfixesAndInfix_should_evaluate_plus_and_push_plus_to_operator_stack(void){
 	Token *token;
 	Stack *numberStack=createStack();
@@ -798,7 +799,7 @@ void xtest_evaluation_5_should_push_into_number_stack(void){
 			BEFORE									  AFTER
 ****************************************************************************/
 
-void xtest_evaluation_negative_2_should_return_answer_negative_2(void){
+void test_evaluation_negative_2_should_return_answer_negative_2(void){
 	
 	int check;
 	
@@ -821,7 +822,7 @@ void xtest_evaluation_negative_2_should_return_answer_negative_2(void){
 void test_should_evaluate_negative_negative_60(void){
 	int check;
 	
-	check=evaluateExpression("--60");
+	check=evaluation("--60");
 	TEST_ASSERT_EQUAL(60,check);
 	
 }

@@ -216,7 +216,15 @@ int evaluation(char *expression){
 	String *tokenizer = stringNew(newText);
 	while((token=getToken(tokenizer))!=NULL){
 		evaluatePrefixesAndNumber(expression,token,numberStack,operatorStack);
+		
 	}
-	
+	evaluatePostfixesAndInfix(expression,token,numberStack,operatorStack);
+	evaluateAllOperatorOnStack(numberStack,operatorStack);
+	Number *result=(Number*)stackPop(numberStack);
+	destroyStack(numberStack);
+	if(operatorStack !=NULL){
+		destroyStack(operatorStack);
+	}
+	return result->value;
 }
 
