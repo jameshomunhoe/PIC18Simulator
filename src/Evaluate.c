@@ -81,17 +81,25 @@ void evaluatePrefixesAndNumber(char *expression,Token *token,Stack *numberStack,
 	if(token== NULL){
 		Throw(ERR_EXPECTING_NUMBER_OR_PREFIX);
 		return;
-	}
-	if(isNumber(token)){
-		stackPush(token,numberStack);
-		return;
+	}	
+	
+	Text *newText=textNew(expression);
+	String *tokenizer = stringNew(newText);
+	Token *newToken =getToken(tokenizer);
+	
+	while(newToken!=NULL){
+		if(isNumber(newToken)){
+			stackPush(newToken,numberStack);
+			break;
+		}
+		else if(isOperator(newToken)){
+			if(((Operator*)newToken)->info->affix !=PREFIX)
+				tryConvertToPrefix((Operator*)newToken);
+			stackPush(newToken,operatorStack);
+		}
+		newToken=getToken(tokenizer);
 	}
 	
-	if(isOperator(token)){
-		if(((Operator*)token)->info->affix !=PREFIX)
-			tryConvertToPrefix((Operator*)token);
-		stackPush(token,operatorStack);
-	}
 }
 
 /*******************************************************************************************
@@ -104,16 +112,17 @@ void evaluatePrefixesAndNumber(char *expression,Token *token,Stack *numberStack,
 
 void evaluatePostfixesAndInfix(char *expression,Token *token,Stack *numberStack,Stack *operatorStack){
 	if(token==NULL){
-		Throw(ERR_EXPECTING_NUMBER);
+		return;
 	}
-	if(isOperator(token)){
-		if(((Operator*)token)->info->affix==INFIX){
-			tryEvaluateOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
-		}else if(((Operator*)token)->info->affix==POSTFIX){
-			tryEvaluatePrefixOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
-		}else
-			Throw(ERR_NOT_EXPECTING_PREFIX_OPERATOR);
-	}
+		if(isOperator(token)){
+			if(((Operator*)token)->info->affix==INFIX){
+				tryEvaluateOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
+			}else if(((Operator*)token)->info->affix==POSTFIX){
+				tryEvaluatePrefixOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
+			}else
+				Throw(ERR_NOT_EXPECTING_PREFIX_OPERATOR);
+		
+		}
 }
 
 /*******************************************************************************************
@@ -201,7 +210,9 @@ int evaluateExpression(char *expression){
 	
 }
 
+
 int evaluation(char *expression){
+	
 	Token *token;
 	//Create 2 stack to take in number token and operator token
 	Stack *numberStack=createStack();
@@ -214,11 +225,11 @@ int evaluation(char *expression){
 	//expression are tokenize anot.
 	Text *newText=textNew(expression);
 	String *tokenizer = stringNew(newText);
+	/*
 	while((token=getToken(tokenizer))!=NULL){
 		evaluatePrefixesAndNumber(expression,token,numberStack,operatorStack);
-		
+		evaluatePostfixesAndInfix(expression,token,numberStack,operatorStack);
 	}
-	evaluatePostfixesAndInfix(expression,token,numberStack,operatorStack);
 	evaluateAllOperatorOnStack(numberStack,operatorStack);
 	Number *result=(Number*)stackPop(numberStack);
 	destroyStack(numberStack);
@@ -226,5 +237,6 @@ int evaluation(char *expression){
 		destroyStack(operatorStack);
 	}
 	return result->value;
+	*/
 }
 

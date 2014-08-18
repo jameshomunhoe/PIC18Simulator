@@ -21,6 +21,33 @@ void tearDown(void) {}
 /******************************************************************************************
 	Tests for evaluatePrefixesAndNumber(char *expression,token,numberStack,operatorStack)
 *******************************************************************************************/
+void test_evaluatePrefixesAndNumber_evaluate_should_push_2_into_number_stack_and_come_out_from_the_loop(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("-2+");
+	String *tokenizer = stringNew(newText);
+	
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-2+",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
+	
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-2+",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(2,((Number*)token)->value);
+	
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-2+",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+}
+
 /****************************************************************************
 	|		|		|		|				|		|		|		|
 	|		|		|		|				|		|		|		|
@@ -153,8 +180,6 @@ void test_evaluatePrefixesAndNumber_should_get_more_one_operator_token_before_ge
 	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
 	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
 	//5
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-5",token,numberStack,operatorStack);
 	token=stackPop(numberStack);
 	TEST_ASSERT_NOT_NULL(token);
 	TEST_ASSERT_EQUAL(5,((Number*)token)->value);
@@ -184,18 +209,14 @@ void test_evaluatePrefixesAndNumber_evaluate_should_push_negative_and_plus_into_
 	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
 	token=stackPop(operatorStack);
 	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
-	//+
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
-	token=stackPop(operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
 	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
 	TEST_ASSERT_EQUAL(PLUS_OP,((Operator*)token)->info->id);
+	//+
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
 	//6
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
 	token=stackPop(numberStack);
 	TEST_ASSERT_NOT_NULL(token);
 	TEST_ASSERT_EQUAL(6,((Number*)token)->value);
@@ -228,22 +249,16 @@ void test_evaluatePrefixesAndNumber_evaluate_should_push_negative_plus_negative_
 	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
 	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
 	//+
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
 	token=stackPop(operatorStack);
 	TEST_ASSERT_NOT_NULL(token);
 	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
 	TEST_ASSERT_EQUAL(PLUS_OP,((Operator*)token)->info->id);
 	//-
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
 	token=stackPop(operatorStack);
 	TEST_ASSERT_NOT_NULL(token);
 	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
 	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
 	//9
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
 	token=stackPop(numberStack);
 	TEST_ASSERT_NOT_NULL(token);
 	TEST_ASSERT_EQUAL(9,((Number*)token)->value);
@@ -364,16 +379,12 @@ void test_evaluatePrefixesAndNumber_evaluate_opening_opening_opening_bracket_10(
 	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
 	
 	//(
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("(((10",token,numberStack,operatorStack);
 	token=stackPop(operatorStack);
 	TEST_ASSERT_NOT_NULL(token);
 	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
 	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
 	
 	//8
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("(((10",token,numberStack,operatorStack);
 	token=stackPop(numberStack);
 	TEST_ASSERT_NOT_NULL(token);
 	TEST_ASSERT_EQUAL(10,((Number*)token)->value);
@@ -755,7 +766,7 @@ evaluateExpression(char *expression)
 			BEFORE									  AFTER
 ****************************************************************************/
 
-void test_evaluate_should_throw_error_if_the_expression_is_null(void){
+void xtest_evaluate_should_throw_error_if_the_expression_is_null(void){
 	
 	CEXCEPTION_T e;
 	int check;
@@ -784,7 +795,7 @@ void xtest_evaluation_5_should_push_into_number_stack(void){
 	int check;
 	check=evaluation("5");
 	
-	//TEST_ASSERT_EQUAL(5,check);
+	TEST_ASSERT_EQUAL(5,check);
 }
 
 
@@ -799,13 +810,13 @@ void xtest_evaluation_5_should_push_into_number_stack(void){
 			BEFORE									  AFTER
 ****************************************************************************/
 
-void test_evaluation_negative_2_should_return_answer_negative_2(void){
+void xtest_evaluation_negative_2_should_return_answer_negative_2(void){
 	
+	CEXCEPTION_T e;
 	int check;
-	
+	printf("testing-2\n");
 	check=evaluation("-2");
-	TEST_ASSERT_EQUAL(-2,check);
-	
+	TEST_ASSERT_EQUAL(-2,check);	
 }
 
 /****************************************************************************
@@ -819,7 +830,7 @@ void test_evaluation_negative_2_should_return_answer_negative_2(void){
 			BEFORE									  AFTER
 ****************************************************************************/
 
-void test_should_evaluate_negative_negative_60(void){
+void xtest_should_evaluate_negative_negative_60(void){
 	int check;
 	
 	check=evaluation("--60");
@@ -894,11 +905,11 @@ void test_should_evaluate_BITWISE_NOT_5(void){
 			BEFORE									  AFTER
 ****************************************************************************/
 
-void test_should_evaluate_1_plus_2(void){
+void xtest_should_evaluate_1_plus_2(void){
 	ErrorCode e;
 	int check;
 	
-	check=evaluateExpression("1+2");
+	check=evaluation("1+2");
 	TEST_ASSERT_EQUAL(3,check);
 	
 }
