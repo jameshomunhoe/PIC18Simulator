@@ -16,7 +16,7 @@
  *	To generate the opcode is based on the operand1 and operand2. The operand1
  *	is get the value and shifted to left 16 times and return. After that get the 
  *	operand1 and mask with 0xff and return. The operand2 is get the value and 
- *	shifted to left 8 times and return
+ *	shifted to left 8 times and return. Shift 0 to left 24 times
  *
  *	Input 	:
  *		arguments
@@ -32,7 +32,7 @@ int NS(String *arguments){
 	operand1 = operand1ExtractValue(arguments);
 	operand2 = operandExtract1BitsValue(arguments);
 	
-	return opcode = ((operand1&0xfff00)<<8) | (operand2<<8) | (operand1 & 0xff);
+	return opcode = (0x0<<24) + (operand1<<16) + (operand2<<8) + (operand1 & 0xff);
 
 
 }
