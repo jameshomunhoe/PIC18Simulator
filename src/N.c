@@ -10,7 +10,9 @@
 #include "ExtractValue.h"
 
 
-
+/*
+*  N: return opcode to LSB 8bit or 12bit;		 
+*/
 int N(String *arguments , int numberOfbits){
 	int value,value1;
 	int operand1;

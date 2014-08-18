@@ -8,7 +8,16 @@
 #include "ErrorCode.h"
 #include "ExtractValue.h"
 
-
+/*
+*	K
+*	
+*	Operation:
+*		operand1 take LSB 0 to 7 bit value
+*
+*	Return:
+*		opcode value
+*
+*/
 int K(String *arguments){
 	int operand1,operand2,operand3;
 	int opcode;

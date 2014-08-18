@@ -7,6 +7,19 @@
 #include "ErrorCode.h"
 #include "Extract1BitsDestination.h"
 
+/*
+*	Extract Destination to operand2
+*	
+*	Operation:
+*		To Catch No Argument and Empty Argument Value,extract value
+*
+*	Data:
+*		Make operand2 to default value 0x1;
+*
+*  Return:
+*		operand2 value
+*
+*/
 int extract1BitsDestination(String *arguments){
 	ErrorCode error;
 	int operand2;

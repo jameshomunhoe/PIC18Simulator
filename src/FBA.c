@@ -10,9 +10,16 @@
 #include "Extract3BitsValue.h"
 #include "Extract1BitsAccessBanked.h"
 
-
-
-
+/*
+*	Operation:
+*		Collect F: 8bit file register, B: bit value, A: Access or Banked
+*	
+*	Extract:
+*		operand1,operand2 and operand3
+*	
+*	Return:
+*		Opcode
+*/
 int FBA(String *arguments){
 	int operand1,operand2,operand3;
 	int opcode;
