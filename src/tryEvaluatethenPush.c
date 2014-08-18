@@ -53,13 +53,15 @@ void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberSt
 {
 	Operator *previousToken=(Operator*)stackPop(operatorStack);
 	if(previousToken == NULL){
+		if(newToken->info->id ==CLOSING_BRACKET_OP){
+			Throw(ERR_EXPECTING_OPENING_BRACKET);
+		}
 		stackPush(newToken,operatorStack);
 	}
 	else{
 		while(previousToken!=NULL)
 		{
 			if(newToken->info->id ==CLOSING_BRACKET_OP){
-				
 				if(previousToken->info->id == OPENING_BRACKET_OP){
 					operatorPrefixEvaluate(numberStack ,previousToken);
 					free(newToken);
