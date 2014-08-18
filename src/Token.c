@@ -146,7 +146,7 @@ Token *getToken(String *str) {
 
 	//Number
 	if(stringIsCharAtInSet(str,0,numberSet)){
-		strReturn = stringRemoveWordContaining(str,numberSet);
+		strReturn = stringRemoveWordContaining(str,hexSet);
 		if(stringIsCharAtInSet(str,0,alphabetSet)){
 			Throw(ERR_NUMBER_NOT_WELL_FORMED);
 		}
