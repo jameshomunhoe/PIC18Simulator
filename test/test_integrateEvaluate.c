@@ -510,6 +510,217 @@ void test_evaluatePrefixesAndNumber_evaluate_divide_multiply_should_throw_error_
 		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX,e);
 	}
 }
+
+/*****************************************************************************************
+	Tests for evaluatePostfixesAndInfix(char *expression,(token,numberStack,operatorStack)
+*******************************************************************************************/
+void test_evaluatePostfixesAndInfix_throw_error_expecting_open_bracket(void){
+	CEXCEPTION_T e;
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Number number2 = {.type= NUMBER_TOKEN, .value=2};
+	Operator closingBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(CLOSING_BRACKET_OP)};
+	
+	stackPush(&number2,numberStack);
+	Try{
+		evaluatePostfixesAndInfix("2)",(Token*)&closingBracket,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Expecting a open bracket ");
+	}Catch(e){
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_OPENING_BRACKET,e);
+	}
+}
+void test_evaluatePostfixesAndInfix_should_evaluate_plus_and_push_plus_to_operator_stack(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	//+
+	Operator plus =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
+	token=(Token*)&plus;
+	evaluatePostfixesAndInfix("+",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(ADD_OP,((Operator*)token)->info->id);
+	TEST_ASSERT_NULL(stackPop(operatorStack));
+}
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|	2	|		|	+	|				|	2    |		|	+	|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+**************************************************************************/
+
+void test_evaluatePostfixesAndInfix_should_evaluate_2_plus_and_push_plus_to_operator_stack(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	//2+
+	Number number2 = {.type= NUMBER_TOKEN, .value=2};
+	Operator plus =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
+	
+	
+	stackPush(&number2,numberStack);
+	evaluatePostfixesAndInfix("2+",(Token*)&plus,numberStack,operatorStack);
+	token = (Token*)stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(2,((Number*)token)->value);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(ADD_OP,((Operator*)token)->info->id);
+	TEST_ASSERT_NULL(stackPop(operatorStack));
+}	
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|	+	|
+	|		|		|		|				|		|		|	)	|
+	|	10	|		|	(	|				|	10    |		|	(	|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+**************************************************************************/
+
+void test_evaluatePostfixesAndInfixes_should_evaluate_opening_bracket_10_plus_and_push_to_their_respective_stack(void){
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Operator openBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(OPENING_BRACKET_OP)};
+	Number number10 = {.type= NUMBER_TOKEN, .value=10};
+	Operator plus =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
+	
+	stackPush(&openBracket,operatorStack);
+	stackPush(&number10,numberStack);
+	
+	evaluatePostfixesAndInfix("(10  +",(Token*)&plus,numberStack,operatorStack);
+	Token *token =(Token*)stackPop(numberStack);
+	TEST_ASSERT_EQUAL(10,((Number*)token)->value);
+	TEST_ASSERT_NULL(stackPop(numberStack));
+	
+	token = (Token*)stackPop(operatorStack);
+	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(ADD_OP,((Operator*)token)->info->id);
+	
+	token = (Token*)stackPop(operatorStack);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	TEST_ASSERT_NULL(stackPop(operatorStack));
+}	
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	(	|				|		|		|		|
+	|	10	|		|	(	|				|	10  |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+**************************************************************************/
+
+void test_evaluatePostfixesAndInfix_should_throw_error_invalid_operator_for_open_bracket_2_open_bracket(void){
+	CEXCEPTION_T e;
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Operator openBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(OPENING_BRACKET_OP)};
+	Number number10 = {.type= NUMBER_TOKEN, .value=10};
+	
+	stackPush(&openBracket,operatorStack);
+	stackPush(&number10,numberStack);
+	stackPush(&openBracket,operatorStack);
+	
+	Try
+	{
+		evaluatePostfixesAndInfix("(10(",(Token*)&openBracket,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Not expecting prefix to come in ");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_NOT_EXPECTING_PREFIX_OPERATOR,e);
+	}
+}
+
+void test_evaluatePostfixesAndInfix_push_plus_into_operator_stack(void){
+	
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Operator openBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(OPENING_BRACKET_OP)};
+	Number number10 = {.type= NUMBER_TOKEN, .value=10};
+	Operator closingBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(CLOSING_BRACKET_OP)};
+	Operator plus =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
+	
+	stackPush(&openBracket,operatorStack);
+	stackPush(&number10,numberStack);
+	stackPush(&closingBracket,operatorStack);
+	
+	evaluatePostfixesAndInfix("(10)+",(Token*)&plus,numberStack,operatorStack);
+	Token *token =(Token*)stackPop(numberStack);
+	TEST_ASSERT_EQUAL(10,((Number*)token)->value);
+	TEST_ASSERT_NULL(stackPop(numberStack));
+	
+	token = (Token*)stackPop(operatorStack);
+	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(ADD_OP,((Operator*)token)->info->id);
+	TEST_ASSERT_NOT_NULL(stackPop(operatorStack));
+	
+	token = (Token*)stackPop(operatorStack);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	TEST_ASSERT_NULL(stackPop(operatorStack));
+}
+/*************************************************************************
+This function only evaluate one time for open bracket and closing bracket
+If the expression have ((10)), after evaluate for the first time the 
+expression become (10), then this expression will be evaluate at function
+evaluateAllOperatorOnStack
+*************************************************************************/
+void test_evaluatePostfixesAndInfix_push_multiply_into_operator_stack(void){
+	
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Operator openBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(OPENING_BRACKET_OP)};
+	Number number10 = {.type= NUMBER_TOKEN, .value=10};
+	Operator closingBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(CLOSING_BRACKET_OP)};
+	Operator multiply =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(MUL_OP)};
+	
+	stackPush(&openBracket,operatorStack);
+	stackPush(&openBracket,operatorStack);
+	stackPush(&number10,numberStack);
+	stackPush(&closingBracket,operatorStack);
+	stackPush(&closingBracket,operatorStack);
+	
+	evaluatePostfixesAndInfix("((10))*",(Token*)&multiply,numberStack,operatorStack);
+	Token *token =(Token*)stackPop(numberStack);
+	TEST_ASSERT_EQUAL(10,((Number*)token)->value);
+	TEST_ASSERT_NULL(stackPop(numberStack));
+	
+	token = (Token*)stackPop(operatorStack);
+	TEST_ASSERT_EQUAL_STRING("*",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(MUL_OP,((Operator*)token)->info->id);
+	TEST_ASSERT_NOT_NULL(stackPop(operatorStack));
+	
+	token = (Token*)stackPop(operatorStack);
+	TEST_ASSERT_EQUAL_STRING(")",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(CLOSING_BRACKET_OP,((Operator*)token)->info->id);
+	TEST_ASSERT_NOT_NULL(stackPop(operatorStack));
+	
+	token = (Token*)stackPop(operatorStack);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	TEST_ASSERT_NULL(stackPop(operatorStack));
+}
+
 /*********************************************************************************************************************************
  Test on function evaluateExpression(char *expression)
  Input parameter : 
@@ -1009,121 +1220,7 @@ void test_should_throw_error_expecting_number_for_evaluate_subtract(void){
 
 
 
-/*****************************************************************************************
-	Tests for evaluatePostfixesAndInfix(char *expression,(token,numberStack,operatorStack)
-*******************************************************************************************/
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|	2	|		|	+	|				|	    |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-**************************************************************************/
 
-void test_evaluatePostfixesPrefixesAndInfixes_should_evaluate_2_plus_and_push_to_their_respective_stack(void){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	//2+
-	Number number2 = {.type= NUMBER_TOKEN, .value=2};
-	Operator plus =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
-	
-	stackPush(&number2,numberStack);
-	
-	evaluatePostfixesPrefixesAndInfixes("2+",(Token*)&plus,numberStack,operatorStack);
-	token = (Token*)stackPop(numberStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(2,((Number*)token)->value);
-	
-	token = (Token*)stackPop(operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(ADD_OP,((Operator*)token)->info->id);
-	TEST_ASSERT_NULL(stackPop(operatorStack));
-}	
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|	+	|
-	|		|		|		|				|		|		|	)	|
-	|	10	|		|	(	|				|	10    |		|	(	|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-**************************************************************************/
-
-void test_evaluatePostfixesPrefixesAndInfixes_should_evaluate_opening_bracket_10_closing_bracket_plus_and_push_to_their_respective_stack(void){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Operator openBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(OPENING_BRACKET_OP)};
-	Number number10 = {.type= NUMBER_TOKEN, .value=10};
-	Operator closeBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(CLOSING_BRACKET_OP)};
-	Operator plus =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
-	
-	stackPush(&openBracket,operatorStack);
-	stackPush(&number10,numberStack);
-	
-	evaluatePostfixesPrefixesAndInfixes("(10   )+",(Token*)&closeBracket,numberStack,operatorStack);
-	token = (Token*)stackPop(numberStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(10,((Number*)token)->value);
-	TEST_ASSERT_NULL(stackPop(numberStack));
-	
-	evaluatePostfixesPrefixesAndInfixes("(10   )+",(Token*)&closeBracket,numberStack,operatorStack);
-	token = (Token*)stackPop(operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING(")",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(CLOSING_BRACKET_OP,((Operator*)token)->info->id);
-	TEST_ASSERT_NULL(stackPop(operatorStack));
-	
-	evaluatePostfixesPrefixesAndInfixes("(10   )+",(Token*)&plus,numberStack,operatorStack);
-	token = (Token*)stackPop(operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(ADD_OP,((Operator*)token)->info->id);
-	TEST_ASSERT_NULL(stackPop(operatorStack));
-	
-}	
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	(	|				|		|		|		|
-	|	10	|		|	(	|				|	10  |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-**************************************************************************/
-
-void test_evaluatePostfixesPrefixesAndInfixes_should_throw_error_invalid_operator_for_open_bracket_2_open_bracket(void){
-	CEXCEPTION_T e;
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Operator openBracket =  {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(OPENING_BRACKET_OP)};
-	Number number10 = {.type= NUMBER_TOKEN, .value=10};
-	
-	stackPush(&openBracket,operatorStack);
-	stackPush(&number10,numberStack);
-	stackPush(&openBracket,operatorStack);
-	
-	Try
-	{
-		evaluatePostfixesPrefixesAndInfixes("(10(",(Token*)&openBracket,numberStack,operatorStack);
-	}
-	Catch(e)
-	{
-		TEST_ASSERT_EQUAL(ERR_INVALID_OPERATOR,e);
-	}
-}
 
 
 

@@ -93,6 +93,29 @@ void evaluatePrefixesAndNumber(char *expression,Token *token,Stack *numberStack,
 		stackPush(token,operatorStack);
 	}
 }
+
+/*******************************************************************************************
+ *	This function is to evaluate postfix and infix operator.
+ *	input  : expression,token,numberStack,operatorStack
+ *	output : none
+ *	return : function
+ *	After detect one infix operator, the loop will stop and come out.
+********************************************************************************************/
+
+void evaluatePostfixesAndInfix(char *expression,Token *token,Stack *numberStack,Stack *operatorStack){
+	if(token==NULL){
+		Throw(ERR_EXPECTING_NUMBER);
+	}
+	if(isOperator(token)){
+		if(((Operator*)token)->info->affix==INFIX){
+			tryEvaluateOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
+		}else if(((Operator*)token)->info->affix==POSTFIX){
+			tryEvaluatePrefixOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
+		}else
+			Throw(ERR_NOT_EXPECTING_PREFIX_OPERATOR);
+	}
+}
+
 /*******************************************************************************************
  *	This function is to evaluate postfix, prefix and infix operator.
  *	This function will stop and go out the loop once no operator is detected.
