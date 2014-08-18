@@ -403,12 +403,12 @@ void test_getInstruction_should_get_opCode_RETLW(){
 	TEST_ASSERT_EQUAL_HEX16(0x0C00,test.opCode);
 	TEST_ASSERT_EQUAL(K_TYPE,test.type);
 }
-/*
+
 void test_interpret_should_able_to_run_FDA_ADDWF(){
-	Text *text = textNew(" ADDWF  0x180, F");
+	Text *text = textNew(" 180, F");
 	String *string = stringNew(text);
 
-	char *stringMock = "0x180";
+	char *stringMock = "180";
 	//evaluate_ExpectAndReturn(stringMock,0x180);
 
 	int test = interpret(string);
@@ -416,7 +416,7 @@ void test_interpret_should_able_to_run_FDA_ADDWF(){
 	TEST_ASSERT_EQUAL_HEX32(0x2780,test);
 
 }
-
+/*
 void test_interpret_should_able_to_run_FA_CLRF(){
 	Text *text = textNew(" CLRF  0x210");
 	String *string = stringNew(text);

@@ -18,6 +18,498 @@
 void setUp(void) {}
 void tearDown(void) {}
 
+/******************************************************************************************
+	Tests for evaluatePrefixesAndNumber(char *expression,token,numberStack,operatorStack)
+*******************************************************************************************/
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|	10	|		|		|				|	10	|		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_should_push_10_into_number_stack(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("10");
+	String *tokenizer = stringNew(newText);
+	
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("10",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(10,((Number*)token)->value);
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|	+	|		|		|				|		|		|	+	|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_should_convert_operator_to_prefix_and_push_into_operator_stack(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("+");
+	String *tokenizer = stringNew(newText);
+	
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("+",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(PLUS_OP,((Operator*)token)->info->id);
+}
+
+void test_evaluatePrefixesAndNumber_should_throw_error_cannot_convert_to_prefix_for_operator_not_in_alternate_operator_table(void){
+	CEXCEPTION_T e;
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("%");
+	String *tokenizer = stringNew(newText);
+	
+	token=getToken(tokenizer);
+	Try{
+		evaluatePrefixesAndNumber("%",token,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Cannot convert to prefix ");
+	}Catch(e){
+		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX,e);
+	}
+	
+}
+
+void test_evaluatePrefixesAndNumber_should_not_convert_to_prefix_for_operator_that_is_prefix(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("!");
+	String *tokenizer = stringNew(newText);
+	
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("!",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("!",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(LOGICAL_NOT_OP,((Operator*)token)->info->id);
+}
+
+void test_evaluatePrefixesAndNumber_should_throw_error_no_number_and_operator_is_detected(void){
+	CEXCEPTION_T e;
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew(" ");
+	String *tokenizer = stringNew(newText);
+	token=getToken(tokenizer);
+	Try{
+		evaluatePrefixesAndNumber(NULL,token,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Expecting number or prefix");
+	}Catch(e){
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER_OR_PREFIX,e);
+	}
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|	5	|		|	-	|				|	-5	|		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_should_get_more_one_operator_token_before_get_number_token(void){
+	Token *token;
+	
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("-5");
+	String *tokenizer = stringNew(newText);
+	//-
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-5",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
+	//5
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-5",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(5,((Number*)token)->value);
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	+	|				|		|		|		|
+	|	6	|		|	-	|				|	6   |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_should_push_negative_and_plus_into_operatorStack_and_6_into_number_stack(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("-+6");
+	String *tokenizer = stringNew(newText);
+	
+	//-
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
+	//+
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(PLUS_OP,((Operator*)token)->info->id);
+	//6
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(6,((Number*)token)->value);
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	-	|				|		|		|		|
+	|		|		|	+	|				|		|		|		|
+	|	9	|		|	-	|				|	-9  |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_should_push_negative_plus_negative_into_operatorStack_and_9_into_number_stack(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("-+-9");
+	String *tokenizer = stringNew(newText);
+	
+	//-
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
+	//+
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(PLUS_OP,((Operator*)token)->info->id);
+	//-
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
+	//9
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(9,((Number*)token)->value);
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|	7	|		|	(	|				|	7   |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_opening_bracket_7(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("(7");
+	String *tokenizer = stringNew(newText);
+	
+	//(
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("(7",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	
+	//7
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("(7",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(7,((Number*)token)->value);
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	(	|				|		|		|		|
+	|	8	|		|	(	|				|	8   |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_opening_opening_bracket_8(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("((8");
+	String *tokenizer = stringNew(newText);
+	
+	//(
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("((8",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	
+	//(
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("((8",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	
+	//8
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("((8",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(8,((Number*)token)->value);
+
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	(	|				|		|		|		|
+	|		|		|	(	|				|		|		|		|
+	|	8	|		|	(	|				|	8   |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_opening_opening_opening_bracket_10(void){
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("(((10");
+	String *tokenizer = stringNew(newText);
+	
+	//(
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("(((10",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	
+	//(
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("(((10",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	
+	//(
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("(((10",token,numberStack,operatorStack);
+	token=stackPop(operatorStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
+	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
+	
+	//8
+	token=getToken(tokenizer);
+	evaluatePrefixesAndNumber("(((10",token,numberStack,operatorStack);
+	token=stackPop(numberStack);
+	TEST_ASSERT_NOT_NULL(token);
+	TEST_ASSERT_EQUAL(10,((Number*)token)->value);
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	*	|				|		|		|		|
+	|		|		|	-	|				|	   |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_negative_multiply_should_throw_error_cannot_convert_to_prefix_operator(void){
+	CEXCEPTION_T e;
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("-*");
+	String *tokenizer = stringNew(newText);
+	
+	//-*
+	token=getToken(tokenizer);
+	token=getToken(tokenizer);
+	Try
+	{
+		evaluatePrefixesAndNumber("-*",token,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Multiply cannot convert to prefix");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX,e);
+	}
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	-	|				|	    |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_negative_should_throw_error_expecting_number(void){
+	CEXCEPTION_T e;
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("-");
+	String *tokenizer = stringNew(newText);
+	token=getToken(tokenizer);
+	token=getToken(tokenizer);
+	
+	Try
+	{
+		evaluatePrefixesAndNumber("-",token,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Expecting number or prefix");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER_OR_PREFIX,e);
+	}
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	+	|				|		|		|		|
+	|		|		|	-	|				|	    |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_negative_positive_should_throw_error_expecting_number(void){
+	CEXCEPTION_T e;
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("-+");
+	String *tokenizer = stringNew(newText);
+	token=getToken(tokenizer);
+	token=getToken(tokenizer);
+	token=getToken(tokenizer);
+	Try
+	{
+		evaluatePrefixesAndNumber("-+",token,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Expecting number or prefix");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER_OR_PREFIX,e);
+	}
+}
+
+/****************************************************************************
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|		|				|		|		|		|
+	|		|		|	*	|				|		|		|		|
+	|		|		|	/	|				|	    |		|		|
+	numberstack		operatorStack			numberstack		operatorStack
+			BEFORE									  AFTER
+****************************************************************************/
+
+void test_evaluatePrefixesAndNumber_evaluate_divide_multiply_should_throw_error_expecting_number(void){
+	CEXCEPTION_T e;
+	Token *token;
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	
+	Text *newText=textNew("/*");
+	String *tokenizer = stringNew(newText);
+	token=getToken(tokenizer);
+	token=getToken(tokenizer);
+	Try
+	{
+		evaluatePrefixesAndNumber("/*",token,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Cannot convert to prefix");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX,e);
+	}
+}
 /*********************************************************************************************************************************
  Test on function evaluateExpression(char *expression)
  Input parameter : 
@@ -51,13 +543,13 @@ evaluateExpression(char *expression)
 			BEFORE									  AFTER
 ****************************************************************************/
 
-void test_evaluate_should_throw_error_if_the_expression_is_null(){
+void test_evaluate_should_throw_error_if_the_expression_is_null(void){
 	
 	CEXCEPTION_T e;
 	int check;
 	Try
 	{
-		check=evaluateExpression(NULL);
+		check=evaluation(NULL);
 		TEST_FAIL_MESSAGE("Should throw Error no expression ");
 	}
 	Catch(e)
@@ -76,12 +568,11 @@ void test_evaluate_should_throw_error_if_the_expression_is_null(){
 	numberstack		operatorStack			numberstack		operatorStack
 			BEFORE									  AFTER
 ****************************************************************************/
-void test_evaluate_5(void){
+void xtest_evaluation_5_should_push_into_number_stack(void){
 	int check;
-	check=evaluateExpression("5");
+	check=evaluation("5");
 	
-	TEST_ASSERT_EQUAL(5,check);
-	
+	//TEST_ASSERT_EQUAL(5,check);
 }
 
 
@@ -96,11 +587,11 @@ void test_evaluate_5(void){
 			BEFORE									  AFTER
 ****************************************************************************/
 
-void test_evaluate_negative_2(void){
+void xtest_evaluation_negative_2_should_return_answer_negative_2(void){
 	
 	int check;
 	
-	check=evaluateExpression("-2");
+	check=evaluation("-2");
 	TEST_ASSERT_EQUAL(-2,check);
 	
 }
@@ -510,429 +1001,13 @@ void test_should_throw_error_expecting_number_for_evaluate_subtract(void){
 	}
 }
 
-/******************************************************************************************
-	Tests for evaluatePrefixesAndNumber(char *expression,token,numberStack,operatorStack)
-*******************************************************************************************/
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|	10	|		|		|				|	10	|		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
 
-void test_evaluatePrefixesAndNumber_evaluate_should_push_10_into_number_stack(void){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("10");
-	String *tokenizer = stringNew(newText);
-	
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("10",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(10,((Number*)token)->value);
-}
 
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|	5	|		|	-	|				|	-5	|		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
 
-void test_evaluatePrefixesAndNumber_evaluate_should_push_negative_into_operatorStack_and_5_into_number_stack(void){
-	Token *token;
-	
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("-5");
-	String *tokenizer = stringNew(newText);
-	//-
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-5",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
-	//5
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-5",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(5,((Number*)token)->value);
-}
 
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	+	|				|		|		|		|
-	|	6	|		|	-	|				|	6   |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
 
-void test_evaluatePrefixesAndNumber_evaluate_should_push_negative_and_plus_into_operatorStack_and_6_into_number_stack(void){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("-+6");
-	String *tokenizer = stringNew(newText);
-	
-	//-
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
-	//+
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(PLUS_OP,((Operator*)token)->info->id);
-	//6
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+6",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(6,((Number*)token)->value);
-}
 
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	-	|				|		|		|		|
-	|		|		|	+	|				|		|		|		|
-	|	9	|		|	-	|				|	-9  |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
 
-void test_evaluatePrefixesAndNumber_evaluate_should_push_negative_plus_negative_into_operatorStack_and_9_into_number_stack(void){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("-+-9");
-	String *tokenizer = stringNew(newText);
-	
-	//-
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
-	//+
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("+",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(PLUS_OP,((Operator*)token)->info->id);
-	//-
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("-",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(MINUS_OP,((Operator*)token)->info->id);
-	//9
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("-+-9",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(9,((Number*)token)->value);
-}
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|	7	|		|	(	|				|	7   |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
-
-void test_evaluatePrefixesAndNumber_evaluate_opening_bracket_7(void){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("(7");
-	String *tokenizer = stringNew(newText);
-	
-	//(
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("(7",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
-	
-	//7
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("(7",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(7,((Number*)token)->value);
-}
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	(	|				|		|		|		|
-	|	8	|		|	(	|				|	8   |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
-
-void test_evaluatePrefixesAndNumber_evaluate_opening_opening_bracket_8(void){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("((8");
-	String *tokenizer = stringNew(newText);
-	
-	//(
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("((8",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
-	
-	//(
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("((8",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
-	
-	//8
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("((8",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(8,((Number*)token)->value);
-
-}
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	(	|				|		|		|		|
-	|		|		|	(	|				|		|		|		|
-	|	8	|		|	(	|				|	8   |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
-
-void test_evaluatePrefixesAndNumber_evaluate_opening_opening_opening_bracket_10(void){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("(((8");
-	String *tokenizer = stringNew(newText);
-	
-	//(
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("(((8",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
-	
-	//(
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("(((8",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
-	
-	//(
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("(((8",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL_STRING("(",((Operator*)token)->info->symbol);
-	TEST_ASSERT_EQUAL(OPENING_BRACKET_OP,((Operator*)token)->info->id);
-	
-	//8
-	token=getToken(tokenizer);
-	evaluatePrefixesAndNumber("(((8",token,numberStack,operatorStack);
-	TEST_ASSERT_NOT_NULL(token);
-	TEST_ASSERT_EQUAL(8,((Number*)token)->value);
-}
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	*	|				|	   |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
-
-void test_evaluatePrefixesAndNumber_evaluate_multiply_should_throw_error_cannot_convert_to_prefix_operator(void){
-	CEXCEPTION_T e;
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("*");
-	String *tokenizer = stringNew(newText);
-	
-	//(
-	token=getToken(tokenizer);
-	Try
-	{
-		evaluatePrefixesAndNumber("*",token,numberStack,operatorStack);
-		TEST_FAIL_MESSAGE("Should throw Error no expression ");
-	}
-	Catch(e)
-	{
-		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX ,e);
-	}
-}
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	*	|				|		|		|		|
-	|		|		|	-	|				|	   |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
-
-void test_evaluatePrefixesAndNumber_evaluate_negative_multiply_should_throw_error_cannot_convert_to_prefix_operator(void){
-	CEXCEPTION_T e;
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("-*");
-	String *tokenizer = stringNew(newText);
-	
-	//-*
-	token=getToken(tokenizer);
-	token=getToken(tokenizer);
-	Try
-	{
-		evaluatePrefixesAndNumber("-*",token,numberStack,operatorStack);
-	}
-	Catch(e)
-	{
-		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX,e);
-	}
-}
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	-	|				|	    |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
-
-void test_evaluatePrefixesAndNumber_evaluate_negative_should_throw_error_expecting_number(void){
-	CEXCEPTION_T e;
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("-");
-	String *tokenizer = stringNew(newText);
-	token=getToken(tokenizer);
-	token=getToken(tokenizer);
-	
-	Try
-	{
-		evaluatePrefixesAndNumber("-",token,numberStack,operatorStack);
-	}
-	Catch(e)
-	{
-		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER,e);
-	}
-}
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	+	|				|		|		|		|
-	|		|		|	-	|				|	    |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
-
-void test_evaluatePrefixesAndNumber_evaluate_negative_positive_should_throw_error_expecting_number(void){
-	CEXCEPTION_T e;
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("-+");
-	String *tokenizer = stringNew(newText);
-	token=getToken(tokenizer);
-	token=getToken(tokenizer);
-	token=getToken(tokenizer);
-	Try
-	{
-		evaluatePrefixesAndNumber("-+",token,numberStack,operatorStack);
-	}
-	Catch(e)
-	{
-		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER,e);
-	}
-}
-
-/****************************************************************************
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|		|				|		|		|		|
-	|		|		|	*	|				|		|		|		|
-	|		|		|	/	|				|	    |		|		|
-	numberstack		operatorStack			numberstack		operatorStack
-			BEFORE									  AFTER
-****************************************************************************/
-
-void test_evaluatePrefixesAndNumber_evaluate_divide_multiply_should_throw_error_expecting_number(void){
-	CEXCEPTION_T e;
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Text *newText=textNew("/*");
-	String *tokenizer = stringNew(newText);
-	token=getToken(tokenizer);
-	token=getToken(tokenizer);
-	Try
-	{
-		evaluatePrefixesAndNumber("/*",token,numberStack,operatorStack);
-	}
-	Catch(e)
-	{
-		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX,e);
-	}
-}
 
 /*****************************************************************************************
 	Tests for evaluatePostfixesAndInfix(char *expression,(token,numberStack,operatorStack)

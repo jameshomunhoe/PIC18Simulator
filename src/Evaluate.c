@@ -69,6 +69,7 @@ int evaluate(char *expression){
 /*******************************************************************************************
  *	This function is to evaluate prefixes and number.
  *	This function will stop and return after number is detected.
+ *  Get a operator token,check whether it can be convert to prefix. If yes, convert to prefix 
  *	input  : expression,token,numberStack,operatorStack
  *	output : none
  *	return : function
@@ -76,28 +77,21 @@ int evaluate(char *expression){
 ********************************************************************************************/
 
 void evaluatePrefixesAndNumber(char *expression,Token *token,Stack *numberStack,Stack *operatorStack){
-	Text *newText=textNew(expression);
-	String *tokenizer = stringNew(newText);
 	
-	if(token==NULL){
-		Throw(ERR_EXPECTING_NUMBER);
-	}else {
-		while(1){
-			if(isNumber(token)){
-				stackPush(token,numberStack);
-				break;
-			}else if(isOperator(token)){
-				if(((Operator*)token)->info->affix !=PREFIX)
-					tryConvertToPrefix((Operator*)token);
-				stackPush(token,operatorStack);
-			}else
-				Throw(ERR_INVALID_IDENTIFIER);
-			token=getToken(tokenizer);
-			if(token==NULL)
-				break;
-		}
+	if(token== NULL){
+		Throw(ERR_EXPECTING_NUMBER_OR_PREFIX);
+		return;
+	}
+	if(isNumber(token)){
+		stackPush(token,numberStack);
+		return;
 	}
 	
+	if(isOperator(token)){
+		if(((Operator*)token)->info->affix !=PREFIX)
+			tryConvertToPrefix((Operator*)token);
+		stackPush(token,operatorStack);
+	}
 }
 /*******************************************************************************************
  *	This function is to evaluate postfix, prefix and infix operator.
@@ -120,7 +114,7 @@ void evaluatePostfixesPrefixesAndInfixes(char *expression,Token *token,Stack *nu
 				Throw(ERR_EXPECTING_OPERATOR);
 			}
 		}else if(isNumber(token)){
-			stackPush(token,numberStack);
+				stackPush(token,numberStack);
 		}else{
 			Throw(ERR_EXPECTING_NUMBER_OR_PREFIX);
 		}
@@ -164,15 +158,15 @@ int evaluateExpression(char *expression){
 			break;
 		}else
 			Throw(ERR_INVALID_IDENTIFIER);
+		
 		token=getToken(tokenizer);
 		if(token==NULL)
 			break;
 	}
-		
 	}
-	
 	while((token=getToken(tokenizer))!=NULL ){
 		evaluatePostfixesPrefixesAndInfixes(expression,token,numberStack,operatorStack);
+		
 	}
 	evaluateAllOperatorOnStack(numberStack,operatorStack);
 	Number *result=(Number*)stackPop(numberStack);
@@ -184,5 +178,22 @@ int evaluateExpression(char *expression){
 	
 }
 
-
+int evaluation(char *expression){
+	Token *token;
+	//Create 2 stack to take in number token and operator token
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	//Check the expression whether is NULL. If yes throw error no argument.
+	if(expression ==NULL){
+		Throw(ERR_NO_ARGUMENT);
+	}
+	//If the expression is not NULL, start create token from the expression.Keep get Token until is NULL.Use token dump to check whether all the
+	//expression are tokenize anot.
+	Text *newText=textNew(expression);
+	String *tokenizer = stringNew(newText);
+	while((token=getToken(tokenizer))!=NULL){
+		evaluatePrefixesAndNumber(expression,token,numberStack,operatorStack);
+	}
+	
+}
 
