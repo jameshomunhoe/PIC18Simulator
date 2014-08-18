@@ -10,6 +10,19 @@
 #include "ExtractValue.h"
 #include "Extract1BitsAccessBanked.h"
 
+/**
+ *	FA
+ *	
+ *	To generate the opcode based on the operand1 and operand2. The operand2 is 
+ *	to get the value and shifted to left 8 times and return. The operand1 is 
+ *	to get the value and mask and return.
+ *
+ *	Input 	:
+ *		arguments
+ *
+ *	Return	:
+ *		opcode
+ **/
 int FA(String *arguments){
 	int operand1;
 	int operand2;

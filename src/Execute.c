@@ -83,9 +83,6 @@ typedef struct BRAnInstruction{
  }code;
 }BRAnInstruction;
 
-
-
-
 /**
 *	To get certain amount of Bits from a variable
 *
@@ -352,7 +349,7 @@ void clearAllFlag(){
 */
 uint32 executeInstruction(uint32 code){
 
-		executionTable[getBitsAtOffset(code,10,6)](code);
+	executionTable[getBitsAtOffset(code,10,6)](code);
 
 }
 
