@@ -75,7 +75,7 @@ void test_evaluate_2_PLUS_3_MULTIPLY_4_PLUS_5_MULTIPLY_6(void){
 	int check;
 	check=evaluate("2+3*4+5*6");
 	TEST_ASSERT_EQUAL(44,check);
-	printf("Answer : %d ",check);
+	
 }
 
 
@@ -108,7 +108,7 @@ void test_left_bracket_2_plus_3_right_bracket(void){
 	int check;
 	check=evaluate("(20*3-50)");
 	TEST_ASSERT_EQUAL(10,check);
-	printf("Answer : %d ",check);
+	
 }
 
 /****************************************************************************
@@ -126,6 +126,6 @@ void test_logic_not_13_SHOULD_RETURN_0(void){
 	int check;
 	check=evaluate("10+(5)");
 	TEST_ASSERT_EQUAL(15,check);
-	printf("Answer : %d ",check);
+	
 
 }

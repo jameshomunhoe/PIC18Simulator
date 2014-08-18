@@ -247,6 +247,7 @@ void tokenDump(Token *token){
 	}
 }
 
+
 /**
  * Find Operator token using id
  *
