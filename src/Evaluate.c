@@ -75,8 +75,6 @@ void evaluatePostfixesAndInfix(String *tokenizer,Token *token,Stack *numberStack
 			}
 		}
 		token=getToken(tokenizer);
-		if(token==NULL)
-			return;
 	}
 }
 
@@ -90,11 +88,10 @@ void evaluatePostfixesAndInfix(String *tokenizer,Token *token,Stack *numberStack
  *	return : ((Number*)token)->value
  *
 ********************************************************************************************/
-/*
+
 int evaluation(char *expression){
 	Text *newText;
 	String *tokenizer;
-	
 	Token *token;
 	//Create 2 stack to take in number token and operator token
 	Stack *numberStack=createStack();
@@ -108,10 +105,12 @@ int evaluation(char *expression){
 	newText=textNew(expression);
 	tokenizer = stringNew(newText);
 	
-	evaluatePrefixesAndNumber(tokenizer,token,numberStack,operatorStack);
-	
-	
-	//evaluatePostfixesAndInfix(expression,token,numberStack,operatorStack)
+	while((token=getToken(tokenizer))!=NULL){
+		evaluatePrefixesAndNumber(tokenizer,token,numberStack,operatorStack);
+		token=getToken(tokenizer);
+		if(token!=NULL)
+			evaluatePostfixesAndInfix(tokenizer,token,numberStack,operatorStack);
+	}
 	evaluateAllOperatorOnStack(numberStack,operatorStack);
 	Number *result=(Number*)stackPop(numberStack);
 	destroyStack(numberStack);
@@ -121,7 +120,7 @@ int evaluation(char *expression){
 	return result->value;
 	
 }
-*/
+
 
 
 

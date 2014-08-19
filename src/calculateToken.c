@@ -92,7 +92,7 @@ int prefixCalculate(Operator *opeToken, Number *first){
 		break;
 		
 		case OPENING_BRACKET_OP:
-			answer=first->value;
+			answer=(first->value);
 		break;
 		
 		case PLUS_OP:

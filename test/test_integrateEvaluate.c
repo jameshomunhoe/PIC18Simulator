@@ -255,10 +255,12 @@ void test_evaluatePostfixesAndInfix_should_throw_error_invalid_operator_for_open
 	Number number10 = {.type= NUMBER_TOKEN, .value=10};
 	numberStack=createStack();
 	operatorStack=createStack();
+	
+	newText=textNew("(10(");
+	tokenizer = stringNew(newText);
 	stackPush(&openBracket,operatorStack);
 	stackPush(&number10,numberStack);
 	stackPush(&openBracket,operatorStack);
-	
 	Try
 	{
 		evaluatePostfixesAndInfix(tokenizer,(Token*)&openBracket,numberStack,operatorStack);
@@ -269,24 +271,30 @@ void test_evaluatePostfixesAndInfix_should_throw_error_invalid_operator_for_open
 		TEST_ASSERT_EQUAL(ERR_NOT_EXPECTING_PREFIX_OPERATOR,e);
 	}
 }
-/*
+
 void xtest_evaluatePostfixesAndInfix_push_closing_bracket_into_operator_stack(void){
 	CEXCEPTION_T e;
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
-	
+	Text *newText;
+	String *tokenizer;
 	Operator openBracket =  {.type= OPERATOR_TOKEN,.info=operatorFindInfoByID(OPENING_BRACKET_OP)};
 	Number number10 = {.type= NUMBER_TOKEN, .value=10};
 	Operator closingBracket =  {.type= OPERATOR_TOKEN,.info=operatorFindInfoByID(CLOSING_BRACKET_OP)};
 	
+	newText=textNew("(10)");
+	tokenizer = stringNew(newText);
+	
 	stackPush(&openBracket,operatorStack);
 	stackPush(&number10,numberStack);
 	
-	evaluatePostfixesAndInfix("10)",(Token*)&closingBracket,numberStack,operatorStack);
+	evaluatePostfixesAndInfix(tokenizer,(Token*)&closingBracket,numberStack,operatorStack);
 }
 
-void xtest_evaluatePostfixesAndInfix_push_closing_bracket_divide_into_operator_stack(void){
+void test_evaluatePostfixesAndInfix_push_closing_bracket_divide_into_operator_stack(void){
 	CEXCEPTION_T e;
+	Text *newText;
+	String *tokenizer;
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
 	
@@ -294,13 +302,17 @@ void xtest_evaluatePostfixesAndInfix_push_closing_bracket_divide_into_operator_s
 	Number number10 = {.type= NUMBER_TOKEN, .value=10};
 	Operator closingBracket =  {.type= OPERATOR_TOKEN,.info=operatorFindInfoByID(CLOSING_BRACKET_OP)};
 	Operator divide =  {.type= OPERATOR_TOKEN,.info=operatorFindInfoByID(DIV_OP)};
+	
+	newText=textNew("(10)/");
+	tokenizer = stringNew(newText);
+	
 	stackPush(&openBracket,operatorStack);
 	stackPush(&number10,numberStack);
 	
-	evaluatePostfixesAndInfix("10)/",(Token*)&closingBracket,numberStack,operatorStack);
+	evaluatePostfixesAndInfix(tokenizer,(Token*)&divide,numberStack,operatorStack);
 	TEST_ASSERT_EQUAL_OPERATOR(DIV_OP,stackPop(operatorStack));
 }
-*/
+
 
 /*********************************************************************************************************************************
  Test on function evaluateExpression(char *expression)
@@ -323,13 +335,13 @@ This test files will doing all the tests request by Dr. Poh using the latest eva
 evaluateExpression(char *expression)
 
 ********************************************************************************************************************************/
-void xtest_evaluate_should_throw_error_if_the_expression_is_null(void){
+void test_evaluate_should_throw_error_if_the_expression_is_null(void){
 	
 	CEXCEPTION_T e;
 	int check;
 	Try
 	{
-		check=evaluateExpression(NULL);
+		check=evaluation(NULL);
 		TEST_FAIL_MESSAGE("Should throw Error no expression ");
 	}
 	Catch(e)
@@ -338,12 +350,73 @@ void xtest_evaluate_should_throw_error_if_the_expression_is_null(void){
 	}
 }
 
+void test_evaluation_5_should_push_into_number_stack(void){
+	int check;
+	check=evaluation("5");
+	TEST_ASSERT_EQUAL(5,check);
+}
 
+void test_evaluation_negative_2_should_return_answer_negative_2(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	check=evaluation("-2");
+	TEST_ASSERT_EQUAL(-2,check);	
+}
 
+void test_should_evaluate_negative_negative_60(void){
+	int check;
+	
+	check=evaluation("--60");
+	TEST_ASSERT_EQUAL(- -60,check);
+	
+}
 
+void test_should_evaluate_1_plus_2(void){
+	ErrorCode e;
+	int check;
+	
+	check=evaluation("1+2");
+	TEST_ASSERT_EQUAL(1+2,check);
+}
 
+void test_should_evaluate_10_minus_2_plus_7(void){
+	ErrorCode e;
+	int check;
+	
+	check=evaluation("10-2+7");
+	TEST_ASSERT_EQUAL(10-2+7,check);
+}
 
+void test_should_evaluate_negative_10_plus_2_multiply_20(void){
+	
+	int check;
+	check=evaluation("--10+2*20");
+	TEST_ASSERT_EQUAL(- -10+2*20,check);
+}
 
+void test_should_evaluate_negative_10_multiply_negative_2(void){
+	
+	int check;
+	check=evaluation("-10*-2");
+	TEST_ASSERT_EQUAL(-10*-2,check);
+}
+
+void test_should_throw_error_for_negative_6_plus_multiply_7(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	Try
+	{
+		check=evaluation("-6+*7");
+		TEST_FAIL_MESSAGE("Should throw Error no expression ");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX ,e);
+	}
+	
+}
 
 
 
