@@ -26,7 +26,7 @@ void operatorEvaluate(Stack *numberStack , Operator *opeToken){
 	int answer; 
 	Token *answerToken; 
 	
-	if(opeToken->info->affix == PREFIX){
+	if(opeToken->info->affix !=INFIX){
 		operatorPrefixEvaluate(numberStack ,opeToken);
 	}else{
 		operatorInfixEvaluate(numberStack ,opeToken);
@@ -34,29 +34,31 @@ void operatorEvaluate(Stack *numberStack , Operator *opeToken){
 }
 
 void operatorInfixEvaluate(Stack *numberStack , Operator *opeToken){
-	
 	int answer; 
+	Number *number1;
+	Number *number2;
+	Token *answerToken;
 	
-	Number *number2=stackPop(numberStack); 
-	Number *number1=stackPop(numberStack); 
+	number2=stackPop(numberStack); 
+	number1=stackPop(numberStack); 
 	answer = calculate(opeToken,number1,number2); 
-	Token *answerToken=createNumberToken(answer);
+	answerToken=createNumberToken(answer);
 	stackPush(answerToken,numberStack);
 	
 }
 
 void operatorPrefixEvaluate(Stack *numberStack , Operator *opeToken){
 	int answer; 
+	Token *answerToken;
 	
 	Number *number1=stackPop(numberStack); 
 	if(number1 ==NULL){
 		Throw(ERR_EXPECTING_NUMBER);
 	}else{
 		answer = prefixCalculate(opeToken,number1); 
-		Token *answerToken=createNumberToken(answer);
+		answerToken=createNumberToken(answer);
 		stackPush(answerToken,numberStack);
 	}
-	
 }	
 
 /**
@@ -70,9 +72,17 @@ void operatorPrefixEvaluate(Stack *numberStack , Operator *opeToken){
 void evaluateAllOperatorOnStack(Stack *numberStack,Stack *operatorStack){
 	
 	Operator *opeToken;
-	while((opeToken=stackPop(operatorStack))!=NULL)
-	{
-		operatorEvaluate(numberStack ,opeToken);
+	opeToken=stackPop(operatorStack);
+	if(opeToken==NULL){
+		return;
+	}else{
+		while(opeToken!=NULL)
+		{	if(opeToken->info->id==CLOSING_BRACKET_OP || opeToken->info->id==OPENING_BRACKET_OP){
+				break;
+			}else{
+				operatorEvaluate(numberStack ,opeToken);
+			}
+		}
 	}
 }
 
@@ -83,6 +93,5 @@ void evaluatePrefixOperatorOnStack(Stack *numberStack,Stack *operatorStack){
 	while((opeToken=stackPop(operatorStack))==NULL)
 	{
 		operatorPrefixEvaluate(numberStack,opeToken);
-	
 	}
 }

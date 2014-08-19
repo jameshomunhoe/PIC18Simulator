@@ -30,10 +30,12 @@ void tryEvaluateOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,St
 	previousToken=(Operator*)stackPop(operatorStack);
 	
 	if(previousToken==NULL){
+		if(newToken->info->id==CLOSING_BRACKET_OP){
+			Throw(ERR_EXPECTING_OPENING_BRACKET);
+		}
 		stackPush(newToken,operatorStack);
 	}else{
 		while(previousToken!=NULL){
-			
 			if(newToken->info->precedence > previousToken->info->precedence){
 				break;
 			}
@@ -104,7 +106,32 @@ void tryConvertToPrefix(Operator *opeToken){
 
 
 void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack){
+	Operator *previousToken;
+	previousToken=(Operator*)stackPop(operatorStack);
 	
+	if(previousToken == NULL){
+		if(newToken->info->id ==CLOSING_BRACKET_OP){
+			Throw(ERR_EXPECTING_OPENING_BRACKET);
+		}
+		stackPush(newToken,operatorStack);
+	}
+	else{
+		while(previousToken!=NULL)
+		{
+			if(newToken->info->id ==CLOSING_BRACKET_OP){
+				if(previousToken->info->id==OPENING_BRACKET_OP){
+					stackPush(previousToken,operatorStack);
+					stackPush(newToken,operatorStack);
+					newToken=stackPop(operatorStack);
+					operatorPrefixEvaluate(numberStack,newToken);
+				}
+				free(previousToken);
+				free(newToken);
+			}
+			previousToken=(Operator*)stackPop(operatorStack);
+			free(previousToken);
+		}
+	}
 }
 
 

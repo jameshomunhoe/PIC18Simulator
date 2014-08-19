@@ -199,7 +199,7 @@ void test_evaluatePrefixesAndNumber_evaluate_opening_opening_opening_bracket_10(
 /*****************************************************************************************
 	Tests for evaluatePostfixesAndInfix(char *expression,(token,numberStack,operatorStack)
 *******************************************************************************************/
-
+/*
 void test_evaluatePostfixesAndInfix_throw_error_expecting_open_bracket(void){
 	CEXCEPTION_T e;
 	Token *token;
@@ -312,7 +312,7 @@ void test_evaluatePostfixesAndInfix_push_closing_bracket_divide_into_operator_st
 	evaluatePostfixesAndInfix(tokenizer,(Token*)&divide,numberStack,operatorStack);
 	TEST_ASSERT_EQUAL_OPERATOR(DIV_OP,stackPop(operatorStack));
 }
-
+*/
 
 /*********************************************************************************************************************************
  Test on function evaluateExpression(char *expression)
@@ -335,6 +335,7 @@ This test files will doing all the tests request by Dr. Poh using the latest eva
 evaluateExpression(char *expression)
 
 ********************************************************************************************************************************/
+/*
 void test_evaluate_should_throw_error_if_the_expression_is_null(void){
 	
 	CEXCEPTION_T e;
@@ -401,7 +402,16 @@ void test_should_evaluate_negative_10_multiply_negative_2(void){
 	check=evaluation("-10*-2");
 	TEST_ASSERT_EQUAL(-10*-2,check);
 }
-
+*/
+void test_should_evaluate_open_bracket_99_closing_bracket(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	printf("testtt\n");
+	check=evaluation("(99)");
+	TEST_ASSERT_EQUAL((99),check);
+}
+/*
 void test_should_throw_error_for_negative_8_plus_multiply_7(void){
 	
 	CEXCEPTION_T e;
@@ -415,7 +425,6 @@ void test_should_throw_error_for_negative_8_plus_multiply_7(void){
 	{
 		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX ,e);
 	}
-	
 }
 
 void test_should_throw_error_for_open_bracket_18(void){
@@ -466,5 +475,35 @@ void test_should_throw_error_for_open_and_closing_bracket_without_number(void){
 	
 }
 
+void test_should_throw_error_for_17_open_bracket_18_plus_19(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	Try
+	{
+		check=evaluation("17(18+19)");
+		TEST_FAIL_MESSAGE("Should throw expect infix operator ");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_NOT_EXPECTING_PREFIX_OPERATOR,e);
+	}
+}
+
+void test_should_throw_error_for_open_bracket_20_closing_bracket_3(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	Try
+	{
+		check=evaluation("(20)3");
+		TEST_FAIL_MESSAGE("Should throw not expect number ");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_NOT_EXPECTING_NUMBER,e);
+	}
+}
+*/
 
 

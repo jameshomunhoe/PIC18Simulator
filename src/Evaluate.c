@@ -64,21 +64,21 @@ void evaluatePrefixesAndNumber(String *tokenizer,Token *token,Stack *numberStack
 
 void evaluatePostfixesAndInfix(String *tokenizer,Token *token,Stack *numberStack,Stack *operatorStack){
 	
-	if(isNumber(token)){
-		Throw(ERR_NOT_EXPECTING_NUMBER);
-	}
 	while(1){
 		if(isOperator(token)){
 			if(((Operator*)token)->info->affix==INFIX){
 				tryEvaluateOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
 				break;
 			}else if(((Operator*)token)->info->affix==POSTFIX){
-				tryEvaluatePrefixOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
+				tryEvaluateAndExecutePostfix((Operator*)token,numberStack,operatorStack);
 			}else{
 				Throw(ERR_NOT_EXPECTING_PREFIX_OPERATOR);
 			}
 		}
 		token=getToken(tokenizer);
+		if(isNumber(token)){
+			Throw(ERR_NOT_EXPECTING_NUMBER);
+		}
 	}
 }
 
@@ -110,6 +110,7 @@ int evaluation(char *expression){
 	tokenizer = stringNew(newText);
 	
 	while((token=getToken(tokenizer))!=NULL){
+	
 		evaluatePrefixesAndNumber(tokenizer,token,numberStack,operatorStack);
 		token=getToken(tokenizer);
 		if(token!=NULL)

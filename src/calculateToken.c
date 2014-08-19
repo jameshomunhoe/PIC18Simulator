@@ -59,28 +59,21 @@ int calculate(Operator *opeToken, Number *first, Number *second){
 			answer=first->value||second->value;
 		break;
 		
-		case CLOSING_BRACKET_OP:
-			Throw(ERR_EXPECTING_OPENING_BRACKET);
-		break;
-
 		default:
 		{
 			Throw(ERR_UNKNOWN_INFIX_OPERATOR);
 		}
 	}
-	
-	
 	return answer;
-	
 }
 
 int prefixCalculate(Operator *opeToken, Number *first){
 	int answer;
+	
 	if(opeToken->info==NULL)
 	{
 		Throw(ERR_INVALID_OPERATOR);
 	}
-	
 	switch(opeToken->info->id)
 	{	
 		case BITWISE_NOT_OP:
@@ -95,9 +88,8 @@ int prefixCalculate(Operator *opeToken, Number *first){
 			if(opeToken->info->id != CLOSING_BRACKET_OP){
 				Throw(ERR_EXPECTING_CLOSING_BRACKET);
 			}
-			
 		break;
-			
+		
 		case PLUS_OP:
 			answer=+first->value;
 		break;
@@ -106,10 +98,14 @@ int prefixCalculate(Operator *opeToken, Number *first){
 			answer=-first->value;
 		break;
 		
+		case CLOSING_BRACKET_OP:
+			answer=first->value;
+			printf("answer : %d \n",answer);
+		break;	
+		
 		default:
-		{
+			printf("why u come here\n");
 			Throw(ERR_UNKNOWN_PREFIX_OPERATOR);
-		}
 	}
 	
 	return answer;
