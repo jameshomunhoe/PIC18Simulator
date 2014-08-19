@@ -408,7 +408,7 @@ void test_should_throw_error_for_negative_6_plus_multiply_7(void){
 	int check;
 	Try
 	{
-		check=evaluation("-6+*7");
+		check=evaluation("-8+*7");
 		TEST_FAIL_MESSAGE("Should throw Error no expression ");
 	}
 	Catch(e)
