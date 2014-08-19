@@ -30,101 +30,25 @@
  *	Throw : ERR_EXPECTING_NUMBER
 ********************************************************************************************/
 
-void evaluatePrefixesAndNumber(char *expression,Token *token,Stack *numberStack,Stack *operatorStack){
+void evaluatePrefixesAndNumber(String *tokenizer,Token *token,Stack *numberStack,Stack *operatorStack){
 	
+	if(token==NULL){
+		Throw(ERR_EXPECTING_NUMBER);
+	}
+	while(1){
 		if(isNumber(token)){
 			stackPush(token,numberStack);
+			break;
 		}else if(isOperator(token)){
 			if(((Operator*)token)->info->affix!=PREFIX)
 				tryConvertToPrefix((Operator*)token);
 			stackPush(token,operatorStack);
 		}
+		token=getToken(tokenizer);
+		if(token==NULL)
+			Throw(ERR_EXPECTING_NUMBER);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*******************************************************************************************
  *	This function is to evaluate postfix and infix operator.
@@ -134,20 +58,156 @@ void evaluatePrefixesAndNumber(char *expression,Token *token,Stack *numberStack,
  *	After detect one infix operator, the loop will stop and come out.
 ********************************************************************************************/
 
-void evaluatePostfixesAndInfix(char *expression,Token *token,Stack *numberStack,Stack *operatorStack){
-	if(token==NULL){
-		return;
+void evaluatePostfixesAndInfix(String *tokenizer,Token *token,Stack *numberStack,Stack *operatorStack){
+	
+	if(isNumber(token)){
+		Throw(ERR_NOT_EXPECTING_NUMBER);
 	}
+	while(1){
 		if(isOperator(token)){
 			if(((Operator*)token)->info->affix==INFIX){
 				tryEvaluateOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
+				break;
 			}else if(((Operator*)token)->info->affix==POSTFIX){
 				tryEvaluatePrefixOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
-			}else
+			}else{
 				Throw(ERR_NOT_EXPECTING_PREFIX_OPERATOR);
-		
+			}
 		}
+		token=getToken(tokenizer);
+		if(token==NULL)
+			return;
+	}
 }
+
+/*******************************************************************************************
+ *	This function is to evaluate the expression which contains numbers and operators and
+ *	return the results in number form.
+ *	This function is the improved function from the evaluate(char *expression)
+ *	Thus, this function can evaluate expression like -2,*2,(((2))), +-+-2... *
+ *	input  : expression
+ *	output : none
+ *	return : ((Number*)token)->value
+ *
+********************************************************************************************/
+/*
+int evaluation(char *expression){
+	Text *newText;
+	String *tokenizer;
+	
+	Token *token;
+	//Create 2 stack to take in number token and operator token
+	Stack *numberStack=createStack();
+	Stack *operatorStack=createStack();
+	//Check the expression whether is NULL. If yes throw error no argument.
+	if(expression ==NULL){
+		Throw(ERR_NO_ARGUMENT);
+	}
+	//If the expression is not NULL, start create token from the expression.Keep get Token until is NULL.Use token dump to check whether all the
+	//expression are tokenize anot.
+	newText=textNew(expression);
+	tokenizer = stringNew(newText);
+	
+	evaluatePrefixesAndNumber(tokenizer,token,numberStack,operatorStack);
+	
+	
+	//evaluatePostfixesAndInfix(expression,token,numberStack,operatorStack)
+	evaluateAllOperatorOnStack(numberStack,operatorStack);
+	Number *result=(Number*)stackPop(numberStack);
+	destroyStack(numberStack);
+	if(operatorStack !=NULL){
+		destroyStack(operatorStack);
+	}
+	return result->value;
+	
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*******************************************************************************************
  *	This function is to evaluate postfix, prefix and infix operator.
@@ -177,16 +237,6 @@ void evaluatePostfixesPrefixesAndInfixes(char *expression,Token *token,Stack *nu
 	}
 }
 
-/*******************************************************************************************
- *	This function is to evaluate the expression which contains numbers and operators and
- *	return the results in number form.
- *	This function is the improved function from the evaluate(char *expression)
- *	Thus, this function can evaluate expression like -2,*2,(((2))), +-+-2... *
- *	input  : expression
- *	output : none
- *	return : ((Number*)token)->value
- *
-********************************************************************************************/
 
 int evaluateExpression(char *expression){
 	Token *token;
@@ -234,33 +284,4 @@ int evaluateExpression(char *expression){
 	
 }
 
-
-int evaluation(char *expression){
-	
-	Token *token;
-	//Create 2 stack to take in number token and operator token
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	//Check the expression whether is NULL. If yes throw error no argument.
-	if(expression ==NULL){
-		Throw(ERR_NO_ARGUMENT);
-	}
-	//If the expression is not NULL, start create token from the expression.Keep get Token until is NULL.Use token dump to check whether all the
-	//expression are tokenize anot.
-	Text *newText=textNew(expression);
-	String *tokenizer = stringNew(newText);
-	/*
-	while((token=getToken(tokenizer))!=NULL){
-		evaluatePrefixesAndNumber(expression,token,numberStack,operatorStack);
-		evaluatePostfixesAndInfix(expression,token,numberStack,operatorStack);
-	}
-	evaluateAllOperatorOnStack(numberStack,operatorStack);
-	Number *result=(Number*)stackPop(numberStack);
-	destroyStack(numberStack);
-	if(operatorStack !=NULL){
-		destroyStack(operatorStack);
-	}
-	return result->value;
-	*/
-}
 
