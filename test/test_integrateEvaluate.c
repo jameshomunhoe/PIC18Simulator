@@ -402,7 +402,7 @@ void test_should_evaluate_negative_10_multiply_negative_2(void){
 	TEST_ASSERT_EQUAL(-10*-2,check);
 }
 
-void test_should_throw_error_for_negative_6_plus_multiply_7(void){
+void test_should_throw_error_for_negative_8_plus_multiply_7(void){
 	
 	CEXCEPTION_T e;
 	int check;
@@ -414,6 +414,54 @@ void test_should_throw_error_for_negative_6_plus_multiply_7(void){
 	Catch(e)
 	{
 		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX ,e);
+	}
+	
+}
+
+void test_should_throw_error_for_open_bracket_18(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	Try
+	{
+		check=evaluation("(18");
+		TEST_FAIL_MESSAGE("Should throw Error expecting closing bracket ");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_CLOSING_BRACKET,e);
+	}
+	
+}
+
+void test_should_throw_error_for_18_closing_bracket(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	Try
+	{
+		check=evaluation("16)");
+		TEST_FAIL_MESSAGE("Should throw Error expecting OPEN bracket ");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_OPENING_BRACKET,e);
+	}
+	
+}
+
+void test_should_throw_error_for_open_and_closing_bracket_without_number(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	Try
+	{
+		check=evaluation("( )");
+		TEST_FAIL_MESSAGE("Should throw Error no argument ");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_NO_ARGUMENT,e);
 	}
 	
 }

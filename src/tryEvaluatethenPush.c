@@ -91,14 +91,20 @@ void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberSt
 }
 
 void tryConvertToPrefix(Operator *opeToken){
-	
+	Stack *numberStack;
 	int i;
 	OperatorInfo *info=operatorFindAlternateInfoByName(opeToken->info->symbol);
 	opeToken->info=info;
+	
 	if(opeToken->info == NULL)
 	{
 		Throw(ERR_CANNOT_CONVERT_TO_PREFIX);
 	}
+}
+
+
+void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack){
+	
 }
 
 

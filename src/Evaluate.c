@@ -41,7 +41,11 @@ void evaluatePrefixesAndNumber(String *tokenizer,Token *token,Stack *numberStack
 			break;
 		}else if(isOperator(token)){
 			if(((Operator*)token)->info->affix!=PREFIX)
-				tryConvertToPrefix((Operator*)token);
+				if(((Operator*)token)->info->affix == POSTFIX){
+					Throw(ERR_NO_ARGUMENT);
+				}else{
+					tryConvertToPrefix((Operator*)token);
+				}
 			stackPush(token,operatorStack);
 		}
 		token=getToken(tokenizer);

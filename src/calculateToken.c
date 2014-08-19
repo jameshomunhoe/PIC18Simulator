@@ -92,9 +92,12 @@ int prefixCalculate(Operator *opeToken, Number *first){
 		break;
 		
 		case OPENING_BRACKET_OP:
-			answer=(first->value);
+			if(opeToken->info->id != CLOSING_BRACKET_OP){
+				Throw(ERR_EXPECTING_CLOSING_BRACKET);
+			}
+			
 		break;
-		
+			
 		case PLUS_OP:
 			answer=+first->value;
 		break;
