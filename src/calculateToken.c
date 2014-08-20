@@ -98,11 +98,10 @@ int prefixCalculate(Operator *opeToken, Number *first){
 		
 		case CLOSING_BRACKET_OP:
 			answer=first->value;
-			printf("answer : %d \n",answer);
+			
 		break;	
 		
 		default:
-			printf("why u come here\n");
 			Throw(ERR_UNKNOWN_PREFIX_OPERATOR);
 	}
 	

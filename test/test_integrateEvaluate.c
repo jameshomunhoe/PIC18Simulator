@@ -415,9 +415,45 @@ void test_should_evaluate_open_bracket_99_closing_bracket(void){
 	
 	CEXCEPTION_T e;
 	int check;
-	printf("testtt\n");
+	
 	check=evaluation("(99)");
 	TEST_ASSERT_EQUAL((99),check);
+}
+
+void test_should_evaluate_open_open_bracket_100_closing_closing_bracket(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	
+	check=evaluation("((100))");
+	TEST_ASSERT_EQUAL(((100)),check);
+}
+
+void test_should_evaluate_expression_involve_prefix_postfix(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	
+	check=evaluation("(12+13)*14");
+	TEST_ASSERT_EQUAL((12+13)*14,check);
+}
+
+void test_should_evaluate_expression_involve_prefix_postfix_2(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	
+	check=evaluation("((8&9))");
+	TEST_ASSERT_EQUAL(((8&9)),check);
+}
+
+void test_should_evaluate_expression_involve_prefix_postfix_3(void){
+	
+	CEXCEPTION_T e;
+	int check;
+	
+	check=evaluation("((8&9))+(((17||20)))/(((60%19)))");
+	TEST_ASSERT_EQUAL(((8&9))+(((17||20)))/(((60%19))),check);
 }
 
 void test_should_throw_error_for_negative_8_plus_multiply_7(void){
