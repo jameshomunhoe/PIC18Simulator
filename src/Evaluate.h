@@ -4,10 +4,8 @@
 #include "Token.h"
 #include "Stack.h"
 
-int evaluate(char *expression);
-int  evaluateExpression(char *expression);
-void evaluatePrefixesAndNumber(char *expression,Token *token,Stack *numberStack,Stack *operatorStack);
-void evaluatePostfixesPrefixesAndInfixes(char *expression,Token *token,Stack *numberStack,Stack *operatorStack);
-void evaluatePostfixesAndInfix(char *expression,Token *token,Stack *numberStack,Stack *operatorStack);
 
+int  evaluateExpression(char *expression);
+void evaluatePrefixesAndNumber(String *tokenizer,Token *token,Stack *numberStack,Stack *operatorStack);
+void evaluatePostfixesAndInfix(String *tokenizer,Token *token,Stack *numberStack,Stack *operatorStack);
 #endif // Evaluate_H

@@ -30,10 +30,12 @@ void tryEvaluateOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,St
 	previousToken=(Operator*)stackPop(operatorStack);
 	
 	if(previousToken==NULL){
+		if(newToken->info->id==CLOSING_BRACKET_OP){
+			Throw(ERR_EXPECTING_OPENING_BRACKET);
+		}
 		stackPush(newToken,operatorStack);
 	}else{
 		while(previousToken!=NULL){
-			
 			if(newToken->info->precedence > previousToken->info->precedence){
 				break;
 			}
@@ -49,8 +51,38 @@ void tryEvaluateOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,St
 	}
 }
 
-void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,Stack *operatorStack)
-{
+/** 
+	This function is use to convert the infix operator to prefix operator.
+	If the infix operator cannot be convert, then will throw error
+	cannot convert to prefix 
+**/
+void tryConvertToPrefix(Operator *opeToken){
+	Stack *numberStack;
+	int i;
+	OperatorInfo *info=operatorFindAlternateInfoByName(opeToken->info->symbol);
+	opeToken->info=info;
+	
+	if(opeToken->info == NULL)
+	{
+		Throw(ERR_CANNOT_CONVERT_TO_PREFIX);
+	}
+}
+
+/**
+	Evaluate postfix operator.
+	when get closing bracket operator,push into the operator stack,then pop it out and execute.
+	When doing execute,pop the opening bracket operator.
+	Execute the expression and free the opening bracket
+	precedence than the operator token to be pushed. The evaluation of operators token
+	is from the top of stack to bottom
+	
+	Input :
+		stack the operatorStack
+		operator the operator to be pushed onto the operator stack 
+		
+**/
+
+void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack){
 	Operator *previousToken=(Operator*)stackPop(operatorStack);
 	if(previousToken == NULL){
 		if(newToken->info->id ==CLOSING_BRACKET_OP){
@@ -61,10 +93,10 @@ void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberSt
 	else{
 		while(previousToken!=NULL)
 		{
-			if(newToken->info->id ==CLOSING_BRACKET_OP){
-				if(previousToken->info->id == OPENING_BRACKET_OP){
-					operatorPrefixEvaluate(numberStack ,previousToken);
-					free(newToken);
+			if(previousToken->info->id == OPENING_BRACKET_OP){
+				if(newToken->info->id ==CLOSING_BRACKET_OP){
+					operatorPrefixEvaluate(numberStack ,newToken);
+					free(previousToken);
 					if(previousToken->info->id == OPENING_BRACKET_OP){
 						previousToken=(Operator*)stackPop(operatorStack);
 						break;
@@ -90,15 +122,65 @@ void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberSt
 	}
 }
 
-void tryConvertToPrefix(Operator *opeToken){
-	
-	int i;
-	OperatorInfo *info=operatorFindAlternateInfoByName(opeToken->info->symbol);
-	opeToken->info=info;
-	if(opeToken->info == NULL)
-	{
-		Throw(ERR_CANNOT_CONVERT_TO_PREFIX);
-	}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
