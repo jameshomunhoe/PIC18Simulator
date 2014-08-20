@@ -46,10 +46,14 @@ void operatorInfixEvaluate(Stack *numberStack , Operator *opeToken){
 	Token *answerToken;
 	
 	number2=stackPop(numberStack); 
-	number1=stackPop(numberStack); 
-	answer = calculate(opeToken,number1,number2); 
-	answerToken=createNumberToken(answer);
-	stackPush(answerToken,numberStack);
+	if(number2 == NULL){
+		Throw(ERR_EXPECTING_NUMBER);
+	}else{
+		number1=stackPop(numberStack); 
+		answer = calculate(opeToken,number1,number2); 
+		answerToken=createNumberToken(answer);
+		stackPush(answerToken,numberStack);
+	}
 	
 }
 
@@ -62,8 +66,9 @@ void operatorInfixEvaluate(Stack *numberStack , Operator *opeToken){
 void operatorPrefixEvaluate(Stack *numberStack , Operator *opeToken){
 	int answer; 
 	Token *answerToken;
+	Number *number1;
 	
-	Number *number1=stackPop(numberStack); 
+	number1=stackPop(numberStack); 
 	if(number1 ==NULL){
 		Throw(ERR_EXPECTING_NUMBER);
 	}else{
