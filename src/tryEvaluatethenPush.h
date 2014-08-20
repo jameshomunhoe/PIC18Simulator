@@ -1,5 +1,5 @@
-#ifndef __TRYEVALUATETHANPUSH_H__
-#define __TRYEVALUATETHANPUSH_H__
+#ifndef __TRYEVALUATETHENPUSH_H__
+#define __TRYEVALUATETHENPUSH_H__
 
 #include "Evaluate.h"
 #include "Stack.h"
@@ -11,4 +11,4 @@ void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberSt
 void tryConvertToPrefix(Operator *opeToken);
 void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack);
 
-#endif //__TRYEVALUATETHANPUSH_H__
+#endif //__TRYEVALUATETHENPUSH_H__
