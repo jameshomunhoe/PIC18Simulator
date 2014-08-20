@@ -3,6 +3,7 @@
 #include "Evaluate.h"
 #include "Stack.h"
 #include "StringObject.h"
+#include "Text.h"
 #include "Token.h"
 #include "tryEvaluatethenPush.h"
 #include "operatorEvaluate.h"
