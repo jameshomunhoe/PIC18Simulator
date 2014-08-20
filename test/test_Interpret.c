@@ -194,12 +194,12 @@ void test_extractDestination_should_throw_with_invalid_argument(void){
 	TEST_ASSERT_EQUAL(123,test);
 
 	stringMock = "FA";
-	//evaluate_ExpectAndThrow(stringMock,ERR_NOT_ACCEPT_IDENTIFIER);
+	//evaluate_ExpectAndThrow(stringMock,ERR_EXPECTING_NUMBER);
 
 	Try{
 		test = extractDestination(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(ERR_NOT_ACCEPT_IDENTIFIER,e);
+		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER,e);
 	}
 
 }

@@ -128,7 +128,7 @@ void test_operatorEvaluate_close_bracket_3_should_throw_error(void){
 		operatorEvaluate(numberStack,&closeBracket);
 	}
 	Catch(e){
-		TEST_ASSERT_EQUAL(ERR_EXPECTING_OPENING_BRACKET,e);
+		TEST_ASSERT_EQUAL(ERR_UNKNOWN_INFIX_OPERATOR,e);
 	}
 }
 
