@@ -26,7 +26,7 @@ void operatorEvaluate(Stack *numberStack , Operator *opeToken){
 	int answer; 
 	Token *answerToken; 
 	
-	if(opeToken->info->affix !=INFIX){
+	if(opeToken->info->affix ==PREFIX){
 		operatorPrefixEvaluate(numberStack ,opeToken);
 	}else{
 		operatorInfixEvaluate(numberStack ,opeToken);
@@ -72,17 +72,9 @@ void operatorPrefixEvaluate(Stack *numberStack , Operator *opeToken){
 void evaluateAllOperatorOnStack(Stack *numberStack,Stack *operatorStack){
 	
 	Operator *opeToken;
-	opeToken=stackPop(operatorStack);
-	if(opeToken==NULL){
-		return;
-	}else{
-		while(opeToken!=NULL)
-		{	if(opeToken->info->id==CLOSING_BRACKET_OP || opeToken->info->id==OPENING_BRACKET_OP){
-				break;
-			}else{
-				operatorEvaluate(numberStack ,opeToken);
-			}
-		}
+	while((opeToken=stackPop(operatorStack))!=NULL)
+	{
+		operatorEvaluate(numberStack,opeToken);
 	}
 }
 

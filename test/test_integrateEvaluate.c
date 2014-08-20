@@ -21,7 +21,7 @@ void tearDown(void) {}
 /******************************************************************************************
 	Tests for evaluatePrefixesAndNumber(char *expression,token,numberStack,operatorStack)
 *******************************************************************************************/
-void xtest_evaluatePrefixesAndNumber_should_push_10_into_number_stack(void){
+void test_evaluatePrefixesAndNumber_should_push_10_into_number_stack(void){
 	Token *token;
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
@@ -33,7 +33,7 @@ void xtest_evaluatePrefixesAndNumber_should_push_10_into_number_stack(void){
 	evaluatePrefixesAndNumber(tokenizer,token,numberStack,operatorStack);
 }
 
-void xtest_evaluatePrefixesAndNumber_should_push_prefix_operator_and_number_into_operator_and_number_stack(void){
+void test_evaluatePrefixesAndNumber_should_push_prefix_operator_and_number_into_operator_and_number_stack(void){
 	Token *token;
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
@@ -199,7 +199,7 @@ void test_evaluatePrefixesAndNumber_evaluate_opening_opening_opening_bracket_10(
 /*****************************************************************************************
 	Tests for evaluatePostfixesAndInfix(char *expression,(token,numberStack,operatorStack)
 *******************************************************************************************/
-/*
+
 void test_evaluatePostfixesAndInfix_throw_error_expecting_open_bracket(void){
 	CEXCEPTION_T e;
 	Token *token;
@@ -272,7 +272,7 @@ void test_evaluatePostfixesAndInfix_should_throw_error_invalid_operator_for_open
 	}
 }
 
-void xtest_evaluatePostfixesAndInfix_push_closing_bracket_into_operator_stack(void){
+void test_evaluatePostfixesAndInfix_push_closing_bracket_into_operator_stack(void){
 	CEXCEPTION_T e;
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
@@ -287,8 +287,16 @@ void xtest_evaluatePostfixesAndInfix_push_closing_bracket_into_operator_stack(vo
 	
 	stackPush(&openBracket,operatorStack);
 	stackPush(&number10,numberStack);
+	Try
+	{
+		evaluatePostfixesAndInfix(tokenizer,(Token*)&closingBracket,numberStack,operatorStack);
+		TEST_FAIL_MESSAGE("Should throw Error no expression ");
+	}
+	Catch(e)
+	{
+		TEST_ASSERT_EQUAL(ERR_NOT_EXPECTING_PREFIX_OPERATOR,e);
+	}
 	
-	evaluatePostfixesAndInfix(tokenizer,(Token*)&closingBracket,numberStack,operatorStack);
 }
 
 void test_evaluatePostfixesAndInfix_push_closing_bracket_divide_into_operator_stack(void){
@@ -312,7 +320,7 @@ void test_evaluatePostfixesAndInfix_push_closing_bracket_divide_into_operator_st
 	evaluatePostfixesAndInfix(tokenizer,(Token*)&divide,numberStack,operatorStack);
 	TEST_ASSERT_EQUAL_OPERATOR(DIV_OP,stackPop(operatorStack));
 }
-*/
+
 
 /*********************************************************************************************************************************
  Test on function evaluateExpression(char *expression)
@@ -335,7 +343,7 @@ This test files will doing all the tests request by Dr. Poh using the latest eva
 evaluateExpression(char *expression)
 
 ********************************************************************************************************************************/
-/*
+
 void test_evaluate_should_throw_error_if_the_expression_is_null(void){
 	
 	CEXCEPTION_T e;
@@ -402,7 +410,7 @@ void test_should_evaluate_negative_10_multiply_negative_2(void){
 	check=evaluation("-10*-2");
 	TEST_ASSERT_EQUAL(-10*-2,check);
 }
-*/
+
 void test_should_evaluate_open_bracket_99_closing_bracket(void){
 	
 	CEXCEPTION_T e;
@@ -411,7 +419,7 @@ void test_should_evaluate_open_bracket_99_closing_bracket(void){
 	check=evaluation("(99)");
 	TEST_ASSERT_EQUAL((99),check);
 }
-/*
+
 void test_should_throw_error_for_negative_8_plus_multiply_7(void){
 	
 	CEXCEPTION_T e;
@@ -504,6 +512,6 @@ void test_should_throw_error_for_open_bracket_20_closing_bracket_3(void){
 		TEST_ASSERT_EQUAL(ERR_NOT_EXPECTING_NUMBER,e);
 	}
 }
-*/
+
 
 

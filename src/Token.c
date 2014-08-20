@@ -24,8 +24,8 @@ OperatorInfo mainOperatorTable[] = {
   {.symbol="&&", .id=LOGICAL_AND_OP, .precedence=30, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   {.symbol="||", .id=LOGICAL_OR_OP, .precedence=20, .affix=INFIX, .assoc=LEFT_TO_RIGHT},
   // All other symbols MUST have higher precedence than those below:
-  {.symbol="(", .id=OPENING_BRACKET_OP, .precedence=9, .affix=PREFIX, .assoc=RIGHT_TO_LEFT},
-  {.symbol=")", .id=CLOSING_BRACKET_OP, .precedence=10,  .affix=POSTFIX, .assoc=LEFT_TO_RIGHT}
+  {.symbol="(", .id=OPENING_BRACKET_OP, .precedence=10, .affix=PREFIX, .assoc=RIGHT_TO_LEFT},
+  {.symbol=")", .id=CLOSING_BRACKET_OP, .precedence=9,  .affix=POSTFIX, .assoc=LEFT_TO_RIGHT}
 };
 
 OperatorInfo alternativeOperatorTable[] = {
