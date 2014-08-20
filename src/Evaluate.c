@@ -73,7 +73,7 @@ void evaluatePostfixesAndInfix(String *tokenizer,Token *token,Stack *numberStack
 				tryEvaluateOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
 				break;
 			}else if(((Operator*)token)->info->affix==POSTFIX){
-				tryEvaluatePrefixOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
+				tryEvaluateAndExecutePostfix((Operator*)token,numberStack,operatorStack);
 			}else{
 				Throw(ERR_NOT_EXPECTING_PREFIX_OPERATOR);
 			}
@@ -98,7 +98,7 @@ void evaluatePostfixesAndInfix(String *tokenizer,Token *token,Stack *numberStack
  *
 ********************************************************************************************/
 
-int evaluation(char *expression){
+int evaluateExpression(char *expression){
 	Text *newText;
 	String *tokenizer;
 	Token *token;
@@ -216,81 +216,5 @@ int evaluation(char *expression){
 
 
 
-
-
-/*******************************************************************************************
- *	This function is to evaluate postfix, prefix and infix operator.
- *	This function will stop and go out the loop once no operator is detected.
- *	input  : expression,token,numberStack,operatorStack
- *	output : none
- *	return : function
- *	Throw  : 
-********************************************************************************************/
-
-void evaluatePostfixesPrefixesAndInfixes(char *expression,Token *token,Stack *numberStack,Stack *operatorStack){
-	
-	if(token!=NULL){
-		if(isOperator(token)){
-			if(((Operator*)token)->info->affix == INFIX ){
-				tryEvaluateOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
-			}else if(((Operator*)token)->info->affix == PREFIX || ((Operator*)token)->info->affix == POSTFIX){
-				tryEvaluatePrefixOperatorOnStackThenPush((Operator*)token,numberStack,operatorStack);
-			}else{
-				Throw(ERR_EXPECTING_OPERATOR);
-			}
-		}else if(isNumber(token)){
-				stackPush(token,numberStack);
-		}else{
-			Throw(ERR_EXPECTING_NUMBER_OR_PREFIX);
-		}
-	}
-}
-
-
-int evaluateExpression(char *expression){
-	Token *token;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-
-	if(expression ==NULL){
-		Throw(ERR_NO_ARGUMENT);
-	}
-	Text *newText=textNew(expression);
-	String *tokenizer = stringNew(newText);
-	
-	
-	token=getToken(tokenizer);
-	if(token->type == IDENTIFIER_TOKEN){
-		Throw(ERR_NOT_ACCEPT_IDENTIFIER);
-	}else{
-	while(token!=NULL){
-		if(isOperator(token)){
-			if(((Operator*)token)->info->affix!=PREFIX)
-			tryConvertToPrefix((Operator*)token);
-		stackPush(token,operatorStack);
-		}else if(isNumber(token)){
-			stackPush(token,numberStack);
-			break;
-		}else
-			Throw(ERR_INVALID_IDENTIFIER);
-		
-		token=getToken(tokenizer);
-		if(token==NULL)
-			break;
-	}
-	}
-	while((token=getToken(tokenizer))!=NULL ){
-		evaluatePostfixesPrefixesAndInfixes(expression,token,numberStack,operatorStack);
-		
-	}
-	evaluateAllOperatorOnStack(numberStack,operatorStack);
-	Number *result=(Number*)stackPop(numberStack);
-	destroyStack(numberStack);
-	if(operatorStack !=NULL){
-		destroyStack(operatorStack);
-	}
-	return result->value;
-	
-}
 
 

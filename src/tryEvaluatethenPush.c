@@ -63,107 +63,21 @@ void tryConvertToPrefix(Operator *opeToken){
 	}
 }
 
-void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack){
-	Operator *previousToken;
-	previousToken=(Operator*)stackPop(operatorStack);
+/**
+	Evaluate postfix operator.
+	when get closing bracket operator,push into the operator stack,then pop it out and execute.
+	When doing execute,pop the opening bracket operator.
+	Execute the expression and free the opening bracket
+	precedence than the operator token to be pushed. The evaluation of operators token
+	is from the top of stack to bottom
 	
-	if(previousToken == NULL){
-		if(newToken->info->id ==CLOSING_BRACKET_OP){
-			Throw(ERR_EXPECTING_OPENING_BRACKET);
-		}
-		stackPush(newToken,operatorStack);
-	}
-	else{
-		while(previousToken!=NULL)
-		{
-			if(newToken->info->id ==CLOSING_BRACKET_OP){
-				if(previousToken->info->id==OPENING_BRACKET_OP){
-					stackPush(previousToken,operatorStack);
-					stackPush(newToken,operatorStack);
-					newToken=stackPop(operatorStack);
-					operatorPrefixEvaluate(numberStack,newToken);
-				}
-				//free(previousToken);
-				free(newToken);
-			}else if(newToken->info->precedence >= previousToken->info->precedence){
-				break;
-			}
-			previousToken=(Operator*)stackPop(operatorStack);
-			free(previousToken);
-		}
-		if(previousToken!=NULL ){
-			stackPush(previousToken,operatorStack);
-		}
-		if(newToken!=NULL ){
-			stackPush(newToken,operatorStack);
-		}
-	}
-}
+	Input :
+		stack the operatorStack
+		operator the operator to be pushed onto the operator stack 
+		
+**/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,Stack *operatorStack)
-{
+void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack){
 	Operator *previousToken=(Operator*)stackPop(operatorStack);
 	if(previousToken == NULL){
 		if(newToken->info->id ==CLOSING_BRACKET_OP){
@@ -202,4 +116,66 @@ void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberSt
 		
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

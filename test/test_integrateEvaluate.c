@@ -350,7 +350,7 @@ void test_evaluate_should_throw_error_if_the_expression_is_null(void){
 	int check;
 	Try
 	{
-		check=evaluation(NULL);
+		check=evaluateExpression(NULL);
 		TEST_FAIL_MESSAGE("Should throw Error no expression ");
 	}
 	Catch(e)
@@ -359,24 +359,24 @@ void test_evaluate_should_throw_error_if_the_expression_is_null(void){
 	}
 }
 
-void test_evaluation_5_should_push_into_number_stack(void){
+void test_evaluateExpression_5_should_push_into_number_stack(void){
 	int check;
-	check=evaluation("5");
+	check=evaluateExpression("5");
 	TEST_ASSERT_EQUAL(5,check);
 }
 
-void test_evaluation_negative_2_should_return_answer_negative_2(void){
+void test_evaluateExpression_negative_2_should_return_answer_negative_2(void){
 	
 	CEXCEPTION_T e;
 	int check;
-	check=evaluation("-2");
+	check=evaluateExpression("-2");
 	TEST_ASSERT_EQUAL(-2,check);	
 }
 
 void test_should_evaluate_negative_negative_60(void){
 	int check;
 	
-	check=evaluation("--60");
+	check=evaluateExpression("--60");
 	TEST_ASSERT_EQUAL(- -60,check);
 	
 }
@@ -385,7 +385,7 @@ void test_should_evaluate_1_plus_2(void){
 	ErrorCode e;
 	int check;
 	
-	check=evaluation("1+2");
+	check=evaluateExpression("1+2");
 	TEST_ASSERT_EQUAL(1+2,check);
 }
 
@@ -393,21 +393,21 @@ void test_should_evaluate_10_minus_2_plus_7(void){
 	ErrorCode e;
 	int check;
 	
-	check=evaluation("10-2+7");
+	check=evaluateExpression("10-2+7");
 	TEST_ASSERT_EQUAL(10-2+7,check);
 }
 
 void test_should_evaluate_negative_10_plus_2_multiply_20(void){
 	
 	int check;
-	check=evaluation("--10+2*20");
+	check=evaluateExpression("--10+2*20");
 	TEST_ASSERT_EQUAL(- -10+2*20,check);
 }
 
 void test_should_evaluate_negative_10_multiply_negative_2(void){
 	
 	int check;
-	check=evaluation("-10*-2");
+	check=evaluateExpression("-10*-2");
 	TEST_ASSERT_EQUAL(-10*-2,check);
 }
 
@@ -416,7 +416,7 @@ void test_should_evaluate_open_bracket_99_closing_bracket(void){
 	CEXCEPTION_T e;
 	int check;
 	
-	check=evaluation("(99)");
+	check=evaluateExpression("(99)");
 	TEST_ASSERT_EQUAL((99),check);
 }
 
@@ -425,7 +425,7 @@ void test_should_evaluate_open_open_bracket_100_closing_closing_bracket(void){
 	CEXCEPTION_T e;
 	int check;
 	
-	check=evaluation("((100))");
+	check=evaluateExpression("((100))");
 	TEST_ASSERT_EQUAL(((100)),check);
 }
 
@@ -434,7 +434,7 @@ void test_should_evaluate_expression_involve_prefix_postfix(void){
 	CEXCEPTION_T e;
 	int check;
 	
-	check=evaluation("(12+13)*14");
+	check=evaluateExpression("(12+13)*14");
 	TEST_ASSERT_EQUAL((12+13)*14,check);
 }
 
@@ -443,7 +443,7 @@ void test_should_evaluate_expression_involve_prefix_postfix_2(void){
 	CEXCEPTION_T e;
 	int check;
 	
-	check=evaluation("((8&9))");
+	check=evaluateExpression("((8&9))");
 	TEST_ASSERT_EQUAL(((8&9)),check);
 }
 
@@ -452,7 +452,7 @@ void test_should_evaluate_expression_involve_prefix_postfix_3(void){
 	CEXCEPTION_T e;
 	int check;
 	
-	check=evaluation("((8&9))+(((17||20)))/(((60%19)))");
+	check=evaluateExpression("((8&9))+(((17||20)))/(((60%19)))");
 	TEST_ASSERT_EQUAL(((8&9))+(((17||20)))/(((60%19))),check);
 }
 
@@ -462,7 +462,7 @@ void test_should_throw_error_for_negative_8_plus_multiply_7(void){
 	int check;
 	Try
 	{
-		check=evaluation("-8+*7");
+		check=evaluateExpression("-8+*7");
 		TEST_FAIL_MESSAGE("Should throw Error no expression ");
 	}
 	Catch(e)
@@ -477,7 +477,7 @@ void test_should_throw_error_for_open_bracket_18(void){
 	int check;
 	Try
 	{
-		check=evaluation("(18");
+		check=evaluateExpression("(18");
 		TEST_FAIL_MESSAGE("Should throw Error expecting closing bracket ");
 	}
 	Catch(e)
@@ -493,7 +493,7 @@ void test_should_throw_error_for_18_closing_bracket(void){
 	int check;
 	Try
 	{
-		check=evaluation("16)");
+		check=evaluateExpression("16)");
 		TEST_FAIL_MESSAGE("Should throw Error expecting OPEN bracket ");
 	}
 	Catch(e)
@@ -509,7 +509,7 @@ void test_should_throw_error_for_open_and_closing_bracket_without_number(void){
 	int check;
 	Try
 	{
-		check=evaluation("( )");
+		check=evaluateExpression("( )");
 		TEST_FAIL_MESSAGE("Should throw Error no argument ");
 	}
 	Catch(e)
@@ -525,7 +525,7 @@ void test_should_throw_error_for_17_open_bracket_18_plus_19(void){
 	int check;
 	Try
 	{
-		check=evaluation("17(18+19)");
+		check=evaluateExpression("17(18+19)");
 		TEST_FAIL_MESSAGE("Should throw expect infix operator ");
 	}
 	Catch(e)
@@ -540,7 +540,7 @@ void test_should_throw_error_for_open_bracket_20_closing_bracket_3(void){
 	int check;
 	Try
 	{
-		check=evaluation("(20)3");
+		check=evaluateExpression("(20)3");
 		TEST_FAIL_MESSAGE("Should throw not expect number ");
 	}
 	Catch(e)
