@@ -51,7 +51,7 @@ void test_evaluate_should_throw_error_if_the_expression_is_null(){
 	
 	Try
 	{
-		check=evaluate(NULL);
+		check=evaluateExpression(NULL);
 		TEST_FAIL_MESSAGE("Should throw Error no expression ");
 	}
 	Catch(e)
@@ -73,7 +73,7 @@ void test_evaluate_should_throw_error_if_the_expression_is_null(){
 
 void test_evaluate_2_PLUS_3_MULTIPLY_4_PLUS_5_MULTIPLY_6(void){
 	int check;
-	check=evaluate("2+3*4+5*6");
+	check=evaluateExpression("2+3*4+5*6");
 	TEST_ASSERT_EQUAL(44,check);
 	
 }
@@ -85,7 +85,7 @@ void test_should_evaluate_43_HASHTAG_42_and_throw_error_invalid_operator(void){
 	int check;
 	ErrorCode e;
 	Try{
-		evaluate("43#42");
+		evaluateExpression("43#42");
 	}Catch(e){
 		 TEST_ASSERT_EQUAL(ERR_UNKNOWN_INFIX_OPERATOR,e);
 		 
@@ -106,7 +106,7 @@ void test_should_evaluate_43_HASHTAG_42_and_throw_error_invalid_operator(void){
 
 void test_left_bracket_2_plus_3_right_bracket(void){
 	int check;
-	check=evaluate("(20*3-50)");
+	check=evaluateExpression("(20*3-50)");
 	TEST_ASSERT_EQUAL(10,check);
 	
 }
@@ -124,7 +124,7 @@ void test_left_bracket_2_plus_3_right_bracket(void){
 
 void test_logic_not_13_SHOULD_RETURN_0(void){
 	int check;
-	check=evaluate("10+(5)");
+	check=evaluateExpression("10+(5)");
 	TEST_ASSERT_EQUAL(15,check);
 	
 
