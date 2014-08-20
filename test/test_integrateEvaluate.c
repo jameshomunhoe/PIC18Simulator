@@ -327,18 +327,6 @@ void test_evaluatePostfixesAndInfix_push_closing_bracket_divide_into_operator_st
  Input parameter : 
 					1)char *expression
 
- Using following real function : 
-								1)getToken()
-								2)stackPop()  
-								3)stackPush()
-								4)createNumberToken()
-								5)operatorEvaluate(Stack *numberStack , Operator *opeToken);
-								6)evaluateAllOperatorOnStack(Stack *numberStack,Stack *operatorStack);
-								7)tryEvaluateOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,Stack *operatorStack);
-								8)calculate(Operator *opeToken, Number *first , Number *second);
-								9)textNew(char *expression)
-								10)stringNew(Text *text)
-
 This test files will doing all the tests request by Dr. Poh using the latest evaluate function which is 
 evaluateExpression(char *expression)
 

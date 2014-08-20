@@ -51,6 +51,11 @@ void tryEvaluateOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,St
 	}
 }
 
+/** 
+	This function is use to convert the infix operator to prefix operator.
+	If the infix operator cannot be convert, then will throw error
+	cannot convert to prefix 
+**/
 void tryConvertToPrefix(Operator *opeToken){
 	Stack *numberStack;
 	int i;

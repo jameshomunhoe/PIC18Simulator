@@ -33,6 +33,12 @@ void operatorEvaluate(Stack *numberStack , Operator *opeToken){
 	}
 }
 
+/**
+	This function is use to calculate expression which have infix 
+	operator
+	Input :
+		stack the operatorStack
+**/
 void operatorInfixEvaluate(Stack *numberStack , Operator *opeToken){
 	int answer; 
 	Number *number1;
@@ -47,6 +53,12 @@ void operatorInfixEvaluate(Stack *numberStack , Operator *opeToken){
 	
 }
 
+/**
+	This function is use to calculate expression which have prefix 
+	and postfix operator
+	Input :
+		stack the operatorStack
+**/
 void operatorPrefixEvaluate(Stack *numberStack , Operator *opeToken){
 	int answer; 
 	Token *answerToken;
