@@ -95,14 +95,14 @@ void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *o
 				if(newToken->info->id ==CLOSING_BRACKET_OP){
 					operatorPrefixEvaluate(numberStack ,newToken);
 					free(previousToken);
-					if(previousToken->info->id == OPENING_BRACKET_OP){
+					if(previousToken->info->affix == PREFIX){
 						previousToken=(Operator*)stackPop(operatorStack);
 						break;
 					}
 				}else {
 					operatorEvaluate(numberStack,previousToken);
 				}
-			}else if(newToken->info->precedence >= previousToken->info->precedence || ((Operator*)newToken)->info->id==OPENING_BRACKET_OP ){
+			}else if(newToken->info->precedence >= previousToken->info->precedence){
 				break;
 			}
 			else{
