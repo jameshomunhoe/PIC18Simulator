@@ -83,9 +83,7 @@ void tryConvertToPrefix(Operator *opeToken){
 void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack){
 	Operator *previousToken=(Operator*)stackPop(operatorStack);
 	if(previousToken == NULL){
-		if(newToken->info->id ==CLOSING_BRACKET_OP){
-			Throw(ERR_EXPECTING_OPENING_BRACKET);
-		}
+		checkPrefixOperator(newToken,numberStack,operatorStack);
 		stackPush(newToken,operatorStack);
 	}
 	else{
@@ -93,16 +91,16 @@ void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *o
 		{
 			if(previousToken->info->id == OPENING_BRACKET_OP){
 				if(newToken->info->id ==CLOSING_BRACKET_OP){
-					operatorPrefixEvaluate(numberStack ,newToken);
+					operatorPrefixOrPostfixEvaluate(numberStack ,newToken);
 					free(previousToken);
-					if(previousToken->info->id == OPENING_BRACKET_OP){
+					if(previousToken->info->affix == PREFIX){
 						previousToken=(Operator*)stackPop(operatorStack);
 						break;
 					}
 				}else {
 					operatorEvaluate(numberStack,previousToken);
 				}
-			}else if(newToken->info->precedence >= previousToken->info->precedence || ((Operator*)newToken)->info->id==OPENING_BRACKET_OP ){
+			}else if(newToken->info->precedence >= previousToken->info->precedence){
 				break;
 			}
 			else{
@@ -120,8 +118,11 @@ void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *o
 	}
 }
 
-
-
+void checkPrefixOperator(Operator *newToken,Stack *numberStack,Stack *operatorStack){
+		if(newToken->info->id ==CLOSING_BRACKET_OP){
+			Throw(ERR_EXPECTING_OPENING_BRACKET);
+		}
+}
 
 
 

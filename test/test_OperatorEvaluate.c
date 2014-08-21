@@ -25,7 +25,7 @@ void tearDown(void){}
 
 ***********************************************************************/	
  
-void test_operaratorPrefixEvalute_should_calculate_prefix_expression(void){
+void test_operatorPrefixOrPostfixEvaluate_should_calculate_prefix_expression(void){
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
 	Number *Ans;
@@ -40,13 +40,13 @@ void test_operaratorPrefixEvalute_should_calculate_prefix_expression(void){
 	stackPush(&minus,operatorStack);
 	stackPush(&number2,numberStack);
 	
-	operatorPrefixEvaluate(numberStack,&minus);
+	operatorPrefixOrPostfixEvaluate(numberStack,&minus);
 	Ans=(Number*)stackPop(numberStack);
 	TEST_ASSERT_NOT_NULL(numberStack);
 	TEST_ASSERT_EQUAL(-2,Ans->value);
 }
 
-void test_operaratorPrefixEvalute_should_calculate_prefix_expression2(void){
+void test_operatorPrefixOrPostfixEvaluate_should_calculate_prefix_expression2(void){
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
 	Number *Ans;
@@ -59,7 +59,7 @@ void test_operaratorPrefixEvalute_should_calculate_prefix_expression2(void){
 	stackPush(&logicalNot,operatorStack);
 	stackPush(&number12,numberStack);
 	
-	operatorPrefixEvaluate(numberStack,&logicalNot);
+	operatorPrefixOrPostfixEvaluate(numberStack,&logicalNot);
 	Ans=(Number*)stackPop(numberStack);
 	TEST_ASSERT_NOT_NULL(numberStack);
 	TEST_ASSERT_EQUAL(0,Ans->value);
@@ -131,7 +131,7 @@ void test_operatorEvaluate_close_bracket_3_should_throw_error(void){
 	stackPush(&closeBracket,operatorStack);
 	
 	Try{
-		operatorPrefixEvaluate(numberStack,&closeBracket);
+		operatorPrefixOrPostfixEvaluate(numberStack,&closeBracket);
 	}
 	Catch(e){
 		TEST_ASSERT_EQUAL(ERR_UNKNOWN_INFIX_OPERATOR,e);
@@ -168,11 +168,8 @@ void test_operatorInfixEvaluate_determine_number_stack_are_not_null(void){
 	Number *Ans;
 	int check;
 	//Initialize tokenizer,token and stack
-	String tokenizer = {.text = t"20+30"};
-	Number number20 = {.type= NUMBER_TOKEN, .value=20};
+	String tokenizer = {.text = t"+"};
 	Operator plus = {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
-	Number number30 = {.type= NUMBER_TOKEN, .value=30};
-	
 	//Only push 
 	stackPush(&plus,operatorStack);
 	Try{
@@ -205,28 +202,6 @@ void test_operatorInfixEvaluate_will_throw_error_if_only_got_first_number_in_num
 	}
 }
 
-void test_operatorInfixEvaluate_will_throw_error_if_only_got_second_number_in_number_stack(void){
-	CEXCEPTION_T e;
-	Stack *numberStack=createStack();
-	Stack *operatorStack=createStack();
-	
-	Number *Ans;
-	int check;
-	//Initialize tokenizer,token and stack
-	String tokenizer = {.text = t"20+30"};
-	Number number20 = {.type= NUMBER_TOKEN, .value=20};
-	Operator plus = {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
-	Number number30 = {.type= NUMBER_TOKEN, .value=30};
-	
-	//Only push 
-	stackPush(&plus,operatorStack);
-	stackPush(&number30,numberStack);
-	Try{
-		operatorInfixEvaluate(numberStack,&plus);
-	}Catch(e){
-		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER,e);
-	}
-}
 
 
 

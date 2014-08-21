@@ -55,7 +55,7 @@ void test_tryEvaluateOperatorOnStackThenPush_will_not_push_lower_precedence_infi
 	stackPush(&multiply,operatorStack);
 	Try{
 		tryEvaluateOperatorOnStackThenPush(&plus,numberStack,operatorStack);
-		TEST_FAIL_MESSAGE("Should throw ERR_EXPECTING_NUMBER.");
+		TEST_FAIL_MESSAGE("Should throw ERR EXPECTING_NUMBER.");
 	}Catch(e){
 		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER,e);//Throw expecting number because the multiply will pop out and call operatorInfix function
 	}
@@ -80,7 +80,7 @@ void test_tryConvertToPrefix_will_throw_error_if_operator_cannot_convert_to_pref
 	
 	Try{
 		tryConvertToPrefix(&multiply);
-		TEST_FAIL_MESSAGE("Should throw ERR_CANNOT_CONVERT_TO_PREFIX");
+		TEST_FAIL_MESSAGE("Should throw ERR CANNOT CONVERT TO PREFIX");
 	}Catch(e){
 		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX,e);
 	}
