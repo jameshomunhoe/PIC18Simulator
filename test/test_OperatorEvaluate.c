@@ -168,11 +168,8 @@ void test_operatorInfixEvaluate_determine_number_stack_are_not_null(void){
 	Number *Ans;
 	int check;
 	//Initialize tokenizer,token and stack
-	String tokenizer = {.text = t"20+30"};
-	Number number20 = {.type= NUMBER_TOKEN, .value=20};
+	String tokenizer = {.text = t"+"};
 	Operator plus = {.type= OPERATOR_TOKEN, .info=operatorFindInfoByID(ADD_OP)};
-	Number number30 = {.type= NUMBER_TOKEN, .value=30};
-	
 	//Only push 
 	stackPush(&plus,operatorStack);
 	Try{
