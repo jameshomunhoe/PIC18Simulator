@@ -16,7 +16,7 @@
 void setUp(void){}
 void tearDown(void){}
 
-void test_tryEvaluateOnStackThenPush_will_push_infix_operator_into_stack_when_stack_is_empty(void){
+void test_tryEvaluateOperatorOnStackThenPush_will_push_infix_operator_into_stack_when_stack_is_empty(void){
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
 	Operator *opeToken;
@@ -27,7 +27,7 @@ void test_tryEvaluateOnStackThenPush_will_push_infix_operator_into_stack_when_st
 	TEST_ASSERT_EQUAL_OPERATOR(ADD_OP,(Token*)&plus);
 }
 
-void test_tryEvaluateOnStackThenPush_will_push_high_precedence_infix_operator_into_stack(void){
+void test_tryEvaluateOperatorOnStackThenPush_will_push_high_precedence_infix_operator_into_stack(void){
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
 	Operator *opeToken;
@@ -44,7 +44,7 @@ void test_tryEvaluateOnStackThenPush_will_push_high_precedence_infix_operator_in
 	TEST_ASSERT_EQUAL_OPERATOR(ADD_OP,(Token*)&plus);
 }
 
-void test_tryEvaluateOnStackThenPush_will_not_push_lower_precedence_infix_operator_into_stack(void){
+void test_tryEvaluateOperatorOnStackThenPush_will_not_push_lower_precedence_infix_operator_into_stack(void){
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
 	CEXCEPTION_T e;
@@ -55,7 +55,7 @@ void test_tryEvaluateOnStackThenPush_will_not_push_lower_precedence_infix_operat
 	stackPush(&multiply,operatorStack);
 	Try{
 		tryEvaluateOperatorOnStackThenPush(&plus,numberStack,operatorStack);
-		TEST_FAIL_MESSAGE("will not push low precedence when stack has high precedence operator");
+		TEST_FAIL_MESSAGE("Should throw ERR_EXPECTING_NUMBER.");
 	}Catch(e){
 		TEST_ASSERT_EQUAL(ERR_EXPECTING_NUMBER,e);//Throw expecting number because the multiply will pop out and call operatorInfix function
 	}
@@ -80,7 +80,7 @@ void test_tryConvertToPrefix_will_throw_error_if_operator_cannot_convert_to_pref
 	
 	Try{
 		tryConvertToPrefix(&multiply);
-		TEST_FAIL_MESSAGE("will not convert to prefix");
+		TEST_FAIL_MESSAGE("Should throw ERR_CANNOT_CONVERT_TO_PREFIX");
 	}Catch(e){
 		TEST_ASSERT_EQUAL(ERR_CANNOT_CONVERT_TO_PREFIX,e);
 	}
@@ -95,7 +95,7 @@ void test_tryEvaluateAndExecutePostfix_will_throw_error_for_closing_bracket_when
 	
 	Try{
 		tryEvaluateAndExecutePostfix(&closeBracket,numberStack,operatorStack);
-		TEST_FAIL_MESSAGE("Expect open bracket");
+		TEST_FAIL_MESSAGE("Expect opening bracket");
 	}Catch(e){
 		TEST_ASSERT_EQUAL(ERR_EXPECTING_OPENING_BRACKET,e);
 	}

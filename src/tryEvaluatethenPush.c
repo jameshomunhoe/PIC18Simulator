@@ -31,11 +31,8 @@ void tryEvaluateOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,St
 	previousToken=(Operator*)stackPop(operatorStack);
 	
 	if(previousToken==NULL){
-		if(newToken->info->id==CLOSING_BRACKET_OP){
-			Throw(ERR_EXPECTING_OPENING_BRACKET);
-		}
-		stackPush(newToken,operatorStack);
-	}else{
+		stackPush(newToken,operatorStack); //I deleted the closing bracket execution details as it unnecessary to put it since the postfix will deal in function 
+	}else{								  // tryEvaluateAndExecutePostfix
 		while(previousToken!=NULL){
 			if(newToken->info->precedence > previousToken->info->precedence){
 				break;
