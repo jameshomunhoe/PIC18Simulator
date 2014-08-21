@@ -12,4 +12,5 @@ void tryConvertToPrefix(Operator *opeToken);
 void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack);
 void checkPrefixOperator(Operator *newToken,Stack *numberStack,Stack *operatorStack);
 
+
 #endif //__TRYEVALUATETHENPUSH_H__
