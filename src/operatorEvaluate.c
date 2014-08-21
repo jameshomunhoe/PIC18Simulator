@@ -26,7 +26,7 @@ void operatorEvaluate(Stack *numberStack , Operator *opeToken){
 	int answer; 
 	Token *answerToken; 
 	
-	if(opeToken->info->affix ==PREFIX){
+	if(opeToken->info->affix ==PREFIX || opeToken->info->affix ==POSTFIX){
 		operatorPrefixOrPostfixEvaluate(numberStack ,opeToken);
 	}else{
 		operatorInfixEvaluate(numberStack ,opeToken);

@@ -403,16 +403,14 @@ void test_should_evaluate_open_bracket_99_closing_bracket(void){
 	
 	CEXCEPTION_T e;
 	int check;
+	evaluateExpression("(99)");
 	
-	check=evaluateExpression("(99)");
-	TEST_ASSERT_EQUAL((99),check);
 }
 
 void test_should_evaluate_open_open_bracket_100_closing_closing_bracket(void){
 	
 	CEXCEPTION_T e;
 	int check;
-	
 	check=evaluateExpression("((100))");
 	TEST_ASSERT_EQUAL(((100)),check);
 }

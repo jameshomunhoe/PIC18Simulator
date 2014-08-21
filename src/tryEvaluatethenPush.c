@@ -89,32 +89,17 @@ void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *o
 	else{
 		while(previousToken!=NULL)
 		{
-			if(previousToken->info->id == OPENING_BRACKET_OP){
-				if(newToken->info->id ==CLOSING_BRACKET_OP){
-					operatorPrefixOrPostfixEvaluate(numberStack ,newToken);
-					free(previousToken);
-					if(previousToken->info->affix == PREFIX){
-						previousToken=(Operator*)stackPop(operatorStack);
-						break;
-					}
-				}else {
-					operatorEvaluate(numberStack,previousToken);
-				}
-			}else if(newToken->info->precedence >= previousToken->info->precedence){
+			if(previousToken->info->affix == INFIX){
+				operatorEvaluate(numberStack,previousToken);
+			}else if(previousToken->info->affix == PREFIX){
+				stackPush(newToken,operatorStack);
+				operatorPrefixOrPostfixEvaluate(numberStack ,newToken);
+				free(previousToken);
 				break;
 			}
-			else{
-				operatorEvaluate(numberStack,previousToken);
-			}
-			previousToken=(Operator*)stackPop(operatorStack);
+			previousToken=(Operator*)stackPop(operatorStack);	
 		}
-		if(previousToken!=NULL ){
-			stackPush(previousToken,operatorStack);
-		}
-		if(newToken->info->affix == PREFIX){
-			stackPush(newToken,operatorStack);
-		}
-		
+			
 	}
 }
 
@@ -123,15 +108,6 @@ void checkPrefixOperator(Operator *newToken,Stack *numberStack,Stack *operatorSt
 			Throw(ERR_EXPECTING_OPENING_BRACKET);
 		}
 }
-
-
-
-
-
-
-
-
-
 
 
 
