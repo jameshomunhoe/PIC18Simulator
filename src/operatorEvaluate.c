@@ -27,7 +27,7 @@ void operatorEvaluate(Stack *numberStack , Operator *opeToken){
 	Token *answerToken; 
 	
 	if(opeToken->info->affix ==PREFIX){
-		operatorPrefixEvaluate(numberStack ,opeToken);
+		operatorPrefixOrPostfixEvaluate(numberStack ,opeToken);
 	}else{
 		operatorInfixEvaluate(numberStack ,opeToken);
 	}
@@ -53,7 +53,7 @@ void operatorInfixEvaluate(Stack *numberStack , Operator *opeToken){
 		if(number1==NULL){
 			Throw(ERR_EXPECTING_NUMBER);
 		}else{
-			answer = calculate(opeToken,number1,number2); 
+			answer = calculateInfix(opeToken,number1,number2); 
 			answerToken=createNumberToken(answer);
 			stackPush(answerToken,numberStack);
 		}
@@ -67,7 +67,7 @@ void operatorInfixEvaluate(Stack *numberStack , Operator *opeToken){
 	Input :
 		stack the operatorStack
 **/
-void operatorPrefixEvaluate(Stack *numberStack , Operator *opeToken){
+void operatorPrefixOrPostfixEvaluate(Stack *numberStack , Operator *opeToken){
 	int answer; 
 	Token *answerToken;
 	Number *number1;
@@ -76,7 +76,7 @@ void operatorPrefixEvaluate(Stack *numberStack , Operator *opeToken){
 	if(number1 ==NULL){
 		Throw(ERR_EXPECTING_NUMBER);
 	}else{
-		answer = prefixCalculate(opeToken,number1); 
+		answer = calculatePrefixOrPostfix(opeToken,number1); 
 		answerToken=createNumberToken(answer);
 		stackPush(answerToken,numberStack);
 	}
@@ -99,12 +99,3 @@ void evaluateAllOperatorOnStack(Stack *numberStack,Stack *operatorStack){
 	}
 }
 
-void evaluatePrefixOperatorOnStack(Stack *numberStack,Stack *operatorStack){
-	
-	Operator *opeToken;
-	
-	while((opeToken=stackPop(operatorStack))==NULL)
-	{
-		operatorPrefixEvaluate(numberStack,opeToken);
-	}
-}

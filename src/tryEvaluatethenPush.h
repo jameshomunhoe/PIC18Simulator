@@ -10,5 +10,6 @@ void tryEvaluateOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,St
 void tryEvaluatePrefixOperatorOnStackThenPush(Operator *newToken,Stack *numberStack,Stack *operatorStack);
 void tryConvertToPrefix(Operator *opeToken);
 void tryEvaluateAndExecutePostfix(Operator *newToken,Stack *numberStack,Stack *operatorStack);
+void checkPrefixOperator(Operator *newToken,Stack *numberStack,Stack *operatorStack);
 
 #endif //__TRYEVALUATETHENPUSH_H__

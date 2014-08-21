@@ -6,7 +6,7 @@
 #include "ErrorCode.h"
 #include "CException.h"
 
-int calculate(Operator *opeToken, Number *first, Number *second){
+int calculateInfix(Operator *opeToken, Number *first, Number *second){
 	Stack *numberStack;
 	int answer;
 	
@@ -67,9 +67,9 @@ int calculate(Operator *opeToken, Number *first, Number *second){
 	return answer;
 }
 
-int prefixCalculate(Operator *opeToken, Number *first){
+int calculatePrefixOrPostfix(Operator *opeToken, Number *first){
 	int answer;
-	
+	Stack *operatorStack;
 	if(opeToken->info==NULL)
 	{
 		Throw(ERR_INVALID_OPERATOR);
@@ -98,7 +98,6 @@ int prefixCalculate(Operator *opeToken, Number *first){
 		
 		case CLOSING_BRACKET_OP:
 			answer=first->value;
-			
 		break;	
 		
 		default:

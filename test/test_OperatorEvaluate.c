@@ -25,7 +25,7 @@ void tearDown(void){}
 
 ***********************************************************************/	
  
-void test_operaratorPrefixEvalute_should_calculate_prefix_expression(void){
+void test_operatorPrefixOrPostfixEvaluate_should_calculate_prefix_expression(void){
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
 	Number *Ans;
@@ -40,13 +40,13 @@ void test_operaratorPrefixEvalute_should_calculate_prefix_expression(void){
 	stackPush(&minus,operatorStack);
 	stackPush(&number2,numberStack);
 	
-	operatorPrefixEvaluate(numberStack,&minus);
+	operatorPrefixOrPostfixEvaluate(numberStack,&minus);
 	Ans=(Number*)stackPop(numberStack);
 	TEST_ASSERT_NOT_NULL(numberStack);
 	TEST_ASSERT_EQUAL(-2,Ans->value);
 }
 
-void test_operaratorPrefixEvalute_should_calculate_prefix_expression2(void){
+void test_operatorPrefixOrPostfixEvaluate_should_calculate_prefix_expression2(void){
 	Stack *numberStack=createStack();
 	Stack *operatorStack=createStack();
 	Number *Ans;
@@ -59,7 +59,7 @@ void test_operaratorPrefixEvalute_should_calculate_prefix_expression2(void){
 	stackPush(&logicalNot,operatorStack);
 	stackPush(&number12,numberStack);
 	
-	operatorPrefixEvaluate(numberStack,&logicalNot);
+	operatorPrefixOrPostfixEvaluate(numberStack,&logicalNot);
 	Ans=(Number*)stackPop(numberStack);
 	TEST_ASSERT_NOT_NULL(numberStack);
 	TEST_ASSERT_EQUAL(0,Ans->value);
@@ -131,7 +131,7 @@ void test_operatorEvaluate_close_bracket_3_should_throw_error(void){
 	stackPush(&closeBracket,operatorStack);
 	
 	Try{
-		operatorPrefixEvaluate(numberStack,&closeBracket);
+		operatorPrefixOrPostfixEvaluate(numberStack,&closeBracket);
 	}
 	Catch(e){
 		TEST_ASSERT_EQUAL(ERR_UNKNOWN_INFIX_OPERATOR,e);

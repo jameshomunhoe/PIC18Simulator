@@ -5,8 +5,8 @@
 
 //Function declaration
 
-int calculate(Operator *opeToken, Number *first , Number *second);
-int prefixCalculate(Operator *opeToken1, Number *first );
+int calculateInfix(Operator *opeToken, Number *first, Number *second);
+int calculatePrefixOrPostfix(Operator *opeToken, Number *first);
 
 
 #endif //__CALCULATETOKEN_H__
