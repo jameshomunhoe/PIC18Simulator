@@ -1,4 +1,4 @@
-#include "LinkedLIst.h"
+#include "LinkedList.h"
 #include <stdio.h>
 #include <malloc.h>
 
