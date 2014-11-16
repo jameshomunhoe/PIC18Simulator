@@ -3,7 +3,7 @@
 #include "ExecutionTable.h"
 #include "Execute.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "Text.h"
 
 void setUp(void){}

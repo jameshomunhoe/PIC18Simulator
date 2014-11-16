@@ -4,7 +4,7 @@
 #include "Execute.h"
 #include "CException.h"
 #include "ExecutionTable.h"
-#include "String.h"
+#include "string.h"
 #include "StringObject.h"
 #include "Token.h"
 #include "Text.h"

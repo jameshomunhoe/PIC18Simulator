@@ -1,7 +1,7 @@
 #include "unity.h"
 #include "CustomTypeAssert.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "Text.h"
 
 typedef struct FakeText {

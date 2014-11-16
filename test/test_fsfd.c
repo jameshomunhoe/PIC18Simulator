@@ -3,7 +3,7 @@
 #include "FsFd.h"
 #include "CException.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "Text.h"
 #include "ErrorCode.h"
 #include "ExtractValue.h"

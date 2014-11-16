@@ -3,7 +3,7 @@
 #include "S.h"
 #include "CException.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "Text.h"
 #include "ErrorCode.h"
 #include "Extract1BitsValue.h"

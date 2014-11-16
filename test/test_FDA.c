@@ -4,7 +4,7 @@
 #include "mock_Extract.h"
 #include "CustomTypeAssert.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "Text.h"
 #include "ErrorCode.h"
 #include "ExtractValue.h"
