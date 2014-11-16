@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "Extract.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "CustomTypeAssert.h"
 #include "CException.h"
 #include "ErrorCode.h"

@@ -4,7 +4,7 @@
 #include "ExtractValue.h"
 #include "Interpret.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "Text.h"
 #include "ErrorCode.h"
 #include "CException.h"

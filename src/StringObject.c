@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "String.h"
+#include "string.h"
 #include "CustomTypeAssert.h"
 #include "StringObject.h"
 #include "malloc.h"

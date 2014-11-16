@@ -5,7 +5,7 @@
 #include "ExecutionTable.h"
 #include "FileRegister.h"
 #include "Execute.h"
-#include "String.h"
+#include "string.h"
 #include "CException.h"
 #include "StringObject.h"
 #include "Token.h"

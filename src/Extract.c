@@ -3,7 +3,7 @@
 #include "Extract.h"
 #include "Bytecode.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "CustomTypeAssert.h"
 #include "CException.h"
 #include "cmock.h"

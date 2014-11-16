@@ -2,7 +2,7 @@
 #include "FDA.h"
 #include "Interpret.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "CustomTypeAssert.h"
 #include "CException.h"
 #include "ErrorCode.h"

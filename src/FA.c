@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "FA.h"
 #include "StringObject.h"
-#include "String.h"
+#include "string.h"
 #include "Text.h"
 #include "ErrorCode.h"
 #include "CException.h"
